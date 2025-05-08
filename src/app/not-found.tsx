@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Home, Compass, Leaf } from "lucide-react";
+import { ArrowLeft, Home, Compass } from "lucide-react";
 
 const NotFound = () => {
   const router = useRouter();

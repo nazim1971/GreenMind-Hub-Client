@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import skill from '../../assets/skill-thumb.png';
 import { Leaf } from 'lucide-react';
+import { Progress } from '../ui/progress';
 
 const OurSkillsSection = () => {
   return (
