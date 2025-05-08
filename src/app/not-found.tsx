@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { ArrowLeft, Home, Compass, Leaf } from 'lucide-react';
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, Home, Compass, Leaf } from "lucide-react";
 
 const NotFound = () => {
   const router = useRouter();
-  const imageUrl = 'https://freefrontend.com/assets/img/html-css-404-page-templates/Pure-CSS-404-Error-Page.gif'; // Replace with your preferred external image link
+  const imageUrl =
+    "https://freefrontend.com/assets/img/html-css-404-page-templates/Pure-CSS-404-Error-Page.gif"; // Replace with your preferred external image link
 
   return (
     <section className="bg-green-50 dark:bg-gray-900 min-h-screen flex items-center justify-center px-4 py-8">
@@ -27,14 +28,15 @@ const NotFound = () => {
         <div className="flex items-center justify-center gap-2 text-green-500">
           {/* <Leaf size={28} /> */}
           <h1 className="text-2xl font-semibold text-gray-800 dark:text-green-400 sm:text-3xl">
-          Lost in the Green Path
+            Lost in the Green Path
           </h1>
           {/* <Leaf size={28} /> */}
         </div>
 
         {/* Message */}
         <p className="text-gray-600 dark:text-gray-300">
-        The page you're looking for isn't here. Let’s guide you back to sustainability.
+          The page you are looking for is not here. Let’s guide you back to
+          sustainability.
         </p>
 
         {/* Buttons */}
@@ -48,7 +50,7 @@ const NotFound = () => {
           </button>
 
           <button
-            onClick={() => router.push('/')}
+            onClick={() => router.push("/")}
             className="flex items-center justify-center gap-2 px-5 py-2 text-sm font-medium text-white bg-green-600 rounded-lg shadow-sm hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600"
           >
             <Home size={18} />
@@ -58,7 +60,7 @@ const NotFound = () => {
 
         {/* Explore Link */}
         <button
-          onClick={() => router.push('/idea')}
+          onClick={() => router.push("/idea")}
           className="inline-flex items-center gap-2 text-sm text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 mt-4"
         >
           <Compass size={16} />

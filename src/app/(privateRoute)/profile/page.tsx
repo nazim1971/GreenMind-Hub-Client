@@ -1,3 +1,4 @@
+import ProfileCard from "@/components/HomeComponents/ProfileCard";
 
 const ProfilePage = () => {
     return (
