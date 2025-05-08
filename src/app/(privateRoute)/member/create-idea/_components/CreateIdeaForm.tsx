@@ -20,6 +20,8 @@ import { toast } from 'sonner';
 import { createAnIdea, draftAnIdea } from '../_action';
 import { ideaDraftSchema } from './IdeaValidation';
 import { useRouter } from 'next/navigation';
+import TGImageUploader from '@/components/ui/ImageUploader';
+import ImagePreviewer from '@/components/ui/ImageUploader/ImagePreviewer';
 const CreateIdeaForm = ({ categories }: { categories: category[] }) => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
