@@ -2,7 +2,7 @@
 
 import { ChevronsUpDown, LogOut } from 'lucide-react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +20,7 @@ import { useUser } from '@/context/UserContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { logOut } from '@/services/AuthService';
 import { protectedRoutes } from '@/constants';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avater';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
