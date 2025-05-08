@@ -25,10 +25,11 @@ import {
 } from '@/components/ui/drawer';
 import { logOut } from '@/services/AuthService';
 import { Button } from '../ui/button';
-import { LogOut, Menu, X } from 'lucide-react';
+import { Loader, LogOut, Menu, X } from 'lucide-react';
 import { protectedRoutes } from '@/constants';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avater';
 import { ModeToggle } from '../theme/ModeToggle';
+import { InteractiveHoverButton } from '../Button/hover-button';
 
 const NavBar = () => {
   const router = useRouter();
@@ -156,13 +157,13 @@ const NavBar = () => {
                 <ModeToggle />
 
                 {isLoading ? (
-                  <NavbarLoadingSkeleton />
+                  <Loader/>
                 ) : user ? (
                   <>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Avatar>
-                          <AvatarImage src={user.image} alt="@shadcn" />
+                          <AvatarImage src={user?.image ?? undefined}  alt="@shadcn" />
                           <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                       </DropdownMenuTrigger>

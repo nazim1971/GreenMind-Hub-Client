@@ -10,7 +10,7 @@ export const createPayment = async (paymentData: FieldValues): Promise<any> => {
   const token = await getValidToken();
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/payment`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/payments`, {
       method: 'POST',
       body: JSON.stringify(paymentData),
       headers: {
@@ -37,7 +37,7 @@ export const getAllPayments = async (
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/payment?limit=100`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/payments?limit=100`,
       {
         method: 'GET',
         headers: {
@@ -65,7 +65,7 @@ export const getMemberPayments = async (
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/payment/member?limit=100`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/payments/member?limit=100`,
       {
         method: 'GET',
         headers: {
@@ -90,7 +90,7 @@ export const validatePayment = async (tran_id: string): Promise<any> => {
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/payment/validate?tran_id=${tran_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/payments/validate?tran_id=${tran_id}`,
       {
         method: 'PATCH',
         headers: {
