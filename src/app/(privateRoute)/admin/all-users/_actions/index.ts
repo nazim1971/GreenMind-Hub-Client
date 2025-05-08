@@ -9,9 +9,6 @@ export const getAllUsers = async () => {
       `${process.env.NEXT_PUBLIC_BASE_API}user?limit=100`,
       {
         method: 'GET',
-        // headers: {
-        //   Authorization: token,
-        // },
         next: {
           tags: ['USERS'],
         },
@@ -28,7 +25,7 @@ export const getAllUsers = async () => {
 export const updateUserStatus = async (id: string, isActive: boolean) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/admin/user/${id}/status`,
+      `${process.env.NEXT_PUBLIC_BASE_API}user/${id}/status`,
       {
         method: 'PATCH',
         headers: {

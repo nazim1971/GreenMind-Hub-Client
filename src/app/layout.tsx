@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/shared/Navbar";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ReactNode } from "react";
-import Footer from "@/components/shared/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { Provider } from "@/Providers/Provider";
 
@@ -43,9 +41,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
            <Provider>
-           <Navbar  />
-            <div className="pt-20">{children}</div>
-            <Footer />
+           <div className="pt-20">{children}</div>
            </Provider>
            <Toaster />
           </ThemeProvider>
