@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import {
@@ -48,6 +49,7 @@ import { deleteIdea } from '../_actions';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { useState } from 'react';
+import { DeleteConfirmationModal } from './DeleteModel';
 
 interface DataTableProps {
   ideas: TIdea[];

@@ -1,6 +1,8 @@
 import { getMemberOwnIdeas } from '../_actions';
 import IdeasTable from './IdeasTable';
 
+
+
 const AllIdeasModule = async () => {
   const { data: ideas } = await getMemberOwnIdeas();
 

@@ -1,5 +1,6 @@
-import { DataTable } from './data-table';
+
 import { TIdea } from '@/types';
+import { DataTable } from './DataTable';
 
 const IdeasTable = ({ ideas = [] }: { ideas: TIdea[] }) => {
   return (
