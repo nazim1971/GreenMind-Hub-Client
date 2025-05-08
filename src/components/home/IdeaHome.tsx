@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getAllIdeas } from '@/services/Idea';
+import IdeaHomeCards from './IdeaHomeCars';
 
 const IdeaHome = async () => {
   const { data: ideas } = await getAllIdeas();
