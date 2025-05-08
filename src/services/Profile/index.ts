@@ -13,7 +13,7 @@ export const updatePassword = async (payload: {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/auth/change-password`,
       {
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
           Authorization: token,
           'Content-Type': 'application/json',
