@@ -1,4 +1,5 @@
-import ContributePart from '@/components/Blogs/ContributePart';
+
+import ContributePart from '@/components/Blogs/contributeIdea';
 import Link from 'next/link';
 
 const BlogsPage = () => {
