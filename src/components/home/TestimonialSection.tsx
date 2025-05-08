@@ -9,11 +9,9 @@ import {
   import Image from 'next/image';
   
   import { getByVotes } from '@/services/Idea';
-  // import { Avatar } from "../ui/avatar";
-  // import { AvatarFallback } from "@radix-ui/react-avatar";
-  import { Separator } from '../ui/separator';
-  import { Badge } from '../ui/badge';
   import u1 from '../../assets/u1.avif';
+import { Badge } from '../ui/badge';
+import { Separator } from '../ui/separator';
   
   const TestimonialSection = async () => {
     const { data: testimonials } = await getByVotes();
