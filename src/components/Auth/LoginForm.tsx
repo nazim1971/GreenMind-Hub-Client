@@ -54,7 +54,7 @@ const LoginForm = ({ redirectPath }: { redirectPath: string | undefined }) => {
   };
 
   return (
-    <div className="dark:text-white text-black bg-transparent relative">
+    <div suppressHydrationWarning className="dark:text-white text-black bg-transparent relative">
       <div className="backdrop-blur-2xl p-8 rounded-lg shadow-lg max-w-md w-full border-2 border-green-500 relative">
         <Link
           href={'/'}

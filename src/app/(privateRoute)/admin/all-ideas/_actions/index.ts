@@ -1,18 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use server';
+"use server";
 
-import { revalidateTag } from 'next/cache';
+import { revalidateTag } from "next/cache";
 
-import { getValidToken } from '@/lib/getValidToken';
+import { getValidToken } from "@/lib/getValidToken";
 
 export const getAllIdeasByAdmin = async () => {
   try {
+    const token = await getValidToken();
+    if (!token)
+      return { success: false, message: "Authentication token not found" };
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/idea?limit=100`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/idea/admin/all-ideas?limit=100`,
       {
-        method: 'GET',
+        method: "GET",
+        headers: { Authorization: token },
         next: {
-          tags: ['IDEAS'],
+          tags: ["IDEAS"],
         },
       }
     );
@@ -28,19 +32,19 @@ export const updateIdeaStatus = async (
   id: string,
   payload: { status: string; feedback?: string }
 ) => {
+  
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/idea/${id}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }
-    );
+    const token = await getValidToken();
+    if (!token)
+      return { success: false, message: "Authentication token not found" };
 
-    revalidateTag('IDEAS');
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/idea/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json",Authorization: token,},
+      body: JSON.stringify(payload),
+    });
+
+    revalidateTag("IDEAS");
     const data = await res.json();
     return data;
   } catch (error: any) {
@@ -52,10 +56,10 @@ export const deleteIdea = async (id: string) => {
   try {
     const token = await getValidToken();
     if (!token)
-      return { success: false, message: 'Authentication token not found' };
+      return { success: false, message: "Authentication token not found" };
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/idea/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: { Authorization: token },
     });
 

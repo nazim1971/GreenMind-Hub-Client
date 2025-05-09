@@ -8,7 +8,8 @@ import { getValidToken } from '@/lib/getValidToken';
 // create Payment
 export const createPayment = async (paymentData: FieldValues): Promise<any> => {
   const token = await getValidToken();
-
+    if (!token)
+      return { success: false, message: "Authentication token not found" };
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/payments`, {
       method: 'POST',
@@ -34,7 +35,8 @@ export const getAllPayments = async (
   // limit?: string
 ): Promise<any> => {
   const token = await getValidToken();
-
+      if (!token)
+      return { success: false, message: "Authentication token not found" };
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/payments?limit=100`,
@@ -58,11 +60,11 @@ export const getAllPayments = async (
 
 // getMemberPayments for Member
 export const getMemberPayments = async (
-  // page?: string,
-  // limit?: string
+
 ): Promise<any> => {
   const token = await getValidToken();
-
+    if (!token)
+      return { success: false, message: "Authentication token not found" };
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/payments/member?limit=100`,
@@ -87,7 +89,8 @@ export const getMemberPayments = async (
 // validate Payment
 export const validatePayment = async (tran_id: string): Promise<any> => {
   const token = await getValidToken();
-
+    if (!token)
+      return { success: false, message: "Authentication token not found" };
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/payments/validate?tran_id=${tran_id}`,

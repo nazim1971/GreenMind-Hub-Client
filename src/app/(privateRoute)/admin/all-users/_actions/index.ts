@@ -4,10 +4,13 @@
 import { getValidToken } from "@/lib/getValidToken";
 import { revalidateTag } from "next/cache";
 
-const token = await getValidToken();
+
 
 export const getAllUsers = async () => {
   try {
+    const token = await getValidToken();
+        if (!token)
+      return { success: false, message: "Authentication token not found" };
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user`, {
       headers: {
         Authorization: token,
@@ -26,12 +29,17 @@ export const getAllUsers = async () => {
 
 export const updateUserStatus = async (id: string, isActive: boolean) => {
   try {
+ 
+    const token = await getValidToken();
+     if (!token)
+      return { success: false, message: "Authentication token not found" };
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/user/${id}/status`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token,
         },
         body: JSON.stringify({ isActive }),
       }
