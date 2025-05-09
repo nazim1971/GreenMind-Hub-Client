@@ -145,7 +145,7 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
               ) : (
                 <>
                   <Link
-                    href={`/ideas/${idea.id}`}
+                    href={`/idea/${idea.id}`}
                     className="w-full"
                     onClick={e => {
                       if (idea.isPaid && user) {
@@ -166,7 +166,7 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
                       if (idea.isPaid && !user) {
                         e.preventDefault();
                         window.location.href = `/login?returnUrl=${encodeURIComponent(
-                          `/ideas/${idea.id}`
+                          `/idea/${idea.id}`
                         )}`;
                       }
                     }}
