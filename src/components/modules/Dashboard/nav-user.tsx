@@ -24,7 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avater';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const { user, setIsLoading ,setUser} = useUser();
+  const { user, setUser} = useUser();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -35,7 +35,6 @@ export function NavUser() {
     if (protectedRoutes.some(route => pathname.match(route))) {
       router.push('/');
     }
-    setIsLoading(true);
   };
 
   return (
