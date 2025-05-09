@@ -108,13 +108,7 @@ export function AppSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/">
-                {/* <div className="grid flex-1 text-left text-sm leading-tight">
-                  {collapsed ? <Icon /> : <Logo />}
-                </div> */}
                 <div className="w-full">
-                  {/* <p className="text-black dark:text-white text-lg font-medium z-10">
-                    ThinkGreenly
-                  </p> */}
                   <Image src={logo} alt="logo" className="h-12 w-12" />
                 </div>
               </Link>

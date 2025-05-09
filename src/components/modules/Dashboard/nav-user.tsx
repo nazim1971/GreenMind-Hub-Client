@@ -24,13 +24,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avater';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const { user, setIsLoading } = useUser();
+  const { user, setIsLoading ,setUser} = useUser();
 
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleLogout = () => {
-    logOut();
+  const handleLogout = async() => {
+    await logOut();
+    setUser(null)
     if (protectedRoutes.some(route => pathname.match(route))) {
       router.push('/');
     }

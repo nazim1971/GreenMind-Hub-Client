@@ -39,8 +39,6 @@ const NavBar = () => {
   const handleLogOut = async () => {
     await logOut();
     setUser(null);
-      // localStorage.clear();
-      //  sessionStorage.clear();
     if (protectedRoutes.some(route => pathname.match(route))) {
       router.push('/');
     }
