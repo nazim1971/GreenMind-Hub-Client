@@ -37,6 +37,7 @@ import { useRouter } from 'next/navigation';
 import IdeaCardCarousel from './IdeaCardCarosule';
 import { createPayment } from '@/services/Payment';
 import IdeaActionSkeleton from './IdeaActionSkelletion';
+
 const IdeaCard = ({ idea }: { idea: Idea }) => {
   const { user, isLoading } = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,7 +48,6 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
       const res = await createPayment({ ideaId: id });
 
       if (res.success && res.data) {
-        // window.location.href = res.data;
         router.push(res.data);
       } else {
         console.error('Payment initiation failed:', res.message);
@@ -58,49 +58,41 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
   };
 
   return (
-    <Card className="bg-white dark:bg-transparent rounded-3xl border-2 border-green-100 shadow-lg hover:shadow-xl transition-shadow relative">
-      <div className="absolute -top-3 z-10 -right-1">
-        <Leaf className="w-10 h-10 text-green-500" />
-      </div>
+    <Card className="bg-white dark:bg-transparent rounded-3xl border-2 border-[#14B8A6] shadow-lg hover:shadow-xl transition-shadow relative">
+   
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 px-2 ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 px-2">
         <div className="lg:h-full relative aspect-video lg:aspect-auto">
           <CardHeader className="relative h-full w-full p-0 overflow-hidden rounded-xl">
-            {/* image carousel part */}
             <IdeaCardCarousel idea={idea} />
 
             <div className="flex justify-around items-center">
-              {/* author name */}
-              <div className="flex items-center gap-1 dark:text-green-400 text-green-700 mt-1">
+              <div className="flex items-center gap-1 dark:text-[#14B8A6] text-[#14B8A6] mt-1">
                 <User className="w-4 h-4" />
                 <span>{idea?.author?.name}</span>
               </div>
 
-              {/* post date */}
-              <div className="flex items-center gap-1 dark:text-green-400 text-green-700">
+              <div className="flex items-center gap-1 dark:text-[#14B8A6] text-[#14B8A6]">
                 <CalendarDays className="w-4 h-4" />
                 <span>{new Date(idea?.createdAt)?.toLocaleDateString()}</span>
               </div>
             </div>
 
-            {/* comments count */}
-            <div className="absolute top-2 left-1 flex items-center gap-1.5  backdrop-blur-sm text-green-700 px-3 py-1 rounded-full z-10 border border-green-200 bg-green-200/50 transition-colors">
-              <MessageCircle className="w-4 h-4 text-green-900" />
+            <div className="absolute top-2 left-1 flex items-center gap-1.5 backdrop-blur-sm text-[#14B8A6] px-3 py-1 rounded-full z-10 border border-[#14B8A6] bg-[#14B8A6]/50 transition-colors">
+              <MessageCircle className="w-4 h-4 text-[#14B8A6]" />
               <span className="text-sm font-medium">
                 {idea.comments?.length || 0}
               </span>
             </div>
 
-            {/* UP-Vote Badge */}
-            <div className="absolute top-2 left-16 flex items-center gap-1.5  backdrop-blur-sm text-green-700 px-3 py-1 rounded-full z-10 border border-green-200 bg-green-200/50 transition-colors">
-              <Heart className="w-4 h-4 text-green-900" />
-              <span className="text-sm  font-medium">
+            <div className="absolute top-2 left-16 flex items-center gap-1.5 backdrop-blur-sm text-[#14B8A6] px-3 py-1 rounded-full z-10 border border-[#14B8A6] bg-[#14B8A6]/50 transition-colors">
+              <Heart className="w-4 h-4 text-[#14B8A6]" />
+              <span className="text-sm font-medium">
                 {idea.votes?.filter(vote => vote.type === 'UP')?.length || 0}
               </span>
             </div>
 
-            {/* DOWN-Vote Badge */}
-            <div className="absolute top-2 left-32 flex items-center gap-1.5  backdrop-blur-sm text-green-700 px-3 py-1 rounded-full z-10 border border-green-200 bg-green-200/50  transition-colors">
+            <div className="absolute top-2 left-32 flex items-center gap-1.5 backdrop-blur-sm text-[#14B8A6] px-3 py-1 rounded-full z-10 border border-[#14B8A6] bg-[#14B8A6]/50 transition-colors">
               <HeartOff className="w-4 h-4 text-red-600" />
               <span className="text-sm font-medium">
                 {idea.votes?.filter(vote => vote.type === 'DOWN')?.length || 0}
@@ -112,13 +104,13 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
         <div className="flex flex-col justify-between lg:h-full lg:pl-4">
           <CardContent className="p-0 space-y-4">
             <CardTitle className="space-y-2">
-              <h1 className="text-xl font-bold text-green-900 dark:text-green-100 leading-tight">
+              <h1 className="text-xl font-bold text-[#14B8A6] dark:text-[#14B8A6] leading-tight">
                 {idea.title}
               </h1>
             </CardTitle>
 
             <div className="relative">
-              <p className="text-gray-600 text-sm dark:text-green-100 line-clamp-3">
+              <p className="text-gray-600 text-sm dark:text-[#14B8A6] line-clamp-3">
                 {idea.description}
               </p>
             </div>
@@ -127,14 +119,14 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
           <CardFooter className="p-0 mt-4">
             <div className="w-full flex flex-col gap-4">
               <div className="flex md:flex-col justify-around items-center gap-3">
-                <div className="flex items-center gap-2 bg-green-50 px-4 py-1 rounded-full">
-                  <Leaf className="w-4 h-4 text-green-600" />
-                  <span className="text-sm font-medium text-green-600">
+                <div className="flex items-center gap-2 bg-[#14B8A6]/10 px-4 py-1 rounded-full">
+                  <Leaf className="w-4 h-4 text-[#14B8A6]" />
+                  <span className="text-sm font-medium text-[#14B8A6]">
                     {idea?.category?.name}
                   </span>
                 </div>
-                <div className="bg-green-100 px-4 py-1 rounded-full">
-                  <span className="text-lg font-medium text-green-900">
+                <div className="bg-[#14B8A6]/20 px-4 py-1 rounded-full">
+                  <span className="text-lg font-medium text-[#14B8A6]">
                     {idea.isPaid ? <>${idea.price?.toFixed(2)}</> : 'Free'}
                   </span>
                 </div>
@@ -173,9 +165,9 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
                   >
                     <Button
                       size="lg"
-                      className="w-full cursor-pointer bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl py-2"
+                      className="w-full cursor-pointer bg-[#14B8A6] hover:bg-[#119B92] text-white font-semibold rounded-xl py-2"
                     >
-                      {idea.isPaid ? ' Premium Solution' : 'Detailed Solution'}
+                      {idea.isPaid ? 'Premium Solution' : 'Detailed Solution'}
                       <ArrowRight className="ml-1 w-3 h-3" />
                     </Button>
                   </Link>
@@ -183,8 +175,7 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
                   <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
                     <DialogContent className="rounded-lg max-w-md">
                       <div className="flex flex-col items-center text-center space-y-4">
-                        {/* Animated Icon Container */}
-                        <div className="p-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse">
+                        <div className="p-4 bg-gradient-to-r from-[#14B8A6] to-emerald-500 rounded-full animate-pulse">
                           <Gem className="w-8 h-8 text-white" />
                         </div>
 
@@ -197,10 +188,9 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
                           </DialogDescription>
                         </DialogHeader>
 
-                        {/* Feature List */}
                         <div className="w-full space-y-3 text-left">
-                          <div className="flex items-center gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                            <FileText className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                          <div className="flex items-center gap-3 p-3 bg-[#14B8A6]/10 dark:bg-[#14B8A6]/20 rounded-lg">
+                            <FileText className="w-5 h-5 text-[#14B8A6]" />
                             <span className="text-sm font-medium">
                               Detailed Step-by-Step Guide
                             </span>
@@ -221,8 +211,7 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
                           </div>
                         </div>
 
-                        {/* Pricing Banner */}
-                        <div className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 rounded-lg">
+                        <div className="w-full bg-gradient-to-r from-[#14B8A6] to-emerald-600 text-white p-4 rounded-lg">
                           <div className="flex justify-between items-center">
                             <div>
                               <p className="text-xl font-bold">
@@ -235,11 +224,10 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
                           </div>
                         </div>
 
-                        {/* Action Buttons */}
                         <div className="w-full flex flex-col gap-2 space-y-2">
                           <Button
                             size="lg"
-                            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold shadow-lg"
+                            className="w-full bg-gradient-to-r from-[#14B8A6] to-emerald-600 hover:from-[#14B8A6] hover:to-emerald-700 text-white font-bold shadow-lg"
                             onClick={() => {
                               setIsModalOpen(false);
                               handlePayment(idea.id);
@@ -250,7 +238,7 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
                           </Button>
 
                           <Button
-                            className="w-full text-green-600 bg-green-100  dark:text-gray-600"
+                            className="w-full text-[#14B8A6] bg-[#14B8A6]/10 dark:text-gray-600"
                             onClick={() => setIsModalOpen(false)}
                           >
                             Maybe Later

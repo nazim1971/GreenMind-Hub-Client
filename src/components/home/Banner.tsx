@@ -8,13 +8,15 @@ import {
   // CarouselNext,
   // CarouselPrevious,
 } from '@/components/ui/carousel';
-import onepic from '@/assets/greenWorld.jpg';
-import twopic from '@/assets/begreen.jpg';
+
 import Image from 'next/image';
 import { useRef } from 'react';
+import banner1 from '../../assets/banner1.avif'
+import banner2 from '../../assets/banner2.jpg'
+import banner3 from '../../assets/banner3.jpg'
 
 export function Banner() {
-  const images = [onepic, twopic];
+  const images = [banner1,banner2,banner3];
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
 
   return (
@@ -25,13 +27,14 @@ export function Banner() {
         // onMouseEnter={plugin.current.stop}
         // onMouseLeave={plugin.current.reset}
       >
-        <CarouselContent>
+        <CarouselContent className='w-full'>
           {images.map((img, idx) => (
             <Image
               key={idx}
               src={img}
               width={2400}
               height={1000}
+              content=''
               alt="images"
             />
           ))}
