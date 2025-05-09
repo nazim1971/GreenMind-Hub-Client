@@ -71,7 +71,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/ideas" className="hover:text-primary">
+                <Link href="/idea" className="hover:text-primary">
                   Ideas
                 </Link>
               </li>
@@ -81,8 +81,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/blogs" className="hover:text-primary">
+                <Link href="/blog" className="hover:text-primary">
                   Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-primary">
+                  Contact
                 </Link>
               </li>
             </ul>

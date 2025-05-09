@@ -110,7 +110,7 @@ const EditIdeaForm = ({
 
       if (res?.success) {
         toast.success(res?.message);
-        router.push(`/ideas/${res?.data?.id}`);
+        router.push(`/idea/${res?.data?.id}`);
       } else {
         toast.error(res?.message || 'Action failed.');
       }

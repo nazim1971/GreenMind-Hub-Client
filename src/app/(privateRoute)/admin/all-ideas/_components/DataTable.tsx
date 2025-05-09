@@ -424,7 +424,7 @@ export function DataTable({ data }: DataTableProps) {
               <DropdownMenuItem>
                 <span className="flex items-center cursor-pointer">
                   <Eye className="mr-2 h-4 w-4" />
-                  <Link href={`/ideas/${project?.id}`}>View details</Link>
+                  <Link href={`/idea/${project?.id}`}>View details</Link>
                 </span>
               </DropdownMenuItem>
              

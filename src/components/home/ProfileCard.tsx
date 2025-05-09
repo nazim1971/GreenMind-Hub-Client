@@ -10,6 +10,7 @@ import UpdatePasswordModal from '../Profile/UpdatePasswordModal';
 
 const ProfileCard = () => {
   const { user, setIsLoading } = useUser();
+  console.log(user);
 
   //   const fileInputRef = useRef<HTMLInputElement>(null);
 

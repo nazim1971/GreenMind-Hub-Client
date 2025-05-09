@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use server';
+"use server";
 
-import { revalidateTag } from 'next/cache';
+import { getValidToken } from "@/lib/getValidToken";
+import { revalidateTag } from "next/cache";
+
+const token = await getValidToken();
 
 export const getAllUsers = async () => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}user?limit=100`,
-      {
-        method: 'GET',
-        next: {
-          tags: ['USERS'],
-        },
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user`, {
+      headers: {
+        Authorization: token,
+      },
+      next: {
+        tags: ["USERS"],
+      },
+    });
 
     const data = await res.json();
     return data;
@@ -25,17 +27,17 @@ export const getAllUsers = async () => {
 export const updateUserStatus = async (id: string, isActive: boolean) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}user/${id}/status`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/user/${id}/status`,
       {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ isActive }),
       }
     );
 
-    revalidateTag('USERS');
+    revalidateTag("USERS");
     const data = await res.json();
     return data;
   } catch (error: any) {

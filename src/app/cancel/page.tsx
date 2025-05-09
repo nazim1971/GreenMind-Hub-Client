@@ -18,7 +18,7 @@ const CancelPage = () => {
             again.
           </p>
 
-          <Link href="/ideas" legacyBehavior>
+          <Link href="/idea" legacyBehavior>
             <Button>Try Again</Button>
           </Link>
         </div>

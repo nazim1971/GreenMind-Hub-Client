@@ -332,7 +332,7 @@ export const columns: ColumnDef<TUser>[] = [
                   }
                   onClick={() => updateUserStatus(user.id, !user.isActive)}
                 >
-                  {user.isActive ? 'Deactivate user' : 'Activate user'}
+                  {user.isActive ? 'Deactivate' : 'Activate'}
                 </span>
               </span>
             </DropdownMenuItem>
@@ -356,7 +356,7 @@ export function UserDataTable({ data }: DataTableProps) {
   const [searchField, setSearchField] = useState<string>('name');
 
   const table = useReactTable({
-    data,
+    data: data || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -497,7 +497,7 @@ export function UserDataTable({ data }: DataTableProps) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table?.getRowModel()?.rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}

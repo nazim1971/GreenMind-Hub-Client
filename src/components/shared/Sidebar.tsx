@@ -2,13 +2,11 @@
 import { useState } from "react";
 import { FiX, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import Link from "next/link";
-import { UserProps } from "./Navbar";
 // import { signOut } from "next-auth/react";
 
 type SidebarProps = {
   isOpen: boolean;
   closeSidebar: () => void;
-  session: UserProps | null;
 };
 
 const Sidebar = ({ isOpen, closeSidebar }: SidebarProps) => {

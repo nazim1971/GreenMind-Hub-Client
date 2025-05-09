@@ -7,7 +7,7 @@ import { Badge } from '../ui/badge';
 
 const IdeaHomeCards = ({ idea }: { idea: any }) => {
   return (
-    <Link href="/ideas">
+    <Link href="/idea">
       <Card className="max-w-md dark:bg-gradient-to-br dark:from-black  dark:to-[#0a2910] dark:text-white text-black border border-green-700 shadow-xl rounded-2xl hover:scale-[1.02] transition-transform">
         <Image
           src={idea?.images?.[0]}
