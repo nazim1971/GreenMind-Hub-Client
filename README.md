@@ -1,7 +1,7 @@
 
 # 🌿 GreenMind-Hub
 
-GreenMind-Hub is a modern, full-stack eCommerce platform designed for plant and eco-product businesses. It combines a clean user interface with powerful backend functionality to ensure a smooth experience for both buyers and administrators.
+GreenMind-Hub is a Next.js-powered community platform for sharing and voting on sustainable ideas. Admins moderate submissions, while members collaborate on eco-friendly solutions. The platform offers a seamless experience for browsing, managing, and contributing to green initiatives, supported by a powerful backend and intuitive UI..
 
 ---
 
