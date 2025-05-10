@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { Button } from '@/components/ui/button';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
@@ -21,7 +21,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PasswordInput } from '../ui/password-input';
 import { loginValidationSchema } from './LoginValidation';
-// import { PasswordInput } from "@/components/ui/password-input";
+import { ShinyButton } from '../magicui/shiny-button';
 
 const LoginForm = ({ redirectPath }: { redirectPath: string | undefined }) => {
   const router = useRouter();
@@ -39,12 +39,8 @@ const LoginForm = ({ redirectPath }: { redirectPath: string | undefined }) => {
       const res = await loginUser(data);
       if (res?.success) {
         setUser(await getCurrentUser());
-        // setIsLoading(true);
         toast.success(res?.message);
         router.push(redirectPath || '/');
-        // setTimeout(() => {
-        //   router.push(redirectPath || '/');
-        // }, 100);
       } else {
         toast.error(res?.message);
       }
@@ -55,14 +51,20 @@ const LoginForm = ({ redirectPath }: { redirectPath: string | undefined }) => {
 
   return (
     <div suppressHydrationWarning className="dark:text-white text-black bg-transparent relative">
-      <div className="backdrop-blur-2xl p-8 rounded-lg shadow-lg max-w-md w-full border-2 border-green-500 relative">
+      <div
+        className="backdrop-blur-2xl p-10 rounded-lg shadow-xl max-w-md w-full relative"
+        style={{ border: '2px solid #1E90FF' }}
+      >
         <Link
           href={'/'}
           className="border inline font-bold shadow-md hover:shadow-sm hover:cursor-pointer px-3 py-1 rounded-full absolute top-0 right-0 m-2"
         >
           X
         </Link>
-        <h2 className="text-3xl font-bold text-center mb-6 text-black dark:text-green-500 tracking-wide">
+        <h2
+          className="text-3xl font-bold text-center mb-6 tracking-wide"
+          style={{ color: '#1E90FF' }}
+        >
           Log In
         </h2>
         <Form {...form}>
@@ -75,13 +77,16 @@ const LoginForm = ({ redirectPath }: { redirectPath: string | undefined }) => {
                   <FormLabel />
                   <FormControl>
                     <Input
-                      className="my-4 py-6"
+                      className="my-4 py-6 px-4 rounded-lg shadow-md focus:outline-none dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                      style={{
+                        border: '1px solid #1E90FF',
+                        outline: 'none',
+                      }}
                       placeholder="Enter Email"
                       {...field}
                       value={field.value || ''}
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -94,25 +99,44 @@ const LoginForm = ({ redirectPath }: { redirectPath: string | undefined }) => {
                   <FormLabel />
                   <FormControl>
                     <PasswordInput
-                      // type="password"
-                      className="my-4 py-6"
+                      className="my-4 py-6 px-4 rounded-lg shadow-md focus:outline-none dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                      style={{
+                        border: '1px solid #1E90FF',
+                        outline: 'none',
+                      }}
                       placeholder="Enter Password"
                       {...field}
                       value={field.value || ''}
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="bg-green-600 mt-3">
+            {/* <Button
+              type="submit"
+              className="shiny-button text-white rounded-lg px-6 py-3 mt-6 transition duration-300 ease-in-out"
+              style={{
+                backgroundColor: '#1E90FF',
+                border: 'none',
+              }}
+            >
               {isSubmitting ? 'Logging in..' : 'Log in'}
-            </Button>
-            <h1 className="flex mt-8">
-              Don&apos;t Have an Account? Please
+            </Button > */}
+              <ShinyButton color='white'  
+              className="shiny-button text-white rounded-lg px-6 py-3 mt-6 transition duration-300 ease-in-out"
+              style={{
+                backgroundColor: '#1E90FF',
+                border: 'none',
+              }}>
+                 {isSubmitting ? 'Logging in..' : 'Log in'}
+              </ShinyButton>
+            <h1 className="flex mt-8 text-sm text-gray-700 dark:text-gray-300">
+              Don&apos;t Have an Account?{' '}
               <Link href="/register">
-                <span className="text-green-700 ml-2 font-bold">Register</span>
+                <span className="ml-2 font-bold" style={{ color: '#1E90FF' }}>
+                  Register
+                </span>
               </Link>
             </h1>
           </form>

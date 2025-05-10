@@ -30,6 +30,7 @@ const RegisterForm = () => {
   const {
     formState: { isSubmitting },
   } = form;
+
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
       const res = await registerUser(data);
@@ -43,16 +44,23 @@ const RegisterForm = () => {
       console.error(err);
     }
   };
+
   return (
     <div className="dark:text-white text-black bg-transparent">
-      <div className="backdrop-blur-2xl p-8 rounded-lg shadow-lg max-w-md w-full border-2 border-green-500 relative">
+      <div
+        className="backdrop-blur-2xl p-8 rounded-lg shadow-lg max-w-md w-full relative"
+        style={{ border: '2px solid #1E90FF' }}
+      >
         <Link
-          href={'/'}
+          href="/"
           className="border inline font-bold shadow-md hover:shadow-sm hover:cursor-pointer px-3 py-1 rounded-full absolute top-0 right-0 m-2"
         >
           X
         </Link>
-        <h2 className="text-3xl font-bold text-center mb-6 text-black dark:text-green-500 tracking-wide">
+        <h2
+          className="text-3xl font-bold text-center mb-6 tracking-wide"
+          style={{ color: '#1E90FF' }}
+        >
           Register
         </h2>
         <Form {...form}>
@@ -66,12 +74,15 @@ const RegisterForm = () => {
                   <FormControl>
                     <Input
                       className="py-6"
+                      style={{
+                        border: '1px solid #1E90FF',
+                        borderRadius: '8px',
+                      }}
                       placeholder="Enter User Name"
                       {...field}
                       value={field.value || ''}
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -85,12 +96,15 @@ const RegisterForm = () => {
                   <FormControl>
                     <Input
                       className="mt-4 py-6"
+                      style={{
+                        border: '1px solid #1E90FF',
+                        borderRadius: '8px',
+                      }}
                       placeholder="Enter Email"
                       {...field}
                       value={field.value || ''}
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -103,26 +117,34 @@ const RegisterForm = () => {
                   <FormLabel />
                   <FormControl>
                     <PasswordInput
-                      // type="password"
                       className="my-4 py-6"
+                      style={{
+                        border: '1px solid #1E90FF',
+                        borderRadius: '8px',
+                      }}
                       placeholder="Enter Password"
                       {...field}
                       value={field.value || ''}
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button type="submit" className="bg-green-600 mt-3">
+            <Button
+              type="submit"
+              className="mt-3 text-white px-6 py-3 rounded-lg transition duration-300 ease-in-out"
+              style={{ backgroundColor: '#1E90FF', border: 'none' }}
+            >
               {isSubmitting ? 'Registering..' : 'Register'}
             </Button>
             <h1 className="mt-4">
               Already Have an Account? Please
               <Link href="/login">
-                <span className="text-green-700 ml-2 font-bold">Login</span>
+                <span className="ml-2 font-bold" style={{ color: '#1E90FF' }}>
+                  Login
+                </span>
               </Link>
             </h1>
           </form>
