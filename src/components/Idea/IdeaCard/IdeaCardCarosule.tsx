@@ -36,7 +36,7 @@ const IdeaCardCarousel = ({ idea }: { idea: Idea }) => {
             </div>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
+        <CarouselPrevious  />
         <CarouselNext />
       </Carousel>
     </div>
