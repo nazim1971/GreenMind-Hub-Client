@@ -1,8 +1,4 @@
-Here’s a well-structured and professional `README.md` file for your **GreenMind-Hub** project:
 
----
-
-````markdown
 # 🌿 GreenMind-Hub
 
 GreenMind-Hub is a modern, full-stack eCommerce platform designed for plant and eco-product businesses. It combines a clean user interface with powerful backend functionality to ensure a smooth experience for both buyers and administrators.
