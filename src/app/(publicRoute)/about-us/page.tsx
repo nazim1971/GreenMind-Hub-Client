@@ -2,123 +2,82 @@ import Link from 'next/link';
 
 const AboutUsPage = () => {
   return (
-    <div className="md:mx-20">
-      <h1 className="text-2xl md:text-4xl font-bold text-center mb-12">
-        About ThinkGreenly
-      </h1>
-      <p className="text-lg dark:text-white text-justify py-4">
-        Welcome to{' '}
-        <Link href="/" className="font-semibold text-green-500 hover:underline">
-          ThinkGreenly
-        </Link>{' '}
-        – your premier platform for sharing and discovering sustainable ideas to
-        help our planet. We are committed to fostering a community where
-        innovative environmental solutions can flourish and make a real impact.
-      </p>
+    <div className="min-h-screen px-4 py-10 md:px-20 bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl md:text-5xl font-bold text-center text-green-600 mb-6">
+          About GreenMind-hub
+        </h1>
+        <p className="text-center text-lg mb-12">
+          Empowering sustainability through innovation and community.
+        </p>
 
-      <div className="space-y-8">
-        {/* Our Mission */}
-        <section>
-          <h2 className="text-xl md:text-2xl font-semibold py-4">
-            Our Mission
-          </h2>
-          <p className="dark:text-white text-justify">
-            At ThinkGreenly, our mission is to accelerate the transition to
-            sustainable living by connecting eco-conscious individuals. We
-            provide a collaborative space where members can share, discuss, and
-            implement practical environmental solutions, from reducing plastic
-            waste to adopting renewable energy.
-          </p>
-        </section>
+        <section className="space-y-10">
+          {/* Welcome */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-3">Welcome to GreenMind-hub</h2>
+            <p className="text-justify text-gray-700 dark:text-gray-300">
+              GreenMind-hub is your trusted platform for discovering and sharing sustainable ideas that make a positive impact on the planet.
+              We’re building a global community where practical, eco-conscious solutions are encouraged and celebrated.
+              Learn more on our <Link href="/" className="text-green-500 font-semibold hover:underline">homepage</Link>.
+            </p>
+          </div>
 
-        {/* Our Story */}
-        <section>
-          <h2 className="text-xl md:text-2xl font-semibold py-4">Our Story</h2>
-          <p className="dark:text-white text-justify">
-            ThinkGreenly was born from a shared passion for environmental
-            conservation. What began as a small group of sustainability
-            enthusiasts has grown into a vibrant community platform where
-            innovative green ideas are shared, refined, and put into action to
-            create meaningful ecological change.
-          </p>
-        </section>
+          {/* Mission */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-3">Our Mission</h2>
+            <p className="text-justify text-gray-700 dark:text-gray-300">
+              We aim to foster a world where sustainability is the norm, not the exception. GreenMind-hub brings together innovators,
+              creators, and changemakers to share actionable ideas and promote a greener lifestyle for everyone.
+            </p>
+          </div>
 
-        {/* Why Choose Us? */}
-        <section>
-          <h2 className="text-xl md:text-2xl font-semibold py-4">
-            Why Choose ThinkGreenly?
-          </h2>
-          <ul className="list-disc list-inside dark:text-white space-y-3 text-justify">
-            <li>
-              <span className="font-semibold">Verified Ideas:</span> Our admin
-              team reviews all submissions to ensure quality and feasibility.
-            </li>
-            <li>
-              <span className="font-semibold">Community-Driven:</span> Get
-              feedback and support from like-minded individuals passionate about
-              sustainability.
-            </li>
-            <li>
-              <span className="font-semibold">Diverse Categories:</span> Explore
-              ideas across energy, waste reduction, transportation, and more.
-            </li>
-            <li>
-              <span className="font-semibold">Monetization Options:</span>{' '}
-              Premium content creators can earn from their innovative
-              sustainability solutions.
-            </li>
-          </ul>
-        </section>
+          {/* Story */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-3">Our Story</h2>
+            <p className="text-justify text-gray-700 dark:text-gray-300">
+              Born from a shared commitment to environmental stewardship, GreenMind-hub started as a collaboration among eco-enthusiasts.
+              What began as a passion project is now a thriving digital hub for green innovation and impactful initiatives.
+            </p>
+          </div>
 
-        {/* Our Values */}
-        <section>
-          <h2 className="text-xl md:text-2xl font-semibold py-4">Our Values</h2>
-          <p className="dark:text-white text-justify">
-            At ThinkGreenly, we believe in:
-          </p>
-          <ul className="list-disc list-inside dark:text-white space-y-3 mt-3 text-justify">
-            <li>
-              <span className="font-semibold">Environmental Impact:</span> Every
-              idea shared has the potential to make our planet greener.
-            </li>
-            <li>
-              <span className="font-semibold">Community Collaboration:</span>{' '}
-              Great solutions emerge when minds work together.
-            </li>
-            <li>
-              <span className="font-semibold">Innovation:</span> We champion
-              creative approaches to sustainability challenges.
-            </li>
-          </ul>
-        </section>
+          {/* Why Choose Us */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-3">Why Choose GreenMind-hub?</h2>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 text-justify">
+              <li><strong>Verified Content:</strong> Every post is reviewed for authenticity and practicality.</li>
+              <li><strong>Community Support:</strong> Connect with people who share your passion for the planet.</li>
+              <li><strong>Diverse Categories:</strong> From recycling to clean energy, explore hundreds of topics.</li>
+              <li><strong>Monetization:</strong> Turn your green ideas into income with our premium creator program.</li>
+            </ul>
+          </div>
 
-        {/* Join the ThinkGreenly Community */}
-        <section>
-          <h2 className="text-xl md:text-2xl font-semibold py-4">
-            Join the Sustainability Movement
-          </h2>
-          <p className="dark:text-white text-justify">
-            Whether you&apos;re looking to share your green initiative or find
-            inspiration for your next eco-project, ThinkGreenly connects you
-            with a community that cares about our planet&apos;s future.
-          </p>
-          <p className="dark:text-white mt-4">
-            Ready to make a difference?{' '}
-            <Link
-              href="/ideas"
-              className="text-blue-500 font-semibold hover:underline"
-            >
-              Browse sustainable ideas
-            </Link>{' '}
-            or{' '}
-            <Link
-              href="/register"
-              className="text-blue-500 font-semibold hover:underline"
-            >
-              join our community
-            </Link>{' '}
-            to share your own.
-          </p>
+          {/* Our Values */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-3">Our Values</h2>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 text-justify">
+              <li><strong>Environmental Impact:</strong> We believe small ideas can create big change.</li>
+              <li><strong>Collaboration:</strong> Solutions thrive when people work together.</li>
+              <li><strong>Innovation:</strong> We support fresh perspectives in solving climate challenges.</li>
+            </ul>
+          </div>
+
+          {/* Call to Action */}
+          <div className="bg-green-100 dark:bg-green-800 p-6 rounded-md text-center mt-10">
+            <h2 className="text-2xl font-semibold mb-3 text-green-900 dark:text-white">Join the Movement</h2>
+            <p className="mb-4 text-gray-800 dark:text-gray-200">
+              Whether you are starting your sustainability journey or ready to inspire others — GreenMind-hub is for you.
+            </p>
+            <p className="text-lg">
+              <Link href="/idea" className="text-blue-600 font-semibold hover:underline">
+                Browse Ideas
+              </Link>{' '}
+              or{' '}
+              <Link href="/register" className="text-blue-600 font-semibold hover:underline">
+                Join Now
+              </Link>{' '}
+              to share your own.
+            </p>
+          </div>
         </section>
       </div>
     </div>

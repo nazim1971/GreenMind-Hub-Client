@@ -145,7 +145,7 @@ const IdeaDetail = ({ idea }: { idea: Idea }) => {
 
           <div className="absolute bottom-4 right-4  flex items-center gap-2 ">
             <div className="flex bg-white/90 backdrop-blur-sm  px-3 md:px-4 py-2 rounded-full shadow-sm items-center gap-2">
-              <Leaf className="w-5 h-5 text-green-600" />
+             
               <span className="font-medium text-green-700">
                 {idea.category?.name}
               </span>
@@ -201,7 +201,7 @@ const IdeaDetail = ({ idea }: { idea: Idea }) => {
               {/* Solution Section */}
               <div className="p-6 bg-green-50 dark:bg-transparent  rounded-xl border border-green-100 ">
                 <div className="flex items-center gap-3 mb-4">
-                  <Leaf className="w-7 h-7 text-green-600 " />
+                  
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-green-400">
                     Proposed Solution
                   </h2>
@@ -330,14 +330,14 @@ const IdeaDetail = ({ idea }: { idea: Idea }) => {
             ) : (
               <div className="bg-green-50 dark:bg-transparent p-6 rounded-xl border border-green-200">
                 <div className="flex items-center gap-3 mb-4">
-                  <Leaf className="w-8 h-8 text-green-600" />
+                  
                   <h3 className="text-xl font-semibold text-green-800 dark:text-green-300">
                     Community Solution
                   </h3>
                 </div>
                 <div className="text-center p-4 bg-green-100 dark:bg-transparent rounded-lg">
                   <p className="text-green-700 dark:text-green-300 font-medium">
-                    🌱 Open Access - Collaborate & Contribute!
+                   Open Access - Collaborate & Contribute!
                   </p>
                 </div>
               </div>

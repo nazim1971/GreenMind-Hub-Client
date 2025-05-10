@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { toast, Toaster } from 'sonner';
+import { toast } from 'sonner';
 import { useState } from 'react';
 
 const ContactPage = () => {
@@ -28,7 +28,7 @@ const ContactPage = () => {
           Contact Us
         </h2>
         <p className="text-center mb-8 text-gray-600 dark:text-gray-300">
-          Have questions or feedback? We'd love to hear from you!
+          Have questions or feedback? We d love to hear from you!
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
