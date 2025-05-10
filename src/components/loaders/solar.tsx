@@ -1,11 +1,11 @@
 'use client'
 import Lottie from "lottie-react"
-import Solar from "../../assets/solarLoader.json";
+import globeLoader from "../../assets/globeLoader.json";
 
 const SolarLoader = () => {
   return (
     <div>
-      <Lottie animationData={Solar} loop={true} />
+      <Lottie animationData={globeLoader} loop={true} />
     </div>
   )
 }

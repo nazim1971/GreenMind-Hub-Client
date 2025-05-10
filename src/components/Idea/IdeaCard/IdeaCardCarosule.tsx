@@ -16,22 +16,24 @@ const IdeaCardCarousel = ({ idea }: { idea: Idea }) => {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
 
   return (
-    <div className="w-full h-full mx-auto my-12 flex justify-center mb-auto">
+    <div className="w-full h-full mx-auto px-6 flex justify-center mb-auto">
       <Carousel
         plugins={[plugin.current]} 
-        className="w-full max-w-7xl "
+        className="w-full max-w-7xl"
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent>
           {idea.images.map((img, idx) => (
-            <Image
-              key={idx}
-              src={img}
-              width={2400}
-              height={1000}
-              alt="images"
-            />
+            <div key={idx} className="w-full h-[300px] md:h-[250px] lg:h-[250px] rounded-2xl ">
+              <Image
+                src={img}
+                alt={`Image ${idx + 1}`}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-lg"
+              />
+            </div>
           ))}
         </CarouselContent>
         <CarouselPrevious />
