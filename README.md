@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Here’s a well-structured and professional `README.md` file for your **GreenMind-Hub** project:
 
-## Getting Started
+---
 
-First, run the development server:
+````markdown
+# 🌿 GreenMind-Hub
+
+GreenMind-Hub is a modern, full-stack eCommerce platform designed for plant and eco-product businesses. It combines a clean user interface with powerful backend functionality to ensure a smooth experience for both buyers and administrators.
+
+---
+
+## 🔗 Live Links
+
+- 🚀 **Client**: [GreenMind-Hub Live Client](https://greenmind-hub.vercel.app/)
+- 🖥️ **Server**: [GreenMind-Hub Live Server](https://greenmind-server.vercel.app/)
+
+---
+
+## 🧠 Core Features
+
+- 🛒 Product listing and filtering
+- 📦 Order placement and tracking
+- 🧑‍💼 Admin dashboard for product and order management
+- 🔒 Authentication & Authorization (JWT)
+- 💳 Payment integration via SSLCommerz
+- 📤 Image uploads via Cloudinary
+- 📧 Email notifications with Nodemailer
+- 🧾 Form validation with Zod & React Hook Form
+- 📂 File upload support via Multer
+
+---
+
+## 📁 Repositories
+
+- 🧩 **Client**: [GreenMind-Hub-Client](https://github.com/nazim1971/GreenMind-Hub-Client.git)
+- 🛠️ **Server**: [GreenMind-Hub](https://github.com/nazim1971/GreenMind-Hub.git)
+
+---
+
+## 💻 Technologies Used
+
+### Frontend
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [React Hook Form](https://react-hook-form.com/)
+- [Zod](https://zod.dev/)
+
+### Backend
+- [Express.js](https://expressjs.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Prisma ORM](https://www.prisma.io/)
+- [SSLCommerz](https://developer.sslcommerz.com/)
+- [Multer](https://github.com/expressjs/multer)
+- [Cloudinary](https://cloudinary.com/)
+- [Nodemailer](https://nodemailer.com/)
+- [Zod](https://zod.dev/)
+
+---
+
+## 🛠️ How to Run Client Locally
 
 ```bash
+# Clone the repository
+git clone https://github.com/nazim1971/GreenMind-Hub-Client.git
+
+# Navigate into the project directory
+cd GreenMind-Hub-Client
+
+# Install dependencies
+pnpm install
+# or
+npm install
+# or
+yarn install
+````
+
+### Setup Environment
+
+Create a `.env.local` file in the root of the client project:
+
+```env
+NEXT_PUBLIC_API_URL="your_backend_url"
+```
+
+Then, start the development server:
+
+```bash
+pnpm dev
+# or
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 👤 Developer Info
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Md. Nazim Uddin
+🔗 [GitHub Profile](https://github.com/nazim1971)
+📧 Email: [nazimmuddin10@gmail.com](mailto:nazimmuddin10@gmail.com)
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
