@@ -18,9 +18,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerHeader,
-  DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { logOut } from '@/services/AuthService';
@@ -31,6 +29,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avater';
 import { ModeToggle } from '../theme/ModeToggle';
 import { ShinyButton } from '../magicui/shiny-button';
 import { useEffect, useState } from 'react';
+import { DialogTitle } from '../ui/dialog';
 
 const NavBar = () => {
   const router = useRouter();
@@ -145,52 +144,61 @@ const NavBar = () => {
               )}
             </div>
 
-            <div className="md:hidden">
-              <Drawer>
-                <DrawerTrigger asChild>
-                  <Button
-                    variant="default"
-                    className="bg-transparent text-black dark:text-green-500"
-                  >
-                    <Menu />
-                  </Button>
-                </DrawerTrigger>
-                <DrawerContent className="text-black dark:text-green-500">
-                  <div className="mx-auto w-full">
-                    <DrawerHeader>
-                      <DrawerTitle className="sr-only">Menu</DrawerTitle>
-                      <DrawerDescription className="sr-only">
-                        Nav Items.
-                      </DrawerDescription>
-                    </DrawerHeader>
-                    <div className="flex justify-end items-start mr-2">
-                      <DrawerClose asChild>
-                        <Button variant="outline">
-                          <X />
-                        </Button>
-                      </DrawerClose>
-                    </div>
+           <div className="md:hidden">
+  <Drawer direction="left">
+    <DrawerTrigger asChild>
+      <Button
+        variant="ghost"
+        className="text-gray-800 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+      >
+        <Menu className="w-6 h-6" />
+      </Button>
+    </DrawerTrigger>
 
-                    <div className="p-4">
-                      <div className="pb-3 flex flex-col justify-center items-end gap-2">
-                        {navLinks.map(({ name, path }) => (
-                          <Link
-                            key={name}
-                            href={path}
-                            className={`rounded-md px-3 py-2 text-sm font-medium 
-                              ${pathname === path
-                                ? 'border border-[#14B8A6] text-[#14B8A6]'
-                                : 'hover:bg-[#14B8A6] hover:text-white'}`}
-                          >
-                            {name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </DrawerContent>
-              </Drawer>
-            </div>
+    <DrawerContent className="text-gray-800 dark:text-white bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 max-w-[280px]">
+      <div className="w-full h-full flex flex-col">
+        <DrawerHeader className="flex justify-between items-center px-4 pt-4">
+          <div>
+            <DialogTitle/>
+            <Link href="/" className="w-fit">
+            <Image src={logo} alt="logo" className="h-16 w-auto" />
+          </Link>
+          </div>
+
+          <DrawerClose asChild>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </DrawerClose>
+        </DrawerHeader>
+
+        <div className="flex-1 px-4 py-6">
+          <div className="flex flex-col gap-3">
+            {navLinks.map(({ name, path }) => (
+              <Link
+                key={name}
+                href={path}
+                className={`w-full rounded-md px-4 py-2 text-sm font-medium transition-all duration-150
+                  ${
+                    pathname === path
+                      ? 'bg-blue-100 text-blue-600 dark:bg-blue-600 dark:text-white'
+                      : 'hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-white'
+                  }`}
+              >
+                {name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </DrawerContent>
+  </Drawer>
+</div>
+
           </div>
         </div>
       </div>

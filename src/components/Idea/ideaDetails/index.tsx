@@ -2,7 +2,6 @@
 'use client';
 
 import {
-  Leaf,
   DollarSign,
   ShieldCheck,
   MessageCircle,
