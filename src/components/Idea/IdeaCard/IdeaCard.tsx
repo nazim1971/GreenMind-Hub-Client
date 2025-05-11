@@ -109,7 +109,7 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
         </CardContent>
 
         <CardFooter className="p-5 flex flex-col gap-3 border-t">
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center gap-3 justify-between text-sm">
             <span className="bg-[#14B8A6]/10 text-[#14B8A6] px-3 py-1 rounded-full">
               {idea.category?.name}
             </span>
@@ -124,7 +124,7 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
             <Link href={`/idea/${idea.id}`} onClick={handleLinkClick} className="w-full">
               <Button
                 size="lg"
-                className="w-full bg-[#14B8A6] hover:bg-emerald-600 text-white font-semibold rounded-xl"
+                className="w-full bg-[#14B8A6] hover:bg-[#14b8a5d1] text-white font-semibold rounded-xl"
               >
                 {idea.isPaid ? 'Unlock Premium' : 'View Solution'}
               </Button>

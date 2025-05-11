@@ -90,7 +90,7 @@ const NavBar = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="hidden lg:flex gap-5 text-black dark:text-green-500">
+            <div className="hidden lg:flex gap-5 text-black dark:text-white">
               {navLinks.map(({ name, path }) => (
                 <Link
                   key={name}

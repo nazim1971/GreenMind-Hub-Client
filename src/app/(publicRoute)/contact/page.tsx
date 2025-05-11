@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { useState } from 'react';
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useState } from "react";
+import { ShinyButton } from "@/components/magicui/shiny-button";
 
 const ContactPage = () => {
   const router = useRouter();
@@ -15,16 +16,15 @@ const ContactPage = () => {
     // Simulate async form submission (you can replace this with actual API call)
     setTimeout(() => {
       setLoading(false);
-      toast.success('Message sent successfully!');
-      router.push('/');
+      toast.success("Message sent successfully!");
+      router.push("/");
     }, 1500);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4">
-      
       <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
-        <h2 className="text-3xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">
+        <h2 className="text-3xl font-bold mb-4 text-center text-[#14B8A6] dark:text-[#14B8A6]">
           Contact Us
         </h2>
         <p className="text-center mb-8 text-gray-600 dark:text-gray-300">
@@ -82,13 +82,15 @@ const ContactPage = () => {
           </div>
 
           <div className="text-center">
-            <button
-             
-              disabled={loading}
-              className="inline-block w-full md:w-auto bg-blue-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-blue-700 transition duration-300"
+            <ShinyButton
+              className="inline-block w-full md:w-auto bg-[#3ec8b8] text-white font-semibold px-6 py-3 rounded-md hover:bg-[#14B8A6] transition duration-300"
+              style={{
+                backgroundColor: "#14B8A6",
+                border: "none",
+              }}
             >
-              {loading ? 'Sending...' : 'Send Message'}
-            </button>
+              {loading ? "Sending..." : "Send Message"}
+            </ShinyButton>
           </div>
         </form>
       </div>

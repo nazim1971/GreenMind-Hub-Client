@@ -22,7 +22,7 @@ const ContributePart = () => {
               : '/'
             : '/login'
         }
-        className="inline-block px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
+        className="inline-block px-6 py-3 bg-[#14B8A6] text-white font-medium rounded-lg hover:bg-[#6dd0c5] transition-colors"
       >
         Submit Your Article Idea
       </Link>

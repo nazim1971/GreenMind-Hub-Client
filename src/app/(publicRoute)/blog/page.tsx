@@ -136,7 +136,7 @@ const BlogsPage = () => {
           <h2 className="text-xl md:text-2xl font-semibold py-4 border-b dark:border-gray-700 text-primary">
             Community Spotlight
           </h2>
-          <div className="mt-6 bg-green-50 dark:bg-green-900/30 rounded-lg p-6">
+          <div className="mt-6 bg-green-50 dark:bg-[#14b8a52c] rounded-lg p-6">
             <h3 className="text-lg md:text-xl font-bold mb-4 text-primary">
               &quot;How Our Neighborhood Cut Plastic Waste by 80%&quot;
             </h3>
@@ -147,7 +147,7 @@ const BlogsPage = () => {
             </p>
             <Link
               href="/blog/community-plastic-reduction"
-              className="inline-flex items-center text-blue-600 hover:underline font-medium"
+              className="inline-flex items-center text-[#14B8A6] hover:underline font-medium"
             >
               Read the full story
               <svg

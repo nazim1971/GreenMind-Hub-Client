@@ -64,14 +64,14 @@ const FilterSideBar = () => {
   };
 
   return (
-    <div className="relative w-full bg-green-50 border-b-2 border-green-200 py-4 px-6">
+    <div className="relative w-full bg-[#14b8a510] border-b-2 border-cyan-200 dark:border-cyan-700 py-4 px-6">
       <div className="w-full flex flex-wrap gap-4 justify-between">
         {/* Search bar */}
     <div className="w-full sm:max-w-xs md:max-w-lg relative">
   <input
     className="w-full border-2 p-3 pl-12 rounded-lg
-      border-gray-300 focus:border-green-500 focus:ring-1 focus:ring-green-300
-      dark:border-gray-700 dark:focus:ring-green-600 dark:bg-gray-900
+      border-gray-300 focus:border-[#14B8A6] focus:ring-1 focus:ring-cyan-300
+      dark:border-gray-700 dark:focus:ring-[#14b8a5e7] dark:bg-gray-900
       text-lg font-medium placeholder:text-gray-500 transition-all"
     type="text"
     onChange={e => {
@@ -103,9 +103,9 @@ const FilterSideBar = () => {
           <SheetTrigger asChild>
             <Button
               variant="outline"
-              className="px-6 py-4 bg-white hover:bg-green-50 
-                border-2 border-green-200 hover:border-green-300 
-                text-green-700 hover:text-green-900 font-semibold
+              className="px-6 py-4 bg-white hover:bg-cyan-50 
+                border-2 border-cyan-200 hover:border-cyan-300 
+                text-cyan-700 hover:text-cyan-900 font-semibold
                 flex items-center gap-2"
             >
               <svg
@@ -124,7 +124,7 @@ const FilterSideBar = () => {
               Filter
               {searchParams.toString()?.length > 0 && (
                 <span
-                  className="bg-green-100 text-green-700 
+                  className="bg-cyan-100 text-cyan-700 
                     rounded-full px-2 py-1 text-xs font-medium"
                 >
                   {Array.from(searchParams.entries())?.length}
@@ -137,7 +137,7 @@ const FilterSideBar = () => {
             className="w-full max-w-full max-h-[400px] overflow-y-auto bg-white shadow-md"
           >
             <SheetHeader>
-              <SheetTitle className="text-2xl font-bold text-green-900 dark:text-green-400 border-b-2 border-green-200 pb-4">
+              <SheetTitle className="text-2xl font-bold text-cyan-900 dark:text-cyan-400 border-b-2 border-cyan-200 pb-4">
                Idea Explorer Filters
               </SheetTitle>
               <SheetDescription asChild>
@@ -153,7 +153,7 @@ const FilterSideBar = () => {
                           setPricing('');
                         }}
                         size="sm"
-                        className="bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-green-200 transition-all"
+                        className="bg-cyan-600 hover:bg-cyan-700 text-white shadow-lg hover:shadow-cyan-200 transition-all"
                       >
                         Clear All Filters
                       </Button>
@@ -161,10 +161,10 @@ const FilterSideBar = () => {
                   </div>
 
                   {/* Price Filter Section */}
-                  <div className="p-6 bg-white dark:bg-transparent rounded-xl shadow-sm hover:shadow-md transition-shadow border border-green-100">
+                  <div className="p-6 bg-white dark:bg-transparent rounded-xl shadow-sm hover:shadow-md transition-shadow border border-cyan-100">
                     <div className="flex items-center gap-2 mb-5">
                      
-                      <h3 className="text-lg font-bold text-green-900 dark:text-green-400">
+                      <h3 className="text-lg font-bold text-cyan-900 dark:text-cyan-400">
                         Price Range
                       </h3>
                     </div>
@@ -177,13 +177,13 @@ const FilterSideBar = () => {
                         setPrice(value);
                         handleSearchQuery('price', value[0]);
                       }}
-                      className="w-full [&_.range-slider__track]:bg-green-200 [&_.range-slider__range]:bg-green-400 [&_.range-slider__thumb]:bg-green-600"
+                      className="w-full [&_.range-slider__track]:bg-cyan-200 [&_.range-slider__range]:bg-cyan-400 [&_.range-slider__thumb]:bg-cyan-600"
                     />
 
                     <div className="mt-4 flex justify-between items-center">
-                      <span className="text-sm text-green-600 dark:text-green-400">Current max:</span>
-                      <div className="px-3 py-1 bg-green-100 dark:bg-transparent rounded-full">
-                        <span className="font-bold text-green-800 dark:text-green-400">
+                      <span className="text-sm text-cyan-600 dark:text-cyan-400">Current max:</span>
+                      <div className="px-3 py-1 bg-cyan-100 dark:bg-transparent rounded-full">
+                        <span className="font-bold text-cyan-800 dark:text-cyan-400">
                           ${price[0]}
                         </span>
                       </div>
@@ -191,10 +191,10 @@ const FilterSideBar = () => {
                   </div>
 
                   {/* Pricing Type Section */}
-                  <div className="p-6 bg-white rounded-xl dark:bg-transparent shadow-sm hover:shadow-md transition-shadow border border-green-100">
+                  <div className="p-6 bg-white rounded-xl dark:bg-transparent shadow-sm hover:shadow-md transition-shadow border border-cyan-100">
                     <div className="flex items-center gap-2 mb-5">
                       
-                      <h3 className="text-lg font-bold text-green-900 dark:text-green-400">
+                      <h3 className="text-lg font-bold text-cyan-900 dark:text-cyan-400">
                         Pricing Type
                       </h3>
                     </div>
@@ -206,14 +206,14 @@ const FilterSideBar = () => {
                         handleSearchQuery('isPaid', value);
                       }}
                     >
-                      <SelectTrigger className="w-full border-green-200 hover:border-green-300">
+                      <SelectTrigger className="w-full border-cyan-200 hover:border-cyan-300">
                         <SelectValue placeholder="Select pricing type" />
                       </SelectTrigger>
-                      <SelectContent className="border-green-50">
+                      <SelectContent className="border-cyan-50">
                         <SelectGroup>
                           <SelectItem
                             value="false"
-                            className="hover:bg-green-50 dark:hover:bg-green-600 focus:bg-green-50 dark:focus:bg-green-600"
+                            className="hover:bg-cyan-50 dark:hover:bg-cyan-600 focus:bg-cyan-50 dark:focus:bg-cyan-600"
                           >
                             <span className="flex items-center gap-2">
                              
@@ -222,7 +222,7 @@ const FilterSideBar = () => {
                           </SelectItem>
                           <SelectItem
                             value="true"
-                            className="hover:bg-green-50 dark:hover:bg-green-600 focus:bg-green-50"
+                            className="hover:bg-cyan-50 dark:hover:bg-cyan-600 focus:bg-cyan-50"
                           >
                             <span className="flex items-center gap-2">
                             
@@ -235,10 +235,10 @@ const FilterSideBar = () => {
                   </div>
 
                   {/* Categories Section */}
-                  <div className="p-6 bg-white dark:bg-transparent rounded-xl shadow-sm hover:shadow-md transition-shadow border border-green-100">
+                  <div className="p-6 bg-white dark:bg-transparent rounded-xl shadow-sm hover:shadow-md transition-shadow border border-cyan-100">
                     <div className="flex items-center gap-2 mb-5">
                     
-                      <h3 className="text-lg font-bold text-green-900 dark:text-green-400">
+                      <h3 className="text-lg font-bold text-cyan-900 dark:text-cyan-400">
                         Categories
                       </h3>
                     </div>
@@ -249,19 +249,19 @@ const FilterSideBar = () => {
                           (category: { id: string; name: string }) => (
                             <div
                               key={category.id}
-                              className="group flex items-center space-x-3 p-3 hover:bg-green-600  rounded-lg transition-all cursor-pointer border border-transparent hover:border-green-200"
+                              className="group flex items-center space-x-3 p-3 hover:bg-cyan-600  rounded-lg transition-all cursor-pointer border border-transparent hover:border-cyan-200"
                             >
                               <RadioGroupItem
                                 value={category.id}
                                 id={category.id}
-                                className="h-5 w-5 rounded-full border-2 border-green-200 text-green-300 focus:ring-2 focus:ring-green-200 focus:ring-offset-2 data-[state=checked]:border-green-300 data-[state=checked]:bg-green-300"
+                                className="h-5 w-5 rounded-full border-2 border-cyan-200 text-cyan-300 focus:ring-2 focus:ring-cyan-200 focus:ring-offset-2 data-[state=checked]:border-cyan-300 data-[state=checked]:bg-cyan-300"
                                 onClick={() =>
                                   handleSearchQuery('categoryId', category.id)
                                 }
                               />
                               <Label
                                 htmlFor={category.id}
-                                className="flex-1 text-green-800 dark:text-green-400 font-medium transition-colors group-hover:text-white data-[state=checked]:text-green-900 flex items-center gap-2"
+                                className="flex-1 text-cyan-800 dark:text-cyan-400 font-medium transition-colors group-hover:text-white data-[state=checked]:text-cyan-900 flex items-center gap-2"
                               >
                                 <span className="flex-1">{category.name}</span>
                             

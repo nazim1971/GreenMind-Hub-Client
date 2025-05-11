@@ -54,8 +54,8 @@ const CommunityPlasticReduction = () => {
 
 
       {/* Article Header */}
-      <header className="mb-12 px-4 md:px-8">
-  <span className="inline-block px-4 py-2 text-sm font-semibold text-green-800 bg-green-100 dark:bg-green-900 dark:text-green-200 rounded-full mb-4">
+      <header className="mb-12 mt-5 px-4 md:px-8">
+  <span className="inline-block px-4 py-2 text-sm font-semibold text-white bg-[#14B8A6] dark:bg-[#14B8A6]  rounded-full mb-4">
     Sustainable Initiatives
   </span>
   <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-4">
@@ -77,7 +77,7 @@ const CommunityPlasticReduction = () => {
           d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
         />
       </svg>
-      <span className="text-sm">By Laura Simmons</span>
+      <span className="text-sm">By Johns Henry</span>
     </div>
     <div className="flex items-center">
       <svg
@@ -94,7 +94,7 @@ const CommunityPlasticReduction = () => {
           d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
         />
       </svg>
-      <span className="text-sm">March 22, 2023</span>
+      <span className="text-sm">May 21, 2020</span>
     </div>
     <div className="flex items-center">
       <svg
@@ -111,7 +111,7 @@ const CommunityPlasticReduction = () => {
           d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
-      <span className="text-sm">5 min read</span>
+      <span className="text-sm">7 min read</span>
     </div>
   </div>
 </header>
@@ -131,25 +131,25 @@ const CommunityPlasticReduction = () => {
     </figcaption>
   </figure>
 
-  <p className="text-lg text-green-700 dark:text-green-400">
+  <p className="text-lg text-[#14B8A6] ">
     At GreenMind-Hub, we believe that small, consistent efforts can lead to significant environmental impact. Our neighborhood embarked on a sustainability journey that reduced plastic waste by 80% in just one year. Here’s a look at how our community took action and inspired others.
   </p>
 
-  <h2 className="text-2xl font-semibold mt-6 text-green-800 dark:text-green-300">
+  <h2 className="text-2xl font-semibold mt-6 text-[#14B8A6] ">
     The Wake-Up Call
   </h2>
   <p className="text-lg text-gray-700 dark:text-gray-400">
     It all began with a startling discovery during our annual cleanup. Of the 320 pounds of trash collected, 73% was single-use plastic. With this eye-opening statistic, our community decided to act and reduce its dependence on plastic.
   </p>
 
-  <div className="bg-green-100 dark:bg-green-800 p-6 rounded-lg my-6">
-    <h3 className="text-xl font-semibold mb-3 text-green-700 dark:text-green-300">
+  <div className="bg-[#14b8a515] dark:bg-[#14b8a521] p-6 rounded-lg my-6">
+    <h3 className="text-xl font-semibold mb-3 text-[#14B8A6] ">
       Key Facts Before Our Action
     </h3>
     <ul className="space-y-3 text-gray-600 dark:text-gray-400">
       <li className="flex items-start">
         <svg
-          className="w-5 h-5 text-green-500 mr-2 mt-0.5"
+          className="w-5 h-5 text-[#14B8A6] mr-2 mt-0.5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -166,7 +166,7 @@ const CommunityPlasticReduction = () => {
       </li>
       <li className="flex items-start">
         <svg
-          className="w-5 h-5 text-green-500 mr-2 mt-0.5"
+          className="w-5 h-5 text-[#14B8A6] mr-2 mt-0.5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -183,7 +183,7 @@ const CommunityPlasticReduction = () => {
       </li>
       <li className="flex items-start">
         <svg
-          className="w-5 h-5 text-green-500 mr-2 mt-0.5"
+          className="w-5 h-5 text-[#14B8A6] mr-2 mt-0.5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -201,11 +201,11 @@ const CommunityPlasticReduction = () => {
     </ul>
   </div>
 
-  <h2 className="text-2xl font-semibold text-green-800 dark:text-green-300 mt-6">
+  <h2 className="text-2xl font-semibold text-[#14B8A6]  mt-6">
     Our 5-Step GreenMind Action Plan
   </h2>
 
-  <h3 className="text-xl font-semibold mt-4 text-green-700 dark:text-green-300">
+  <h3 className="text-xl font-semibold mt-4 text-[#14B8A6] ">
     1. The GreenMind Plastic-Free Pledge
   </h3>
   <p className="text-lg text-gray-700 dark:text-gray-400">
@@ -217,52 +217,52 @@ const CommunityPlasticReduction = () => {
     <li>Choosing products with minimal or recyclable packaging</li>
   </ul>
 
-  <h3 className="text-xl font-semibold mt-6 text-green-700 dark:text-green-300">
+  <h3 className="text-xl font-semibold mt-6 text-[#14B8A6] ">
     2. GreenMind Swap Events
   </h3>
   <p className="text-lg text-gray-700 dark:text-gray-400">
     Our community held monthly swap events to exchange common plastic items for eco-friendly alternatives. Successful events included:
   </p>
   <div className="grid md:grid-cols-2 gap-4 my-4">
-    <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+    <div className="bg-[#14b8a516]  p-4 rounded-lg">
       <h4 className="font-semibold mb-2">Kitchen Revolution</h4>
       <p>Plastic containers swapped for glass jars (collected over 400 plastic containers)</p>
     </div>
-    <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+    <div className="bg-[#14b8a516]  p-4 rounded-lg">
       <h4 className="font-semibold mb-2">Bathroom Makeover</h4>
       <p>Plastic toiletries swapped for bar shampoos, bamboo toothbrushes, etc.</p>
     </div>
   </div>
-    <h3 className="text-xl font-semibold mt-6 text-green-700 dark:text-green-300">
+    <h3 className="text-xl font-semibold mt-6 text-[#14B8A6] ">
     3. Local Business Collaboration
   </h3>
   <p className="text-lg text-gray-700 dark:text-gray-400">
     We collaborated with local businesses to provide more sustainable options. Many restaurants replaced plastic straws with metal or paper alternatives, and stores started offering bulk-buy discounts for reusable products.
   </p>
 
-  <h3 className="text-xl font-semibold mt-6 text-green-700 dark:text-green-300">
+  <h3 className="text-xl font-semibold mt-6 text-[#14B8A6] ">
     4. Education and Awareness Campaigns
   </h3>
   <p className="text-lg text-gray-700 dark:text-gray-400">
     We organized seminars and workshops to educate residents about the harmful effects of plastic waste and the importance of reducing, reusing, and recycling. Our community also partnered with schools to engage younger generations in the mission.
   </p>
 
-  <h3 className="text-xl font-semibold mt-6 text-green-700 dark:text-green-300">
+  <h3 className="text-xl font-semibold mt-6 text-[#14B8A6] ">
     5. Waste Management Innovation
   </h3>
   <p className="text-lg text-gray-700 dark:text-gray-400">
     We implemented a neighborhood-wide composting system and organized regular waste collection events. By working together, we were able to reduce plastic waste by 80% and significantly improve our recycling rates.
   </p>
 
-  <h2 className="text-2xl font-semibold text-green-800 dark:text-green-300 mt-6">
+  <h2 className="text-2xl font-semibold text-[#14B8A6]  mt-6">
     The Impact
   </h2>
   <p className="text-lg text-gray-700 dark:text-gray-400">
     The GreenMind initiative transformed our neighborhood. Plastic waste decreased by 80%, recycling rates increased to 60%, and businesses are now providing more eco-friendly products. Here’s what some of our residents had to say:
   </p>
 
-  <div className="bg-green-100 dark:bg-green-800 p-6 rounded-lg my-6">
-    <h3 className="text-xl font-semibold mb-3 text-green-700 dark:text-green-300">
+  <div className="bg-[#14b8a516]  p-6 rounded-lg my-6">
+    <h3 className="text-xl font-semibold mb-3 text-[#14B8A6] ">
       Testimonials
     </h3>
     <blockquote className="italic text-gray-700 dark:text-gray-400">
