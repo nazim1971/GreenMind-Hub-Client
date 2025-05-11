@@ -8,7 +8,7 @@ import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 const Footer = () => {
   return (
     <footer className="bg-gray-100 dark:bg-zinc-900 text-gray-700 dark:text-gray-300 border-t">
-      <div className="max-w-7xl mx-auto px-5 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-5 py-12 grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Navigation */}
         <div>
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Navigation</h3>
@@ -59,12 +59,9 @@ const Footer = () => {
 
       {/* Bottom bar */}
       <div className="border-t dark:border-zinc-700 py-4 px-5 text-sm text-center text-gray-600 dark:text-gray-400">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div className="max-w-7xl mx-auto flex justify-center items-center gap-3">
           <p>© {new Date().getFullYear()} GreenMind-HUb. All rights reserved.</p>
-          <div className="flex gap-4">
-            <Link href="#" className="hover:text-teal-500">Terms</Link>
-            <Link href="#" className="hover:text-teal-500">Privacy</Link>
-          </div>
+         
         </div>
       </div>
     </footer>

@@ -47,6 +47,8 @@ const NavBar = () => {
     }
   };
 
+  
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Idea', path: '/idea' },
@@ -82,13 +84,13 @@ const NavBar = () => {
               <Image
                 src={logo}
                 alt="logo"
-                className="h-20 w-40"
+                className="h-14 w-32 md:h-20 md:w-40"
               />
             </Link>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex gap-5 text-black dark:text-green-500">
+            <div className="hidden lg:flex gap-5 text-black dark:text-green-500">
               {navLinks.map(({ name, path }) => (
                 <Link
                   key={name}
@@ -179,18 +181,19 @@ const NavBar = () => {
         <div className="flex-1 px-4 py-6">
           <div className="flex flex-col gap-3">
             {navLinks.map(({ name, path }) => (
-              <Link
-                key={name}
-                href={path}
-                className={`w-full rounded-md px-4 py-2 text-sm font-medium transition-all duration-150
-                  ${
-                    pathname === path
-                      ? 'bg-blue-100 text-blue-600 dark:bg-blue-600 dark:text-white'
-                      : 'hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-white'
-                  }`}
-              >
-                {name}
-              </Link>
+              <DrawerClose asChild key={name}>
+      <Link
+        href={path}
+        className={`w-full rounded-md px-4 py-2 text-sm font-medium transition-all duration-150
+          ${
+            pathname === path
+              ? 'bg-blue-100 text-blue-600 dark:bg-blue-600 dark:text-white'
+              : 'hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-white'
+          }`}
+      >
+        {name}
+      </Link>
+    </DrawerClose>
             ))}
           </div>
         </div>

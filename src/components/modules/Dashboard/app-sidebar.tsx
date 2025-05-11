@@ -10,7 +10,7 @@ import {
   UserCog,
   UsersRoundIcon,
 } from 'lucide-react';
-import logo from '@/assets/sLogo.png';
+import logo from '@/assets/logo.png';
 // import smLogo from '@/assets/smLogo.png';
 import {
   Sidebar,
@@ -48,12 +48,7 @@ export function AppSidebar({
       title: 'Manage Payments',
       url: '/member/payments',
       icon: DollarSign,
-    },
-    // {
-    //   title: 'Edit Idea',
-    //   url: '/member/edit-idea',
-    //   icon: ClipboardList,
-    // },
+    }
   ];
 
   const adminMenu = [
@@ -109,7 +104,7 @@ export function AppSidebar({
             <SidebarMenuButton size="lg" asChild>
               <Link href="/">
                 <div className="w-full">
-                  <Image src={logo} alt="logo" className="h-12 w-12" />
+                  <Image src={logo} alt="logo" className="h-20 w-40" />
                 </div>
               </Link>
             </SidebarMenuButton>

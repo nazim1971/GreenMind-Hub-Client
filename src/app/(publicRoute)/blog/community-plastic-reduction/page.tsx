@@ -6,7 +6,7 @@ const CommunityPlasticReduction = () => {
   return (
     <div className="md:mx-20">
       {/* Breadcrumb Navigation */}
-      <nav className="flex py-4 text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 shadow-md rounded-md">
+      <nav className="flex p-4 text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 shadow-md rounded-md">
   <ol className="inline-flex items-center space-x-1 md:space-x-3">
     <li className="inline-flex items-center">
       <Link href="/" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors duration-200">
@@ -27,7 +27,7 @@ const CommunityPlasticReduction = () => {
             clipRule="evenodd"
           />
         </svg>
-        <Link href="/blogs" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors duration-200">
+        <Link href="/blog" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors duration-200">
           Blogs
         </Link>
       </div>

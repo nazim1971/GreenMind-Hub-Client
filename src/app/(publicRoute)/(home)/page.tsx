@@ -6,9 +6,11 @@ import WorkingSolutins from '@/components/home/WorkingSolution';
 import React from 'react';
 
 
-// import NavBar from "@/components/Basics/NavBar";
 
-const HomePage = async () => {
+
+const HomePage = () => {
+
+  
   return (
     <div>
       <Banner />
