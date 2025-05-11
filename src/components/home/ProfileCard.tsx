@@ -5,29 +5,46 @@ import { Card } from '../ui/card';
 import { useUser } from '@/context/UserContext';
 import UpdateProfileModal from '../Profile/UpdateProfileModal';
 import UpdatePasswordModal from '../Profile/UpdatePasswordModal';
+import { Sparkles } from 'lucide-react';
 
 const ProfileCard = () => {
   const { user, setIsLoading } = useUser();
   
   return (
-    <div className="flex justify-center items-center min-h-screen  p-4 mt-24">
-      <Card className="w-full max-w-sm shadow-xl rounded-2xl p-6 text-center bg-white border border-[#14B8A6]">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="relative w-32 h-32 mb-6">
-            <Image
-              src={user?.image || '/avatar.png'}
-              alt="Profile"
-              width={1200}
-              height={1200}
-              className="w-32 h-32 rounded-full border-4 border-[#14B8A6] object-cover"
-            />
+    <div className="flex justify-center items-center min-h-screen p-4 md:p-8 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-gray-800">
+      <Card className="w-full max-w-md shadow-2xl rounded-3xl overflow-hidden bg-white dark:bg-gray-800 border-0 relative">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-400 to-teal-400" />
+        <div className="absolute -top-16 -right-16 w-32 h-32 rounded-full bg-emerald-100/50 dark:bg-emerald-900/20 blur-xl" />
+        <div className="absolute -bottom-16 -left-16 w-32 h-32 rounded-full bg-teal-100/50 dark:bg-teal-900/20 blur-xl" />
+        
+        <div className="flex flex-col items-center px-8 py-10 relative z-10">
+          {/* Profile image with decorative ring */}
+          <div className="relative mb-6 group">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 p-1 animate-spin-slow [animation-duration:8s] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative w-36 h-36 rounded-full border-4 border-white dark:border-gray-800 shadow-lg overflow-hidden">
+              <Image
+                src={user?.image || '/avatar.png'}
+                alt="Profile"
+                width={480}
+                height={480}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <Sparkles className="absolute -bottom-2 -right-2 text-amber-400 w-8 h-8 p-1.5 bg-white dark:bg-gray-800 rounded-full shadow-md" />
           </div>
 
-          <h2 className="text-2xl font-bold text-gray-800">{user?.name || 'User Name'}</h2>
-          <p className="text-sm text-gray-500">{user?.email || 'user@example.com'}</p>
+          {/* Profile info */}
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-1">
+              {user?.name || 'User Name'}
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400">{user?.email || 'user@example.com'}</p>
+          </div>
 
-          <div className="flex flex-col gap-4 w-[85%]">
-            <UpdateProfileModal user={user} setIsLoading={setIsLoading} />
+          {/* Action buttons */}
+          <div className="flex flex-col gap-4 w-full max-w-xs">
+           <UpdateProfileModal user={user} setIsLoading={setIsLoading} />
             <UpdatePasswordModal />
           </div>
         </div>

@@ -94,9 +94,9 @@ const CreateIdeaForm = ({ categories }: { categories: category[] }) => {
 
 
   return (
-    <div className="p-4 md:p-0">
+    <div className="p-4 md:p-0 ">
       <h1 className="text-3xl text-center mb-6">Create Idea</h1>
-      <div className="flex justify-center h-screen mx-auto">
+      <div className="flex justify-center h-screen  mx-auto">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleIdeaSubmit)}
@@ -269,19 +269,6 @@ const CreateIdeaForm = ({ categories }: { categories: category[] }) => {
               </Button>
             </div>
 
-            {/* <Button
-              className="mt-4 mb-20 gap-2"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <div className="flex items-center gap-2">
-                  <span>Creating...</span>
-                </div>
-              ) : (
-                'Create Idea'
-              )}
-            </Button> */}
           </form>
         </Form>
       </div>

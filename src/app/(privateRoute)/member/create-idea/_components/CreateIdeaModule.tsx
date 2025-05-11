@@ -5,7 +5,7 @@ const CreateIdeaModule = async () => {
   const { data: categories } = await getAllCategories();
 
   return (
-    <div>
+    <div >
       <CreateIdeaForm categories={categories} />
     </div>
   );

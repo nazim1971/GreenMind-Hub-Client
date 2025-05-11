@@ -18,9 +18,9 @@ const FailedPage = () => {
             details and try again.
           </p>
 
-          <Link href="/idea" legacyBehavior>
-            <Button>Try Again</Button>
-          </Link>
+          <Button asChild>
+            <Link href="/idea">Try Again</Link>
+          </Button>
         </div>
       </div>
     </div>
