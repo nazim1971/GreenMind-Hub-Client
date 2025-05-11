@@ -5,8 +5,6 @@ import {
   DollarSign,
   ShieldCheck,
   MessageCircle,
-  Heart,
-  HeartOff,
   ChevronUp,
   ChevronDown,
 } from 'lucide-react';
@@ -120,54 +118,70 @@ const IdeaDetail = ({ idea }: { idea: Idea }) => {
       {/* New Layout Structure */}
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Sidebar - Voting */}
-        <div className="lg:w-20 flex-shrink-0">
-          <div className="sticky top-4 flex lg:flex-col items-center justify-center gap-2 bg-white dark:bg-gray-900 p-4 rounded-xl shadow border border-gray-200 dark:border-gray-800">
-            <button
-  onClick={() => {
-    const existingVote = idea.votes?.find(
-      p => p.ideaId === idea.id && p.userEmail === user?.email && p.type === 'DOWN'
-    );
-    if (existingVote) {
-      handleDeleteVote(idea.id);
-    } else {
-      handleVote('DOWN');
-    }
-  }}
-  className={`p-2 rounded-full transition-colors ${
-    idea.votes?.some(p => p.ideaId === idea.id && p.userEmail === user?.email && p.type === 'DOWN')
-      ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400'
-      : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
-  }`}
->
-  <ChevronDown className="w-6 h-6" />
-</button>
-            
-            <span className="text-lg font-bold text-gray-800 dark:text-gray-200">
-              {(idea.votes?.filter(vote => vote.type === 'UP')?.length || 0) - 
-               (idea.votes?.filter(vote => vote.type === 'DOWN')?.length || 0)}
-            </span>
-            
-           <button
-  onClick={() => {
-    const existingVote = idea.votes?.find(
-      p => p.ideaId === idea.id && p.userEmail === user?.email && p.type === 'DOWN'
-    );
-    if (existingVote) {
-      handleDeleteVote(idea.id);
-    } else {
-      handleVote('DOWN');
-    }
-  }}
-  className={`p-2 rounded-full transition-colors ${
-    idea.votes?.some(p => p.ideaId === idea.id && p.userEmail === user?.email && p.type === 'DOWN')
-      ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400'
-      : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
-  }`}
->
-  <ChevronDown className="w-6 h-6" />
-</button>
-          </div>
-        </div>
+       <div className="lg:w-24 flex-shrink-0">
+  <div className="sticky top-6 flex lg:flex-col items-center justify-center gap-3 bg-white dark:bg-gray-900 p-4 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+    {/* Upvote Button */}
+    <div className="flex flex-col items-center">
+      <button
+        onClick={() => {
+          const existingVote = idea.votes?.find(
+            p => p.ideaId === idea.id && p.userEmail === user?.email && p.type === 'UP'
+          );
+          if (existingVote) {
+            handleDeleteVote(idea.id);
+          } else {
+            handleVote('UP');
+          }
+        }}
+        className={`p-2 rounded-full transition-all duration-200 ${
+          idea.votes?.some(p => p.ideaId === idea.id && p.userEmail === user?.email && p.type === 'UP')
+            ? 'bg-emerald-50 text-emerald-600 shadow-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 shadow-md'
+            : 'text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-emerald-500 dark:hover:text-emerald-400'
+        }`}
+      >
+        <ChevronUp className="w-6 h-6" />
+      </button>
+      <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        {idea.votes?.filter(vote => vote.type === 'UP')?.length || 0}
+      </span>
+    </div>
+
+    {/* Vote Count */}
+    <div className="flex flex-col items-center">
+      <span className="text-xl font-bold text-gray-800 dark:text-white px-2 py-1 rounded-md bg-gray-50 dark:bg-gray-800">
+        {(idea.votes?.filter(vote => vote.type === 'UP')?.length || 0) - 
+         (idea.votes?.filter(vote => vote.type === 'DOWN')?.length || 0)}
+      </span>
+      <span className="text-[10px] uppercase tracking-wider text-gray-400 mt-1">Votes</span>
+    </div>
+
+    {/* Downvote Button */}
+    <div className="flex flex-col items-center">
+      <button
+        onClick={() => {
+          const existingVote = idea.votes?.find(
+            p => p.ideaId === idea.id && p.userEmail === user?.email && p.type === 'DOWN'
+          );
+          if (existingVote) {
+            handleDeleteVote(idea.id);
+          } else {
+            handleVote('DOWN');
+          }
+        }}
+        className={`p-2 rounded-full transition-all duration-200 ${
+          idea.votes?.some(p => p.ideaId === idea.id && p.userEmail === user?.email && p.type === 'DOWN')
+            ? 'bg-rose-50 text-rose-600 shadow-rose-100 dark:bg-rose-900/20 dark:text-rose-400 shadow-md'
+            : 'text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-rose-500 dark:hover:text-rose-400'
+        }`}
+      >
+        <ChevronDown className="w-6 h-6" />
+      </button>
+      <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        {idea.votes?.filter(vote => vote.type === 'DOWN')?.length || 0}
+      </span>
+    </div>
+  </div>
+</div>
 
         {/* Main Content */}
         <div className="flex-1">
