@@ -32,7 +32,7 @@ export default async function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <body
-        className={`${roboto.className} antialiased transition-colors duration-300 max-w-[1200px] mx-auto `}
+        className={`${roboto.className} antialiased transition-colors duration-300 overflow-x-hidden`}
       >
         <ThemeProvider
             attribute="class"
@@ -41,7 +41,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
            <Provider>
-           <div className="pt-20">{children}</div>
+           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 w-full">{children}</div>
            </Provider>
            <Toaster />
           </ThemeProvider>
