@@ -82,7 +82,7 @@ export interface Idea {
   }
   
   // Enums
-  enum IdeaStatus {
+  export enum IdeaStatus {
     DRAFT = "DRAFT",
     UNDER_REVIEW = "UNDER_REVIEW",
     APPROVED = "APPROVED",

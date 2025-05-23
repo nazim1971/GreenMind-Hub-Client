@@ -1,139 +1,547 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useUser } from '@/context/UserContext';
-import { Sparkles, Leaf, Heart, Lightbulb, Users, BarChart2 } from 'lucide-react';
+import { Sparkles, Leaf, Users, BarChart2, Lightbulb, CreditCard, MessageSquare, UserCheck } from 'lucide-react';
+import CountUp from 'react-countup';
+import { useEffect, useState } from 'react';
+import { getAllUsers } from '@/app/(privateRoute)/admin/all-users/_actions';
+import { getAllIdeasByAdmin } from '@/app/(privateRoute)/admin/all-ideas/_actions';
+import { LineChart, PieChart, Line, Pie, Cell, ResponsiveContainer, Tooltip, Legend, YAxis, CartesianGrid, XAxis } from 'recharts';
+import { IdeaStatus } from '@/types/idea';
+
+interface Comment {
+  id: string;
+  replies?: Comment[];
+}
+
+interface Activity {
+  id: string;
+  type: 'idea' | 'user';
+  title: string;
+  description: string;
+  timestamp: string;
+}
+
+interface DashboardStats {
+  userCount: number;
+  paymentCount: number;
+  ideaCount: number;
+  commentCount: number;
+  userIdeas: number;
+  userPayments: number;
+  paymentAmount: number;
+  growthData: { month: string; value: number }[];
+  ideaDistribution: { name: string; value: number }[];
+  ideaStatusCounts: {
+    DRAFT: number;
+    UNDER_REVIEW: number;
+    APPROVED: number;
+    REJECTED: number;
+  };
+  recentActivities: Activity[];
+}
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+export function countAllComments(comments: Comment[] = []): number {
+  let count = 0;
+
+  const countReplies = (replies: Comment[] = []) => {
+    replies.forEach((reply) => {
+      count++;
+      if (reply.replies?.length) {
+        countReplies(reply.replies);
+      }
+    });
+  };
+
+  comments.forEach((comment) => {
+    count++;
+    if (comment.replies?.length) {
+      countReplies(comment.replies);
+    }
+  });
+
+  return count;
+}
+
+const StatCard = ({ 
+  icon, 
+  title, 
+  value, 
+  unit = '', 
+  change, 
+  color 
+}: {
+  icon: React.ReactNode;
+  title: string;
+  value: number;
+  unit?: string;
+  change: string;
+  color: 'blue' | 'purple' | 'amber' | 'emerald';
+}) => {
+  const colorClasses = {
+    blue: { bg: 'bg-blue-100 dark:bg-blue-900/20', text: 'text-blue-600 dark:text-blue-400' },
+    purple: { bg: 'bg-purple-100 dark:bg-purple-900/20', text: 'text-purple-600 dark:text-purple-400' },
+    amber: { bg: 'bg-amber-100 dark:bg-amber-900/20', text: 'text-amber-600 dark:text-amber-400' },
+    emerald: { bg: 'bg-emerald-100 dark:bg-emerald-900/20', text: 'text-emerald-600 dark:text-emerald-400' },
+  };
+
+  return (
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+      <div className="flex items-center justify-between">
+        <div className={`${colorClasses[color].bg} p-3 rounded-lg`}>
+          {icon}
+        </div>
+        <span className={`text-sm font-medium ${colorClasses[color].text}`}>
+          {change}
+        </span>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium">{title}</h3>
+        <p className="text-2xl font-bold text-gray-800 dark:text-white mt-1">
+          <CountUp end={value} duration={1.5} />{unit}
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const CommonDashboard = () => {
   const { user } = useUser();
+  const [stats, setStats] = useState<DashboardStats>({
+    userCount: 0,
+    paymentCount: 0,
+    ideaCount: 0,
+    commentCount: 0,
+    userIdeas: 0,
+    userPayments: 0,
+    paymentAmount: 0,
+    growthData: [],
+    ideaDistribution: [],
+    ideaStatusCounts: {
+      DRAFT: 0,
+      UNDER_REVIEW: 0,
+      APPROVED: 0,
+      REJECTED: 0
+    },
+    recentActivities: []
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (user?.role === 'ADMIN') {
+          const [usersResponse, ideasResponse] = await Promise.all([
+            getAllUsers(),
+            getAllIdeasByAdmin()
+          ]);
+
+          const users = usersResponse.data || [];
+          const ideas = ideasResponse.data || [];
+
+          const commentCount = ideas.reduce((sum: number, idea: { comments: Comment[] | undefined; }) => 
+            sum + countAllComments(idea.comments), 0);
+
+          // Count ideas by status
+          const statusCounts = {
+            DRAFT: ideas.filter((idea: { status: IdeaStatus }) => idea.status === 'DRAFT').length,
+            UNDER_REVIEW: ideas.filter((idea: { status: IdeaStatus }) => idea.status === 'UNDER_REVIEW').length,
+            APPROVED: ideas.filter((idea: { status: IdeaStatus }) => idea.status === 'APPROVED').length,
+            REJECTED: ideas.filter((idea: { status: IdeaStatus }) => idea.status === 'REJECTED').length,
+          };
+
+          // Generate recent activities
+          const activities: Activity[] = [];
+          
+          // Add user signups (last 5 users)
+          const recentUsers = users.slice(0, 5).map((u: any) => ({
+            id: u.id,
+            type: 'user',
+            title: 'New member joined',
+            description: `${u.name || 'A user'} joined the platform`,
+            timestamp: new Date(u.createdAt).toLocaleString()
+          }));
+          
+          // Add recent ideas (last 5 ideas)
+          const recentIdeas = ideas.slice(0, 5).map((idea: any) => ({
+            id: idea.id,
+            type: 'idea',
+            title: 'New idea submitted',
+            description: `"${idea.title}" was added`,
+            timestamp: new Date(idea.createdAt).toLocaleString()
+          }));
+          
+          // Combine and sort by timestamp
+          activities.push(...recentUsers, ...recentIdeas);
+          activities.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+          const recentActivities = activities.slice(0, 5);
+
+          setStats({
+            userCount: users.length,
+            paymentCount: users.reduce((sum: any, u: { payments: string | any[]; }) => sum + (u.payments?.length || 0), 0),
+            ideaCount: ideas.length,
+            commentCount,
+            userIdeas: 0,
+            userPayments: 0,
+            paymentAmount: 0,
+            growthData: [
+              { month: 'Jan', value: 120 },
+              { month: 'Feb', value: 210 },
+              { month: 'Mar', value: 180 },
+              { month: 'Apr', value: 350 },
+              { month: 'May', value: 420 },
+              { month: 'Jun', value: 510 },
+            ],
+            ideaDistribution: [
+              { name: 'Draft', value: statusCounts.DRAFT },
+              { name: 'Under Review', value: statusCounts.UNDER_REVIEW },
+              { name: 'Approved', value: statusCounts.APPROVED },
+              { name: 'Rejected', value: statusCounts.REJECTED },
+            ],
+            ideaStatusCounts: statusCounts,
+            recentActivities
+          });
+        } else {
+          // For regular users
+          const userActivities: Activity[] = [];
+          
+          // Add user's ideas as activities
+          if (user?.ideas?.length) {
+            user.ideas.slice(0, 5).forEach((idea: any) => {
+              userActivities.push({
+                id: idea.id,
+                type: 'idea',
+                title: `Idea ${idea.status.toLowerCase().replace('_', ' ')}`,
+                description: `"${idea.title}" is now ${idea.status.toLowerCase().replace('_', ' ')}`,
+                timestamp: new Date(idea.updatedAt).toLocaleString()
+              });
+            });
+          }
+          
+          // Sort by timestamp and take latest 5
+          userActivities.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+          const recentActivities = userActivities.slice(0, 5);
+
+          setStats({
+            userCount: 0,
+            paymentCount: 0,
+            ideaCount: 0,
+            commentCount: 0,
+            userIdeas: user?.ideas?.length || 0,
+            userPayments: user?.payments?.length || 0,
+            paymentAmount: user?.payments?.reduce((sum, p) => sum + (p.amount || 0), 0) || 0,
+            growthData: [
+              { month: 'Jan', value: 20 },
+              { month: 'Feb', value: 35 },
+              { month: 'Mar', value: 28 },
+              { month: 'Apr', value: 45 },
+              { month: 'May', value: 52 },
+              { month: 'Jun', value: 60 },
+            ],
+            ideaDistribution: [
+              { name: 'Your Ideas', value: user?.ideas?.length || 0 },
+              { name: 'Supported', value: user?.payments?.length || 0 },
+              { name: 'Comments', value: 15 }, // Example value
+            ],
+            ideaStatusCounts: {
+              DRAFT: user?.ideas?.filter((i: any) => i.status === 'DRAFT').length || 0,
+              UNDER_REVIEW: user?.ideas?.filter((i: any) => i.status === 'UNDER_REVIEW').length || 0,
+              APPROVED: user?.ideas?.filter((i: any) => i.status === 'APPROVED').length || 0,
+              REJECTED: user?.ideas?.filter((i: any) => i.status === 'REJECTED').length || 0,
+            },
+            recentActivities
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Hero Header */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 p-6 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-sm">
+    <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-            Welcome, <span className="text-emerald-600 dark:text-emerald-400">{user?.name || 'Sustainability Champion'}</span>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            {user?.role === 'ADMIN' ? 'Admin Dashboard' : 'My Sustainability Hub'}
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
-            Your contributions are shaping a greener tomorrow. Keep inspiring others!
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
+            {user?.role === 'ADMIN' 
+              ? 'Manage platform activities and track growth' 
+              : 'Track your contributions and impact'}
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-full shadow-lg">
-          <Sparkles className="w-10 h-10 text-amber-400" />
+        <div className="flex items-center gap-3 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm">
+          <div className="bg-emerald-100 dark:bg-emerald-900/20 p-2 rounded-full">
+            <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+          </div>
+          <span className="font-medium text-gray-700 dark:text-gray-300">
+            {user?.name || 'User'}
+          </span>
         </div>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* Community Card */}
-        <div className="col-span-1 lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="bg-emerald-100 dark:bg-emerald-900/30 p-2 rounded-lg">
-              <Users className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">GreenMind Community</h2>
-          </div>
-          
-          <div className="space-y-4">
-            <p className="text-gray-600 dark:text-gray-300">
-              Join <span className="font-medium text-emerald-600 dark:text-emerald-400">1,240+</span> environmental innovators collaborating on sustainable solutions.
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {user?.role === 'ADMIN' ? (
+          <>
+            <StatCard 
+              icon={<Users className="w-5 h-5" />}
+              title="Total Users"
+              value={stats.userCount}
+              change="+12%"
+              color="blue"
+            />
+            <StatCard 
+              icon={<CreditCard className="w-5 h-5" />}
+              title="Payments"
+              value={stats.paymentCount}
+              change="+8%"
+              color="purple"
+            />
+            <StatCard 
+              icon={<Lightbulb className="w-5 h-5" />}
+              title="Total Ideas"
+              value={stats.ideaCount}
+              change="+24%"
+              color="amber"
+            />
+            <StatCard 
+              icon={<MessageSquare className="w-5 h-5" />}
+              title="Comments"
+              value={stats.commentCount}
+              change="+18%"
+              color="emerald"
+            />
+          </>
+        ) : (
+          <>
+            <StatCard 
+              icon={<Lightbulb className="w-5 h-5" />}
+              title="Your Ideas"
+              value={stats.userIdeas}
+              change="+2 this month"
+              color="blue"
+            />
+            <StatCard 
+              icon={<UserCheck className="w-5 h-5" />}
+              title="Supported"
+              value={stats.userPayments}
+              change={`$${stats.paymentAmount}`}
+              color="purple"
+            />
+            <StatCard 
+              icon={<Leaf className="w-5 h-5" />}
+              title="CO₂ Reduced"
+              value={1245}
+              unit="kg"
+              change="+120kg"
+              color="emerald"
+            />
+            <StatCard 
+              icon={<BarChart2 className="w-5 h-5" />}
+              title="Engagement"
+              value={87}
+              unit="%"
+              change="+12%"
+              color="amber"
+            />
+          </>
+        )}
+      </div>
+
+      {/* Additional Status Counts for Admin */}
+      {user?.role === 'ADMIN' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard 
+            icon={<Lightbulb className="w-5 h-5" />}
+            title="Draft Ideas"
+            value={stats.ideaStatusCounts.DRAFT}
+            change={`${Math.round((stats.ideaStatusCounts.DRAFT / stats.ideaCount) * 100)}%`}
+            color="blue"
+          />
+          <StatCard 
+            icon={<Lightbulb className="w-5 h-5" />}
+            title="Under Review"
+            value={stats.ideaStatusCounts.UNDER_REVIEW}
+            change={`${Math.round((stats.ideaStatusCounts.UNDER_REVIEW / stats.ideaCount) * 100)}%`}
+            color="purple"
+          />
+          <StatCard 
+            icon={<Lightbulb className="w-5 h-5" />}
+            title="Approved Ideas"
+            value={stats.ideaStatusCounts.APPROVED}
+            change={`${Math.round((stats.ideaStatusCounts.APPROVED / stats.ideaCount) * 100)}%`}
+            color="emerald"
+          />
+          <StatCard 
+            icon={<Lightbulb className="w-5 h-5" />}
+            title="Rejected Ideas"
+            value={stats.ideaStatusCounts.REJECTED}
+            change={`${Math.round((stats.ideaStatusCounts.REJECTED / stats.ideaCount) * 100)}%`}
+            color="amber"
+          />
+        </div>
+      )}
+
+      {/* Charts Section */}
+      {/* Charts Section */}
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+    <div className="flex items-center justify-between mb-6">
+      <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+        Platform Growth
+      </h2>
+      <select className="bg-gray-50 dark:bg-gray-700 text-sm rounded-lg px-3 py-1">
+        <option>Last 6 Months</option>
+        <option>Last Year</option>
+      </select>
+    </div>
+    <div className="h-80">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={stats.growthData}>
+          <Line 
+            type="monotone" 
+            dataKey="value" 
+            stroke="#10B981" 
+            strokeWidth={2}
+            dot={{ r: 4 }}
+            activeDot={{ r: 6 }}
+          />
+          <Tooltip 
+            contentStyle={{
+              background: 'white',
+              borderRadius: '0.5rem',
+              borderColor: '#e5e7eb',
+              boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
+              padding: '0.5rem'
+            }}
+            formatter={(value: number) => [`Value: ${value}`, '']}
+            labelFormatter={(label) => `Month: ${label}`}
+          />
+          <Legend />
+          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+          <XAxis 
+            dataKey="month" 
+            tick={{ fill: '#6b7280' }}
+            tickMargin={10}
+          />
+          <YAxis 
+            tick={{ fill: '#6b7280' }}
+            tickMargin={10}
+            tickFormatter={(value) => `${value}`}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  </div>
+
+  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+    <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">
+      {user?.role === 'ADMIN' ? 'Idea Distribution' : 'Your Contributions'}
+    </h2>
+    <div className="h-80">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={stats.ideaDistribution}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            outerRadius={70}
+            innerRadius={40}
+            paddingAngle={2}
+            fill="#8884d8"
+            dataKey="value"
+            label={({ name, value }) => `${name}: ${value}`}
+          >
+            {stats.ideaDistribution.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip 
+            formatter={(value: number, name: string) => [
+              value,
+              `${name}: ${((value / stats.ideaDistribution.reduce((sum, item) => sum + item.value, 0)) * 100).toFixed(1)}%`
+            ]}
+            contentStyle={{
+              background: 'white',
+              borderRadius: '0.5rem',
+              borderColor: '#e5e7eb',
+              boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
+              padding: '0.5rem'
+            }}
+          />
+          <Legend 
+            layout="vertical"
+            verticalAlign="middle"
+            align="right"
+            wrapperStyle={{
+              paddingLeft: '20px'
+            }}
+            formatter={(value) => (
+              <span className="text-gray-600 dark:text-gray-300 text-sm">
+                {value}
+              </span>
+            )}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  </div>
+</div>
+
+      {/* Recent Activity */}
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">
+          Recent Activity
+        </h2>
+        <div className="space-y-4">
+          {stats.recentActivities.length > 0 ? (
+            stats.recentActivities.map((activity) => (
+              <div key={activity.id} className="flex items-start gap-4 p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors">
+                <div className={`${activity.type === 'idea' ? 'bg-emerald-100 dark:bg-emerald-900/20' : 'bg-blue-100 dark:bg-blue-900/20'} p-2 rounded-full mt-1`}>
+                  {activity.type === 'idea' ? (
+                    <Lightbulb className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                  ) : (
+                    <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  )}
+                </div>
+                <div>
+                  <p className="font-medium text-gray-800 dark:text-white">
+                    {activity.title}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {activity.description}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                    {activity.timestamp}
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 dark:text-gray-400 text-center py-4">
+              No recent activities to show
             </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
-                <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-2 flex items-center gap-2">
-                  <Lightbulb className="w-5 h-5 text-amber-500" />
-                  Your Ideas
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Share your eco-innovations and get community feedback
-                </p>
-              </div>
-              
-              <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
-                <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-2 flex items-center gap-2">
-                  <Heart className="w-5 h-5 text-rose-500" />
-                  Green Projects
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Collaborate on sustainability initiatives
-                </p>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
-
-        {/* Impact Stats Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
-              <BarChart2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-            </div>
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Your Impact</h2>
-          </div>
-          
-          <div className="space-y-4">
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-              <p className="text-sm text-blue-700 dark:text-blue-300 mb-1">CO₂ Reduced</p>
-              <p className="text-2xl font-bold text-gray-800 dark:text-white">12,450 kg</p>
-              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">This month</p>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-emerald-50 dark:bg-emerald-900/10 p-3 rounded-lg">
-                <p className="text-xs text-emerald-700 dark:text-emerald-400">Ideas Shared</p>
-                <p className="font-semibold text-gray-800 dark:text-white">24</p>
-              </div>
-              
-              <div className="bg-amber-50 dark:bg-amber-900/10 p-3 rounded-lg">
-                <p className="text-xs text-amber-700 dark:text-amber-400">Projects Joined</p>
-                <p className="font-semibold text-gray-800 dark:text-white">8</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Action Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-          <div className="bg-teal-100 dark:bg-teal-900/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-            <Lightbulb className="w-6 h-6 text-teal-600 dark:text-teal-400" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">Share Ideas</h3>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
-            Contribute your sustainable solutions and get feedback from the community.
-          </p>
-        </div>
-        
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-          <div className="bg-purple-100 dark:bg-purple-900/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-            <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">Join Discussions</h3>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
-            Participate in forums about environmental challenges and solutions.
-          </p>
-        </div>
-        
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-          <div className="bg-amber-100 dark:bg-amber-900/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-            <Leaf className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">Take Challenges</h3>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
-            Engage in sustainability challenges and track your environmental impact.
-          </p>
-        </div>
-      </div>
-
-      {/* Inspiration Footer */}
-      <div className="text-center py-6 border-t border-gray-100 dark:border-gray-800">
-        <p className="text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
-          <Leaf className="w-5 h-5 text-emerald-500" />
-          Together we are planting the seeds of change
-          <Leaf className="w-5 h-5 text-emerald-500" />
-        </p>
       </div>
     </div>
   );
