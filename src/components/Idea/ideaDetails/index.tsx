@@ -141,18 +141,23 @@ const IdeaDetail = ({ idea }: { idea: Idea }) => {
       >
         <ChevronUp className="w-6 h-6" />
       </button>
-      <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        {idea.votes?.filter(vote => vote.type === 'UP')?.length || 0}
-      </span>
+     
     </div>
 
     {/* Vote Count */}
     <div className="flex flex-col items-center">
       <span className="text-xl font-bold text-gray-800 dark:text-white px-2 py-1 rounded-md bg-gray-50 dark:bg-gray-800">
-        {(idea.votes?.filter(vote => vote.type === 'UP')?.length || 0) - 
-         (idea.votes?.filter(vote => vote.type === 'DOWN')?.length || 0)}
+        {(idea.votes?.filter(vote => vote.type === 'UP')?.length || 0)}
       </span>
-      <span className="text-[10px] uppercase tracking-wider text-gray-400 mt-1">Votes</span>
+      <span className="text-[10px] uppercase tracking-wider text-gray-400 mt-1">Like</span>
+    </div>
+
+     {/* Vote Count */}
+    <div className="flex flex-col items-center">
+      <span className="text-xl font-bold text-gray-800 dark:text-white px-2 py-1 rounded-md bg-gray-50 dark:bg-gray-800">
+        { (idea.votes?.filter(vote => vote.type === 'DOWN')?.length || 0)}
+      </span>
+      <span className="text-[10px] uppercase tracking-wider text-gray-400 mt-1">Dislike</span>
     </div>
 
     {/* Downvote Button */}
@@ -176,9 +181,7 @@ const IdeaDetail = ({ idea }: { idea: Idea }) => {
       >
         <ChevronDown className="w-6 h-6" />
       </button>
-      <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        {idea.votes?.filter(vote => vote.type === 'DOWN')?.length || 0}
-      </span>
+      
     </div>
   </div>
 </div>

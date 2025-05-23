@@ -48,7 +48,7 @@ const PaymentAfter = ({
             </>
           )}
 
-          <Link href={href} legacyBehavior>
+          <Link href={href}>
             <Button>{buttonText}</Button>
           </Link>
         </div>

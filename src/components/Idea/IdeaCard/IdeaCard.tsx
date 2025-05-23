@@ -15,13 +15,13 @@ import {
   User,
   CalendarDays,
   MessageCircle,
-  Heart,
-  HeartOff,
   Sparkles,
   ShieldCheck,
   FileText,
   ShoppingCart,
   Gem,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import {
   Dialog,
@@ -98,11 +98,11 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
               {idea.comments?.length ?? 0}
             </span>
             <span className="flex items-center gap-1">
-              <Heart className="w-4 h-4" />
+              <ChevronUp className="w-4 h-4" />
               {idea.votes?.filter(v => v.type === 'UP')?.length ?? 0}
             </span>
             <span className="flex items-center gap-1 text-red-500">
-              <HeartOff className="w-4 h-4" />
+              <ChevronDown className="w-4 h-4" />
               {idea.votes?.filter(v => v.type === 'DOWN')?.length ?? 0}
             </span>
           </div>

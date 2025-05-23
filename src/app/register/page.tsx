@@ -1,6 +1,5 @@
-
-import RegisterForm from '@/components/Auth/RegisterForm';
 import WithSuspense from '@/Providers/LoadingProviders';
+import RegisterForm from './_components/RegisterForm';
 
 const RegisterPage = () => {
   return (

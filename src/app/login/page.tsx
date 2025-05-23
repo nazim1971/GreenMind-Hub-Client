@@ -1,5 +1,6 @@
-import LoginForm from "@/components/Auth/LoginForm";
+
 import WithSuspense from "@/Providers/LoadingProviders";
+import LoginForm from "./_components/LoginForm";
 
 
 type SearchParams = Promise<{ [key: string]: string | undefined }>;
