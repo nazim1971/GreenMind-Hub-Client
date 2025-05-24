@@ -6,9 +6,9 @@ const IdeaHome = async () => {
   const { data: ideas } = await getAllIdeas();
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center px-4">
       <section className="text-center py-12">
-        <h2 className="text-4xl sm:text-4xl font-bold tracking-tight text-[#14B8A6] dark:text-[#5eead4]">
+        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#14B8A6] dark:text-[#5eead4]">
           Innovative Green Solutions for a Better Future
         </h2>
         <p className="mt-4 max-w-2xl mx-auto text-base text-gray-700 dark:text-gray-300">

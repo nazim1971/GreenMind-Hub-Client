@@ -34,12 +34,12 @@ export function Banner() {
   );
 
   return (
-    <div className="w-full my-12">
-      <Carousel plugins={[plugin.current]} className="w-full">
+    <div className="w-full my-12 ">
+      <Carousel plugins={[plugin.current]} className="w-full ">
         <CarouselContent>
           {bannerData.map((item, idx) => (
             <CarouselItem key={idx}>
-              <div className="relative w-full h-[500px]">
+              <div className="relative w-full h-[500px] ">
                 <Image
                   src={item.image}
                   alt={`Banner ${idx + 1}`}
@@ -49,7 +49,7 @@ export function Banner() {
                   priority
                 />
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <h2 className="text-white text-3xl md:text-5xl font-bold text-center px-4">
+                  <h2 className="text-white text-2xl md:text-5xl font-bold text-center px-4">
                     {item.text}
                   </h2>
                 </div>

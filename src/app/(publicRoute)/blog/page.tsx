@@ -3,13 +3,13 @@ import Link from 'next/link';
 
 const BlogsPage = () => {
   return (
-    <div className="md:mx-20">
+    <div className="p-5 md:p-10 bg-gray-100">
       {/* Header Section */}
       <header className="text-center mb-12">
-        <h1 className="text-3xl md:text-5xl font-bold text-primary mb-4">
+        <h1 className="text-2xl md:text-5xl font-bold text-primary mb-4">
           Welcome to GreedMind-hub Blog
         </h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300 py-4">
+        <p className="md:text-lg text-gray-700 dark:text-gray-300 py-4">
           Welcome to the{' '}
            GreedMind-hub
           blog – your source for in-depth articles, success stories, and expert
@@ -22,14 +22,14 @@ const BlogsPage = () => {
       <div className="space-y-12">
         {/* Featured Articles Section */}
         <section>
-          <h2 className="text-xl md:text-2xl font-semibold py-4 border-b dark:border-gray-700 text-primary">
+          <h2 className=" md:text-2xl font-semibold py-4 border-b dark:border-gray-700 text-primary">
             Featured Articles
           </h2>
           <div className="grid md:grid-cols-2 gap-8 mt-6">
             {/* Article 1 */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <div className="p-6">
-                <h3 className="text-lg md:text-xl font-bold mb-2 text-primary">
+                <h3 className=" md:text-xl font-bold mb-2 text-primary">
                   <Link href="/blog" className="hover:text-blue-600">
                     How Zero-Waste Communities Are Changing Urban Living
                   </Link>
@@ -50,7 +50,7 @@ const BlogsPage = () => {
             {/* Article 2 */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <div className="p-6">
-                <h3 className="text-lg md:text-xl font-bold mb-2 text-primary">
+                <h3 className=" md:text-xl font-bold mb-2 text-primary">
                   <Link href="/blog" className="hover:text-blue-600">
                     DIY Solar: Affordable Home Energy Solutions
                   </Link>
@@ -71,7 +71,7 @@ const BlogsPage = () => {
 
         {/* Recent Posts Section */}
         <section>
-          <h2 className="text-xl md:text-2xl font-semibold py-4 border-b dark:border-gray-700 text-primary">
+          <h2 className=" md:text-2xl font-semibold py-4 border-b dark:border-gray-700 text-primary">
             Recent Posts
           </h2>
           <div className="grid md:grid-cols-3 gap-6 mt-6">
@@ -81,7 +81,7 @@ const BlogsPage = () => {
                 <span className="inline-block px-3 py-1 text-xs font-semibold text-green-800 bg-green-100 dark:bg-green-900 dark:text-green-200 rounded-full mb-2">
                   Waste Reduction
                 </span>
-                <h3 className="text-lg font-bold mb-2 text-primary">
+                <h3 className="md:text-lg font-bold mb-2 text-primary">
                   <Link href="/blog" className="hover:text-blue-600">
                     Composting 101: Turning Waste Into Garden Gold
                   </Link>
@@ -99,7 +99,7 @@ const BlogsPage = () => {
                 <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-800 bg-blue-100 dark:bg-blue-900 dark:text-blue-200 rounded-full mb-2">
                   Transportation
                 </span>
-                <h3 className="text-lg font-bold mb-2 text-primary">
+                <h3 className="md:text-lg font-bold mb-2 text-primary">
                   <Link href="/blog" className="hover:text-blue-600">
                     The Complete Guide to Bike Commuting
                   </Link>
@@ -117,7 +117,7 @@ const BlogsPage = () => {
                 <span className="inline-block px-3 py-1 text-xs font-semibold text-yellow-800 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-200 rounded-full mb-2">
                   Energy
                 </span>
-                <h3 className="text-lg font-bold mb-2 text-primary">
+                <h3 className="md:text-lg font-bold mb-2 text-primary">
                   <Link href="/blog" className="hover:text-blue-600">
                     Home Energy Audit: Finding Your Hidden Savings
                   </Link>
@@ -133,11 +133,11 @@ const BlogsPage = () => {
 
         {/* Community Spotlight Section */}
         <section>
-          <h2 className="text-xl md:text-2xl font-semibold py-4 border-b dark:border-gray-700 text-primary">
+          <h2 className=" md:text-2xl font-semibold py-4 border-b dark:border-gray-700 text-primary">
             Community Spotlight
           </h2>
           <div className="mt-6 bg-green-50 dark:bg-[#14b8a52c] rounded-lg p-6">
-            <h3 className="text-lg md:text-xl font-bold mb-4 text-primary">
+            <h3 className=" md:text-xl font-bold mb-4 text-primary">
               &quot;How Our Neighborhood Cut Plastic Waste by 80%&quot;
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4">

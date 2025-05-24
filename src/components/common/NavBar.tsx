@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/drawer';
 import { logOut } from '@/services/AuthService';
 import { Button } from '../ui/button';
-import { Loader, LogOut, Menu, X } from 'lucide-react';
+import { Loader, LogOut, Menu, Search, X } from 'lucide-react';
 import { protectedRoutes } from '@/constants';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avater';
 import { ModeToggle } from '../theme/ModeToggle';
@@ -38,6 +38,7 @@ const NavBar = () => {
 
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleLogOut = async () => {
     await logOut();
@@ -47,7 +48,11 @@ const NavBar = () => {
     }
   };
 
-  
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Search functionality would go here
+    console.log('Searching for:', searchQuery);
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -90,6 +95,26 @@ const NavBar = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Search Bar - Desktop */}
+            <form 
+              onSubmit={handleSearch}
+              className="hidden md:flex items-center relative"
+            >
+              <input
+                type="text"
+                placeholder="Search..."
+                className="pl-4 pr-10 py-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#14B8A6] dark:bg-gray-800 dark:text-white w-48 lg:w-64 transition-all duration-300"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button 
+                type="submit"
+                className="absolute right-3 text-gray-500 dark:text-gray-400 hover:text-[#14B8A6]"
+              >
+                <Search className="w-5 h-5" />
+              </button>
+            </form>
+
             <div className="hidden lg:flex gap-5 text-black dark:text-white">
               {navLinks.map(({ name, path }) => (
                 <Link
@@ -146,62 +171,81 @@ const NavBar = () => {
               )}
             </div>
 
-           <div className="md:hidden">
-  <Drawer direction="left">
-    <DrawerTrigger asChild>
-      <Button
-        variant="ghost"
-        className="text-gray-800 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-      >
-        <Menu className="w-6 h-6" />
-      </Button>
-    </DrawerTrigger>
+            <div className="md:hidden">
+              <Drawer direction="left">
+                <DrawerTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-gray-800 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <Menu className="w-6 h-6" />
+                  </Button>
+                </DrawerTrigger>
 
-    <DrawerContent className="text-gray-800 dark:text-white bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 max-w-[280px]">
-      <div className="w-full h-full flex flex-col">
-        <DrawerHeader className="flex justify-between items-center px-4 pt-4">
-          <div>
-            <DialogTitle/>
-            <Link href="/" className="w-fit">
-            <Image src={logo} alt="logo" className="h-16 w-auto" />
-          </Link>
-          </div>
+                <DrawerContent className="text-gray-800 dark:text-white bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 max-w-[280px]">
+                  <div className="w-full h-full flex flex-col">
+                    <DrawerHeader className="flex justify-between items-center px-4 pt-4">
+                      <div>
+                        <DialogTitle/>
+                        <Link href="/" className="w-fit">
+                          <Image src={logo} alt="logo" className="h-16 w-auto" />
+                        </Link>
+                      </div>
 
-          <DrawerClose asChild>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
-              <X className="w-5 h-5" />
-            </Button>
-          </DrawerClose>
-        </DrawerHeader>
+                      <DrawerClose asChild>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        >
+                          <X className="w-5 h-5" />
+                        </Button>
+                      </DrawerClose>
+                    </DrawerHeader>
 
-        <div className="flex-1 px-4 py-6">
-          <div className="flex flex-col gap-3">
-            {navLinks.map(({ name, path }) => (
-              <DrawerClose asChild key={name}>
-      <Link
-        href={path}
-        className={`w-full rounded-md px-4 py-2 text-sm font-medium transition-all duration-150
-          ${
-            pathname === path
-              ? 'bg-blue-100 text-blue-600 dark:bg-blue-600 dark:text-white'
-              : 'hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-white'
-          }`}
-      >
-        {name}
-      </Link>
-    </DrawerClose>
-            ))}
-          </div>
-        </div>
-      </div>
-    </DrawerContent>
-  </Drawer>
-</div>
+                    {/* Search Bar - Mobile */}
+                    <form 
+                      onSubmit={handleSearch}
+                      className="px-4 py-3 flex items-center relative"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        className="pl-4 pr-10 py-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#14B8A6] dark:bg-gray-800 dark:text-white w-full"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <button 
+                        type="submit"
+                        className="absolute right-6 text-gray-500 dark:text-gray-400 hover:text-[#14B8A6]"
+                      >
+                        <Search className="w-5 h-5" />
+                      </button>
+                    </form>
 
+                    <div className="flex-1 px-4 py-3 overflow-y-auto">
+                      <div className="flex flex-col gap-1">
+                        {navLinks.map(({ name, path }) => (
+                          <DrawerClose asChild key={name}>
+                            <Link
+                              href={path}
+                              className={`w-full rounded-md px-4 py-2 text-sm font-medium transition-all duration-150
+                                ${
+                                  pathname === path
+                                    ? 'bg-blue-100 text-blue-600 dark:bg-blue-600 dark:text-white'
+                                    : 'hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-white'
+                                }`}
+                            >
+                              {name}
+                            </Link>
+                          </DrawerClose>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </DrawerContent>
+              </Drawer>
+            </div>
           </div>
         </div>
       </div>

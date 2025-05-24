@@ -41,7 +41,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
            <Provider>
-           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 w-full">{children}</div>
+           <div className="max-w-[1200px] mx-auto  sm:px-6 lg:px-8 pt-20 w-full">{children}</div>
            </Provider>
            <Toaster />
           </ThemeProvider>

@@ -30,7 +30,7 @@ const TestimonialSection = async () => {
             className="relative group overflow-hidden rounded-2xl bg-white/90 dark:bg-zinc-800/70 backdrop-blur-md border border-gray-200 dark:border-zinc-700 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.01] hover:border-transparent hover:ring-2 hover:ring-teal-400/40 max-w-[350px] mx-auto"
           >
 
-            <CardFooter className="flex items-center gap-3 pt-2">
+            <CardFooter className="flex items-center gap-3 pt-5">
                 <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 dark:border-zinc-600">
                   <Image
                     src={idea.author.image || u1}
@@ -80,7 +80,7 @@ const TestimonialSection = async () => {
               </h3>
 
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {idea.description?.slice(0, 100)}...
+                {idea.description?.split(' ').slice(0,5).join(' ')}...
               </p>
 
              

@@ -15,7 +15,7 @@ const OurSkillsSection = () => {
       {/* Left Content */}
       <div className="space-y-6 max-w-xl">
         
-        <h2 className="text-4xl md:text-5xl font-bold text-black dark:text-[#14B8A6] leading-tight">
+        <h2 className="text-2xl md:text-5xl font-bold text-black dark:text-[#14B8A6] leading-tight">
           Building a Sustainable <br /> Tomorrow With Innovation
         </h2>
 
