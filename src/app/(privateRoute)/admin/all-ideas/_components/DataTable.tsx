@@ -14,11 +14,9 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import {
-  ArrowUpDown,
   ChevronDown,
   MoreHorizontal,
   Eye,
-  // Edit,
   Trash2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -62,24 +60,21 @@ export function DataTable({ data }: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
-
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedIdea, setSelectedIdea] = useState<TIdea | null>(null);
   const router = useRouter();
 
   const handleDeleteClick = (ideaId: string) => {
     setSelectedIdeaId(ideaId);
     setOpenDeleteModal(true);
   };
+
   const handleConfirmDelete = async () => {
     if (!selectedIdeaId) return;
     try {
       await deleteIdea(selectedIdeaId);
       toast.success('Idea deleted successfully');
       setOpenDeleteModal(false);
-      setSelectedIdea(null);
       router.refresh();
     } catch (err: any) {
       toast.error(err.message || 'Failed to delete idea');
@@ -110,81 +105,31 @@ export function DataTable({ data }: DataTableProps) {
       enableHiding: false,
     },
     {
-      accessorKey: 'id',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            ID
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const id = row.getValue('id') as string;
-        return (
-          <div className="font-mono text-xs max-w-[120px] truncate" title={id}>
-            {id}
-          </div>
-        );
-      },
-    },
-    {
       accessorKey: 'title',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Project Title
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      header: 'Project',
       cell: ({ row }) => {
         const title = row.getValue('title') as string;
+        const words = title.split(' ');
+        const shortTitle = words.length > 2 
+          ? `${words[0]} ${words[1]}...` 
+          : title;
+          
         return (
-          <div className="font-medium max-w-[200px] truncate" title={title}>
-            {title}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'problemStatement',
-      header: 'Problem Statement',
-      cell: ({ row }) => {
-        const problemStatement = row.getValue('problemStatement') as string;
-        return (
-          <div className="max-w-[200px] truncate" title={problemStatement}>
-            {problemStatement}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'solution',
-      header: 'Solution',
-      cell: ({ row }) => {
-        const solution = row.getValue('solution') as string;
-        return (
-          <div className="max-w-[200px] truncate" title={solution}>
-            {solution}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'description',
-      header: 'Description',
-      cell: ({ row }) => {
-        const description = row.getValue('description') as string;
-        return (
-          <div className="max-w-[200px] truncate" title={description}>
-            {description}
+          <div className="font-medium flex items-center gap-3">
+            <div className="relative h-10 w-10 overflow-hidden rounded-md">
+              <Image
+                src={row.original.images?.[0] || '/placeholder.svg'}
+                alt={title}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div>
+              <div className="font-medium" title={title}>{shortTitle}</div>
+              <div className="text-xs text-muted-foreground">
+                {row.original.category?.name}
+              </div>
+            </div>
           </div>
         );
       },
@@ -193,8 +138,8 @@ export function DataTable({ data }: DataTableProps) {
       accessorKey: 'status',
       header: 'Status',
       cell: ({ row }) => {
-        const status = row.getValue('status') as string;
-        const id = row?.getValue('id') as string;
+        const status = row.original.status;
+        const id = row.original.id;
 
         const statusColorMap: Record<string, string> = {
           UNDER_REVIEW: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100/80',
@@ -205,7 +150,6 @@ export function DataTable({ data }: DataTableProps) {
 
         return (
           <Badge
-            onClick={() => {}}
             className={`${
               statusColorMap[status] || 'bg-gray-100 text-gray-800'
             } font-medium`}
@@ -216,181 +160,46 @@ export function DataTable({ data }: DataTableProps) {
             ) : (
               status.replace(/_/g, ' ')
             )}
-            {/* {status.replace(/_/g, " ")} */}
           </Badge>
         );
       },
       filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id));
+        return value.includes(row.original.status);
       },
     },
     {
-      accessorKey: 'isPaid',
-      header: 'Type',
+      id: 'author',
+      accessorFn: (row) => row.author?.name,
+      header: 'Author',
       cell: ({ row }) => {
-        const isPaid = row.getValue('isPaid') as boolean;
-        return (
-          <Badge variant={isPaid ? 'default' : 'outline'}>
-            {isPaid ? 'Paid' : 'Free'}
-          </Badge>
-        );
+        return <div className="font-medium">{row.original.author?.name}</div>;
       },
     },
     {
-      accessorKey: 'price',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            className="text-right"
-          >
-            Price
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      id: 'price',
+      accessorFn: (row) => row.isPaid ? row.price : 'Free',
+      header: 'Price',
       cell: ({ row }) => {
-        const price = Number.parseFloat(row.getValue('price'));
-        const isPaid = row.getValue('isPaid') as boolean;
+        const isPaid = row.original.isPaid;
+        const price = row.original.price;
 
         if (!isPaid) return <div className="text-center">Free</div>;
 
-        // Format the price as a dollar amount
         const formatted = new Intl.NumberFormat('en-US', {
           style: 'currency',
           currency: 'USD',
         }).format(price);
 
-        return <div className="text-center font-medium">{formatted}</div>;
+        return <div className="font-medium">{formatted}</div>;
       },
     },
     {
-      accessorKey: 'feedback',
-      header: 'Feedback',
-      cell: ({ row }) => {
-        const feedback = row.getValue('feedback') as string | null;
-        return (
-          <div className="max-w-[200px] truncate" title={feedback || ''}>
-            {feedback || 'No feedback'}
-          </div>
-        );
-      },
-    },
-    {
-      id: 'category',
-      accessorFn: row => row?.category?.name,
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Category
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const categoryName = row?.original?.category?.name;
-        return <div className="text-center">{categoryName}</div>;
-      },
-    },
-    {
-      id: 'author',
-      accessorFn: row => row?.author?.name,
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Author
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const authorName = row?.original?.author?.name;
-        return <div className="text-center">{authorName}</div>;
-      },
-    },
-    {
-      accessorKey: 'isDeleted',
-      header: 'Delete Status',
-      cell: ({ row }) => {
-        const isDeleted = row.getValue('isDeleted') as boolean;
-        return (
-          <Badge
-            className="text-center"
-            variant={isDeleted ? 'destructive' : 'outline'}
-          >
-            {isDeleted ? 'Deleted' : 'Active'}
-          </Badge>
-        );
-      },
-    },
-    {
-      accessorKey: 'images',
-      header: 'Image',
-      cell: ({ row }) => {
-        const images = row.getValue('images') as string[];
-
-        if (!images || images?.length === 0) {
-          return (
-            <div className="text-center text-muted-foreground">No image</div>
-          );
-        }
-
-        return (
-          <div className="flex justify-center">
-            <div className="relative h-10 w-10 overflow-hidden rounded-md">
-              <Image
-                src={images[0] || '/placeholder.svg'}
-                alt={row.getValue('title') as string}
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-        );
-      },
-      enableSorting: false,
-    },
-    {
+      id: 'createdAt',
       accessorKey: 'createdAt',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Created
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      header: 'Created',
       cell: ({ row }) => {
-        const date = new Date(row.getValue('createdAt'));
-        return <div className="text-center">{date.toLocaleDateString()}</div>;
-      },
-    },
-    {
-      accessorKey: 'updatedAt',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Updated
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const date = new Date(row.getValue('updatedAt'));
-        return <div className="text-center">{date.toLocaleDateString()}</div>;
+        const date = new Date(row.original.createdAt);
+        return <div>{date.toLocaleDateString()}</div>;
       },
     },
     {
@@ -398,7 +207,7 @@ export function DataTable({ data }: DataTableProps) {
       enableHiding: false,
       cell: ({ row }) => {
         const project = row.original;
-        const isDeleted = row.getValue('isDeleted') as boolean;
+        const isDeleted = row.original.isDeleted;
 
         return (
           <DropdownMenu>
@@ -413,30 +222,25 @@ export function DataTable({ data }: DataTableProps) {
               <DropdownMenuItem
                 onClick={() => {
                   navigator.clipboard.writeText(project.id);
-                  toast.success('Idea id copied to dashboard');
+                  toast.success('Idea ID copied to clipboard');
                 }}
               >
-                <span className="flex items-center">
-                  <span className="mr-2">Copy ID</span>
-                </span>
+                Copy ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <span className="flex items-center cursor-pointer">
+                <Link href={`/idea/${project?.id}`} className="flex items-center">
                   <Eye className="mr-2 h-4 w-4" />
-                  <Link href={`/idea/${project?.id}`}>View details</Link>
-                </span>
+                  View details
+                </Link>
               </DropdownMenuItem>
-             
               {!isDeleted && (
                 <DropdownMenuItem
                   onClick={() => handleDeleteClick(project.id)}
                   className="text-red-600"
                 >
-                  <span className="flex items-center">
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    <span className="cursor-pointer">Delete idea</span>
-                  </span>
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
@@ -447,7 +251,7 @@ export function DataTable({ data }: DataTableProps) {
   ];
 
   const table = useReactTable({
-     data: data || [],
+    data: data || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -465,7 +269,6 @@ export function DataTable({ data }: DataTableProps) {
     },
   });
 
-  // Status filter options
   const statusOptions = [
     { label: 'Under Review', value: 'UNDER_REVIEW' },
     { label: 'Approved', value: 'APPROVED' },
@@ -473,7 +276,6 @@ export function DataTable({ data }: DataTableProps) {
     { label: 'Draft', value: 'DRAFT' },
   ];
 
-  // Handle status filter change
   const handleStatusFilterChange = (value: string) => {
     setStatusFilter(prev => {
       const newFilter = prev.includes(value)
@@ -488,10 +290,10 @@ export function DataTable({ data }: DataTableProps) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-4">
       <div className="flex flex-col gap-4 py-4 md:flex-row md:items-center">
         <Input
-          placeholder="Filter by title..."
+          placeholder="Search projects..."
           value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
           onChange={event =>
             table.getColumn('title')?.setFilterValue(event.target.value)
@@ -512,18 +314,18 @@ export function DataTable({ data }: DataTableProps) {
             </Badge>
           ))}
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter(column => column.getCanHide())
-              .map(column => {
-                return (
+        <div className="ml-auto flex gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter(column => column.getCanHide())
+                .map(column => (
                   <DropdownMenuCheckboxItem
                     key={column.id}
                     className="capitalize"
@@ -532,28 +334,25 @@ export function DataTable({ data }: DataTableProps) {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+                ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-      <div className="rounded-md border">
+
+      <div className="rounded-lg border bg-card shadow-sm">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted/50">
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map(header => (
+                  <TableHead key={header.id}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -576,23 +375,21 @@ export function DataTable({ data }: DataTableProps) {
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns?.length}
-                  className="h-24 text-center"
-                >
-                  No results.
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No projects found.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows?.length} of{' '}
-          {table.getFilteredRowModel().rows?.length} row(s) selected.
+
+      <div className="flex flex-col items-center gap-4 py-4 sm:flex-row sm:justify-between">
+        <div className="text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
+        <div className="flex gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -611,6 +408,7 @@ export function DataTable({ data }: DataTableProps) {
           </Button>
         </div>
       </div>
+
       <DeleteConfirmationModal
         open={openDeleteModal}
         onCancel={() => setOpenDeleteModal(false)}

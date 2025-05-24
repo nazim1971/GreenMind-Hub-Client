@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import {
@@ -13,14 +14,15 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import {
-  ArrowUpDown,
   ChevronDown,
   MoreHorizontal,
   Eye,
-  Trash2,
   Search,
+  User,
+  Shield,
+  Lock,
+  Unlock,
 } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -54,8 +56,9 @@ import { updateUserStatus } from '../_actions';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avater';
+import Link from 'next/link';
 
-// Define the columns for the data table
+
 export const columns: ColumnDef<TUser>[] = [
   {
     id: 'select',
@@ -80,110 +83,47 @@ export const columns: ColumnDef<TUser>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'id',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const id = row.getValue('id') as string;
-      return (
-        <div className="font-mono text-xs max-w-[120px] truncate" title={id}>
-          {id}
-        </div>
-      );
-    },
-  },
-  {
     accessorKey: 'name',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: 'User',
     cell: ({ row }) => {
-      const name = row.getValue('name') as string;
-      return <div className="font-medium">{name}</div>;
-    },
-  },
-  {
-    accessorKey: 'email',
-    header: ({ column }) => {
+      const user = row.original;
+      const initials = user.name
+        ?.split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .substring(0, 2);
+
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const email = row.getValue('email') as string;
-      return <div className="font-medium">{email}</div>;
-    },
-  },
-  {
-    accessorKey: 'passwordChangedAt',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Password Changed
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const passwordChangedAt = row.getValue('passwordChangedAt') as
-        | string
-        | null;
-      return (
-        <div className="text-center">
-          {passwordChangedAt
-            ? new Date(passwordChangedAt).toLocaleDateString()
-            : 'Never'}
+        <div className="flex items-center gap-3">
+          <Avatar className="h-9 w-9">
+            <AvatarImage src={user.image || ''} alt={user.name} />
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
+          <div>
+            <div className="font-medium">{user.name}</div>
+            <div className="text-sm text-muted-foreground">{user.email}</div>
+          </div>
         </div>
       );
     },
   },
   {
     accessorKey: 'role',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Role
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: 'Role',
     cell: ({ row }) => {
-      const role = row.getValue('role') as string;
+      const role = row.original.role;
       return (
         <Badge
           variant={role === 'ADMIN' ? 'default' : 'outline'}
-          className="capitalize"
+          className="flex items-center gap-1"
         >
-          {role.toLowerCase()}
+          {role === 'ADMIN' ? (
+            <Shield className="h-3 w-3" />
+          ) : (
+            <User className="h-3 w-3" />
+          )}
+          <span className="capitalize">{role.toLowerCase()}</span>
         </Badge>
       );
     },
@@ -192,100 +132,58 @@ export const columns: ColumnDef<TUser>[] = [
     },
   },
   {
-    accessorKey: 'image',
-    header: 'Avatar',
-    cell: ({ row }) => {
-      const user = row.original;
-      const name = user.name || 'User';
-      const initials = name
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .toUpperCase()
-        .substring(0, 2);
-
-      return (
-        <div className="flex justify-center">
-          <Avatar>
-            <AvatarImage src={user.image || ''} alt={name} />
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
-        </div>
-      );
-    },
-    enableSorting: false,
-  },
-  {
     accessorKey: 'isActive',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: 'Status',
     cell: ({ row }) => {
-      const isActive = row.getValue('isActive') as boolean;
+      const isActive = row.original.isActive;
       return (
         <Badge
           variant={isActive ? 'default' : 'destructive'}
-          className="capitalize"
+          className="flex items-center gap-1"
         >
-          {isActive ? 'Active' : 'Inactive'}
+          {isActive ? (
+            <Unlock className="h-3 w-3" />
+          ) : (
+            <Lock className="h-3 w-3" />
+          )}
+          <span>{isActive ? 'Active' : 'Inactive'}</span>
         </Badge>
       );
     },
   },
   {
-    id: 'ideasCount',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Ideas
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    accessorKey: 'ideas',
+    header: 'Ideas',
     cell: ({ row }) => {
-      const user = row.original;
-      const ideasCount = user.ideas?.length || 0;
-      return <div className="text-center font-medium">{ideasCount}</div>;
-    },
-    sortingFn: (rowA, rowB) => {
-      const countA = rowA.original.ideas?.length || 0;
-      const countB = rowB.original.ideas?.length || 0;
-      return countA - countB;
+      const ideasCount = row.original.ideas?.length || 0;
+      return (
+        <div className="text-center font-medium">
+          <Badge variant="outline">{ideasCount}</Badge>
+        </div>
+      );
     },
   },
   {
-    id: 'paymentsCount',
-    header: ({ column }) => {
+    accessorKey: 'payments',
+    header: 'Payments',
+    cell: ({ row }) => {
+      const paymentsCount = row.original.payments?.length || 0;
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Payments
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="text-center font-medium">
+          <Badge variant="outline">{paymentsCount}</Badge>
+        </div>
       );
     },
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Joined',
     cell: ({ row }) => {
-      const user = row.original;
-      const paymentsCount = user.payments?.length || 0;
-      return <div className="text-center font-medium">{paymentsCount}</div>;
-    },
-    sortingFn: (rowA, rowB) => {
-      const countA = rowA.original.payments?.length || 0;
-      const countB = rowB.original.payments?.length || 0;
-      return countA - countB;
+      return (
+        <div className="text-sm text-muted-foreground">
+          {new Date(row.original.createdAt).toLocaleString()}
+        </div>
+      );
     },
   },
   {
@@ -293,6 +191,17 @@ export const columns: ColumnDef<TUser>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const user = row.original;
+
+      const handleStatusUpdate = async () => {
+        try {
+          await updateUserStatus(user.id, !user.isActive);
+          toast.success(
+            `User ${!user.isActive ? 'activated' : 'deactivated'} successfully`
+          );
+        } catch (error) {
+          toast.error('Failed to update user status');
+        }
+      };
 
       return (
         <DropdownMenu>
@@ -302,39 +211,38 @@ export const columns: ColumnDef<TUser>[] = [
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="w-40">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => {
                 navigator.clipboard.writeText(user.id);
-                toast.success('UserId copied to dashboard');
+                toast.success('User ID copied to clipboard');
               }}
             >
-              <span className="flex items-center">
-                <span className="mr-2 cursor-pointer">Copy ID</span>
-              </span>
+              Copy ID
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/users/${user.id}`} className="flex items-center">
+                <Eye className="mr-2 h-4 w-4" />
+                View
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <span className="flex items-center">
-                <Eye className="mr-2 h-4 w-4" />
-                <span className="cursor-pointer">View profile</span>
-              </span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600">
-              <span className="flex items-center">
-                <Trash2 className="mr-2 h-4 w-4" />
-                <span
-                  className={
-                    user.isActive
-                      ? 'text-red-600 cursor-pointer'
-                      : 'text-green-600 cursor-pointer'
-                  }
-                  onClick={() => updateUserStatus(user.id, !user.isActive)}
-                >
-                  {user.isActive ? 'Deactivate' : 'Activate'}
-                </span>
-              </span>
+            <DropdownMenuItem
+              onClick={handleStatusUpdate}
+              className={user.isActive ? 'text-red-600' : 'text-green-600'}
+            >
+              {user.isActive ? (
+                <>
+                  <Lock className="mr-2 h-4 w-4" />
+                  Deactivate
+                </>
+              ) : (
+                <>
+                  <Unlock className="mr-2 h-4 w-4" />
+                  Activate
+                </>
+              )}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -353,7 +261,7 @@ export function UserDataTable({ data }: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [roleFilter, setRoleFilter] = useState<string[]>([]);
-  const [searchField, setSearchField] = useState<string>('name');
+  const [searchField, setSearchField] = useState<'name' | 'email'>('name');
 
   const table = useReactTable({
     data: data || [],
@@ -374,69 +282,57 @@ export function UserDataTable({ data }: DataTableProps) {
     },
   });
 
-  // Role filter options
   const roleOptions = [
     { label: 'Member', value: 'MEMBER' },
     { label: 'Admin', value: 'ADMIN' },
   ];
 
-  // Handle role filter change
   const handleRoleFilterChange = (value: string) => {
     setRoleFilter(prev => {
       const newFilter = prev.includes(value)
         ? prev.filter(item => item !== value)
         : [...prev, value];
-
-      table
-        .getColumn('role')
-        ?.setFilterValue(newFilter.length ? newFilter : undefined);
+      table.getColumn('role')?.setFilterValue(newFilter.length ? newFilter : undefined);
       return newFilter;
     });
   };
 
-  // Handle search field change
   const handleSearchChange = (value: string) => {
     table.getColumn(searchField)?.setFilterValue(value);
   };
 
-  // Handle search field selection change
-  const handleSearchFieldChange = (value: string) => {
-    // Clear previous filter
+  const handleSearchFieldChange = (value: 'name' | 'email') => {
     table.getColumn(searchField)?.setFilterValue('');
     setSearchField(value);
   };
 
   return (
-    <div className="w-full">
-      <div className="flex flex-col gap-4 py-4">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center">
-          <div className="flex flex-1 items-center space-x-2">
-            <Select value={searchField} onValueChange={handleSearchFieldChange}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Search field" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="name">Name</SelectItem>
-                <SelectItem value="email">Email</SelectItem>
-                <SelectItem value="id">ID</SelectItem>
-              </SelectContent>
-            </Select>
-            <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder={`Search by ${searchField}...`}
-                value={
-                  (table.getColumn(searchField)?.getFilterValue() as string) ??
-                  ''
-                }
-                onChange={event => handleSearchChange(event.target.value)}
-                className="pl-8"
-              />
-            </div>
+    <div className="w-full space-y-4">
+      <div className="flex flex-col gap-4 py-4 md:flex-row md:items-center">
+        <div className="flex flex-1 items-center gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder={`Search by ${searchField}...`}
+              value={(table.getColumn(searchField)?.getFilterValue() as string) ?? ''}
+              onChange={e => handleSearchChange(e.target.value)}
+              className="pl-9"
+            />
           </div>
+          <Select value={searchField} onValueChange={handleSearchFieldChange}>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Search by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="name">Name</SelectItem>
+              <SelectItem value="email">Email</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
+              <Button variant="outline">
                 Columns <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -444,60 +340,51 @@ export function UserDataTable({ data }: DataTableProps) {
               {table
                 .getAllColumns()
                 .filter(column => column.getCanHide())
-                .map(column => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={value =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
+                .map(column => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    checked={column.getIsVisible()}
+                    onCheckedChange={value => column.toggleVisibility(!!value)}
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {roleOptions.map(option => (
-            <Badge
-              key={option.value}
-              variant={
-                roleFilter.includes(option.value) ? 'default' : 'outline'
-              }
-              className="cursor-pointer"
-              onClick={() => handleRoleFilterChange(option.value)}
-            >
-              {option.label}
-            </Badge>
-          ))}
-        </div>
       </div>
+
+      <div className="flex flex-wrap gap-2">
+        {roleOptions.map(option => (
+          <Button
+            key={option.value}
+            variant={roleFilter.includes(option.value) ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => handleRoleFilterChange(option.value)}
+          >
+            {option.label}
+          </Button>
+        ))}
+      </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map(header => (
+                  <TableHead key={header.id}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table?.getRowModel()?.rows?.length ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
@@ -515,23 +402,21 @@ export function UserDataTable({ data }: DataTableProps) {
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns?.length}
-                  className="h-24 text-center"
-                >
-                  No results.
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No users found.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows?.length} of{' '}
-          {table.getFilteredRowModel().rows?.length} row(s) selected.
+
+      <div className="flex flex-col items-center gap-4 py-4 sm:flex-row sm:justify-between">
+        <div className="text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
+        <div className="flex gap-2">
           <Button
             variant="outline"
             size="sm"

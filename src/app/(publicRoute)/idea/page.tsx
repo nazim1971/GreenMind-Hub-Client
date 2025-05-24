@@ -1,7 +1,7 @@
 
-import AllIdeas from '@/components/Idea/AllIdea';
 import Pagination from '@/components/Pagination';
 import { getAllIdeas } from '@/services/Idea';
+import AllIdeas from './_components/AllIdea';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 

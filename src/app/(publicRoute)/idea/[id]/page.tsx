@@ -1,6 +1,6 @@
 
-import IdeaDetail from "@/components/Idea/ideaDetails";
 import { getSingleIdeaDetails } from "@/services/Idea";
+import IdeaDetail from "./_components";
 
 const BlogDetailsPage = async ({
   params,

@@ -13,14 +13,16 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import {
-  ArrowUpDown,
   ChevronDown,
   MoreHorizontal,
   Eye,
   FileText,
   RefreshCw,
   Ban,
-  Download,
+  CreditCard,
+  Calendar,
+  User,
+  Hash,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -81,24 +83,16 @@ export const columns: ColumnDef<ITransaction>[] = [
   },
   {
     accessorKey: 'transactionId',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Transaction ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: () => (
+      <div className="flex items-center">
+        <Hash className="mr-2 h-4 w-4" />
+        Transaction ID
+      </div>
+    ),
     cell: ({ row }) => {
       const transactionId = row.getValue('transactionId') as string;
       return (
-        <div
-          className="font-mono text-xs max-w-[120px] truncate"
-          title={transactionId}
-        >
+        <div className="font-medium text-sm truncate max-w-[150px]" title={transactionId}>
           {transactionId}
         </div>
       );
@@ -106,77 +100,41 @@ export const columns: ColumnDef<ITransaction>[] = [
   },
   {
     accessorKey: 'userEmail',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          User Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: () => (
+      <div className="flex items-center">
+        <User className="mr-2 h-4 w-4" />
+        Customer
+      </div>
+    ),
     cell: ({ row }) => {
       const email = row.getValue('userEmail') as string;
       return (
-        <div className="font-medium max-w-[180px] truncate" title={email}>
+        <div className="font-medium text-sm truncate max-w-[180px]" title={email}>
           {email}
         </div>
       );
     },
   },
   {
-    accessorKey: 'ideaId',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Idea ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const ideaId = row.getValue('ideaId') as string;
-      return (
-        <div
-          className="font-mono text-xs max-w-[120px] truncate"
-          title={ideaId}
-        >
-          {ideaId}
-        </div>
-      );
-    },
-  },
-  {
     accessorKey: 'amount',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className="text-right"
-        >
-          Amount
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: () => <div className="text-right">Amount</div>,
     cell: ({ row }) => {
       const amount = Number.parseFloat(row.getValue('amount'));
-      const currency = row.original.gatewayResponse?.currency;
+      const currency = row.original.gatewayResponse?.currency || 'USD';
 
-      // Format the amount with the currency
       const formatted = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: currency || 'USD',
+        currency,
         minimumFractionDigits: 2,
       }).format(amount);
 
-      return <div className="text-center font-medium">{formatted}</div>;
+      return (
+        <div className="text-right font-medium">
+          <Badge variant="outline" className="font-normal">
+            {formatted}
+          </Badge>
+        </div>
+      );
     },
   },
   {
@@ -185,138 +143,60 @@ export const columns: ColumnDef<ITransaction>[] = [
     cell: ({ row }) => {
       const status = row.getValue('status') as string;
 
-      const statusColorMap: Record<string, string> = {
-        Paid: 'bg-green-100 text-green-800 hover:bg-green-100/80',
-        Pending: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100/80',
-        Failed: 'bg-red-100 text-red-800 hover:bg-red-100/80',
+      const statusVariantMap: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+        Paid: 'default',
+        Pending: 'secondary',
+        Failed: 'destructive',
       };
 
       return (
-        <Badge
-          className={`${
-            statusColorMap[status] || 'bg-gray-100 text-gray-800'
-          } font-medium`}
-          variant="outline"
-        >
+        <Badge variant={statusVariantMap[status] || 'outline'}>
           {status}
         </Badge>
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return Array.isArray(value) ? value.includes(row.getValue(id)) : false;
     },
   },
   {
     accessorKey: 'gatewayResponse.bank_gw',
-    header: 'Payment Method',
+    header: () => (
+      <div className="flex items-center">
+        <CreditCard className="mr-2 h-4 w-4" />
+        Payment Method
+      </div>
+    ),
     cell: ({ row }) => {
       const paymentMethod = row.original.gatewayResponse?.bank_gw;
-      const cardType = row.original.gatewayResponse?.card_type;
-
-      return (
-        <div
-          className="max-w-[120px] truncate"
-          title={`${paymentMethod} (${cardType})`}
-        >
-          {paymentMethod}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'gatewayResponse.card_brand',
-    header: 'Card Brand',
-    cell: ({ row }) => {
       const cardBrand = row.original.gatewayResponse?.card_brand;
-
+      
       return (
-        <div className="max-w-[120px] truncate" title={cardBrand}>
-          {cardBrand}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'gatewayResponse.risk_title',
-    header: 'Risk Level',
-    cell: ({ row }) => {
-      const riskTitle = row.original.gatewayResponse?.risk_title;
-      const riskLevel = row.original.gatewayResponse?.risk_level;
-
-      const riskColorMap: Record<string, string> = {
-        Safe: 'bg-green-100 text-green-800',
-        Low: 'bg-blue-100 text-blue-800',
-        Medium: 'bg-yellow-100 text-yellow-800',
-        High: 'bg-red-100 text-red-800',
-      };
-
-      return (
-        <Badge
-          className={`${
-            riskColorMap[riskTitle] || 'bg-gray-100 text-gray-800'
-          } font-medium`}
-          variant="outline"
-        >
-          {riskTitle} ({riskLevel})
-        </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: 'gatewayResponse.discount_amount',
-    header: 'Discount',
-    cell: ({ row }) => {
-      const discountAmount = Number(
-        row.original.gatewayResponse?.discount_amount
-      );
-      const discountPercentage =
-        row.original.gatewayResponse?.discount_percentage;
-      const currency = row.original.gatewayResponse?.currency;
-
-      if (!discountAmount || discountAmount <= 0)
-        return <div className="text-center">-</div>;
-
-      // Format the discount amount with the currency
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currency || 'USD',
-        minimumFractionDigits: 2,
-      }).format(discountAmount);
-
-      return (
-        <div
-          className="text-center"
-          title={row.original.gatewayResponse?.discount_remarks || ''}
-        >
-          {formatted} {discountPercentage ? `(${discountPercentage}%)` : ''}
+        <div className="flex items-center">
+          <span className="capitalize">{cardBrand || paymentMethod}</span>
         </div>
       );
     },
   },
   {
     accessorKey: 'createdAt',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: () => (
+      <div className="flex items-center">
+        <Calendar className="mr-2 h-4 w-4" />
+        Date
+      </div>
+    ),
     cell: ({ row }) => {
       const date = new Date(row.getValue('createdAt'));
-      return <div className="text-center">{date.toLocaleDateString()}</div>;
-    },
-  },
-  {
-    accessorKey: 'gatewayResponse.tran_date',
-    header: 'Gateway Date',
-    cell: ({ row }) => {
-      const tranDate = row.original.gatewayResponse?.tran_date;
-      return <div>{tranDate}</div>;
+      return (
+        <div className="text-sm">
+          {date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}
+        </div>
+      );
     },
   },
   {
@@ -334,216 +214,119 @@ export const columns: ColumnDef<ITransaction>[] = [
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => {
-                  navigator.clipboard.writeText(transaction?.transactionId);
-                  toast.success('Transaction id copied to dashboard');
+                  navigator.clipboard.writeText(transaction.transactionId);
+                  toast.success('Transaction ID copied to clipboard');
                 }}
               >
-                <span className="flex items-center">
-                  <span className="mr-2 cursor-pointer">
-                    Copy Transaction ID
-                  </span>
-                </span>
+                <FileText className="mr-2 h-4 w-4" />
+                Copy ID
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              
               <DialogTrigger asChild>
                 <DropdownMenuItem>
-                  <span className="flex items-center">
-                    <Eye className="mr-2 h-4 w-4" />
-                    <span className="cursor-pointer">View details</span>
-                  </span>
+                  <Eye className="mr-2 h-4 w-4" />
+                  View Details
                 </DropdownMenuItem>
               </DialogTrigger>
-              <DropdownMenuItem>
-                <span className="flex items-center">
-                  <FileText className="mr-2 h-4 w-4" />
-                  <span className="cursor-pointer">Generate invoice</span>
-                </span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <span className="flex items-center">
-                  <Download className="mr-2 h-4 w-4" />
-                  <span className="cursor-pointer">Download receipt</span>
-                </span>
-              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
-              {transaction?.status === 'Paid' && (
+
+              {transaction.status === 'Paid' && (
                 <DropdownMenuItem>
-                  <span className="flex items-center">
-                    <RefreshCw className="mr-2 h-4 w-4" />
-                    <span className="cursor-pointer">Process refund</span>
-                  </span>
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Process Refund
                 </DropdownMenuItem>
               )}
-              {transaction?.status === 'Pending' && (
+
+              {transaction.status === 'Pending' && (
                 <DropdownMenuItem className="text-red-600">
-                  <span className="flex items-center">
-                    <Ban className="mr-2 h-4 w-4" />
-                    <span className="cursor-pointer">Cancel transaction</span>
-                  </span>
+                  <Ban className="mr-2 h-4 w-4" />
+                  Cancel
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogContent className="sm:max-w-[625px]">
             <DialogHeader>
               <DialogTitle>Transaction Details</DialogTitle>
               <DialogDescription>
-                Complete information about transaction{' '}
-                {transaction?.transactionId}
+                Transaction ID: {transaction.transactionId}
               </DialogDescription>
             </DialogHeader>
 
-            <div className="grid gap-6 py-4">
+            <div className="grid gap-4 py-4">
               <Card>
-                <CardHeader>
-                  <CardTitle>Basic Information</CardTitle>
+                <CardHeader className="p-4 pb-2">
+                  <CardTitle className="text-lg">Summary</CardTitle>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm font-medium">Transaction ID</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.transactionId}
+                <CardContent className="p-4 pt-0 grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Customer</p>
+                    <p className="text-sm">{transaction.userEmail}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Date</p>
+                    <p className="text-sm">
+                      {new Date(transaction.createdAt).toLocaleString()}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">User Email</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.userEmail}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Amount</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.amount}{' '}
-                      {transaction?.gatewayResponse?.currency}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Status</p>
-                    <Badge
-                      variant={
-                        transaction?.status === 'Paid'
-                          ? 'outline'
-                          : transaction?.status === 'Pending'
-                          ? 'default'
-                          : 'destructive'
-                      }
-                      className={
-                        transaction?.status === 'Paid'
-                          ? 'bg-green-500'
-                          : transaction?.status === 'Pending'
-                          ? 'bg-yellow-500'
-                          : ''
-                      }
-                    >
-                      {transaction?.status}
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Status</p>
+                    <Badge variant={
+                      transaction.status === 'Paid' ? 'default' :
+                      transaction.status === 'Pending' ? 'secondary' : 'destructive'
+                    }>
+                      {transaction.status}
                     </Badge>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">Date</p>
-                    <p className="text-sm text-muted-foreground">
-                      {new Date(transaction?.createdAt).toLocaleString()}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Idea ID</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.ideaId}
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Amount</p>
+                    <p className="text-sm font-medium">
+                      {new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: transaction.gatewayResponse?.currency || 'USD',
+                      }).format(Number(transaction.amount))}
                     </p>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardHeader>
-                  <CardTitle>Gateway Response</CardTitle>
+                <CardHeader className="p-4 pb-2">
+                  <CardTitle className="text-lg">Payment Details</CardTitle>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm font-medium">Gateway Status</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.status}
+                <CardContent className="p-4 pt-0 grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Method</p>
+                    <p className="text-sm capitalize">
+                      {transaction.gatewayResponse?.card_brand || transaction.gatewayResponse?.bank_gw}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">Payment Method</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.bank_gw}
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Card Type</p>
+                    <p className="text-sm capitalize">
+                      {transaction.gatewayResponse?.card_type || '-'}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">Card Type</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.card_type}
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Transaction Date</p>
+                    <p className="text-sm">
+                      {transaction.gatewayResponse?.tran_date || '-'}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">Card Brand</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.card_brand}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Card Issuer</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.card_issuer}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Transaction Date</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.tran_date}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Store Amount</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.store_amount}{' '}
-                      {transaction?.gatewayResponse?.currency}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Discount</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.discount_percentage}% (
-                      {transaction?.gatewayResponse?.discount_amount}{' '}
-                      {transaction?.gatewayResponse?.currency})
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Risk Level</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.risk_title} (
-                      {transaction?.gatewayResponse?.risk_level})
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Issuer Country</p>
-                    <p className="text-sm text-muted-foreground">
-                      {transaction?.gatewayResponse?.card_issuer_country} (
-                      {transaction?.gatewayResponse?.card_issuer_country_code})
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Risk Level</p>
+                    <p className="text-sm">
+                      {transaction.gatewayResponse?.risk_title || '-'}
                     </p>
                   </div>
                 </CardContent>
               </Card>
-
-              {transaction?.gatewayResponse?.discount_remarks && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Discount Information</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm">
-                      {transaction?.gatewayResponse?.discount_remarks}
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
             </div>
           </DialogContent>
         </Dialog>
@@ -561,10 +344,9 @@ export function TransactionDataTable({ data }: TransactionDataTableProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [statusFilter, setStatusFilter] = useState<string[]>([]);
 
   const table = useReactTable({
-    data: data,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -582,102 +364,110 @@ export function TransactionDataTable({ data }: TransactionDataTableProps) {
     },
   });
 
-  // Status filter options
-  const statusOptions = [
-    { label: 'Paid', value: 'Paid' },
-    { label: 'Pending', value: 'Pending' },
-    { label: 'Failed', value: 'Failed' },
-  ];
+  const isStatusFiltered = (status: string) => {
+    const filterValue = table.getColumn('status')?.getFilterValue();
+    return Array.isArray(filterValue) ? filterValue.includes(status) : false;
+  };
 
-  // Handle status filter change
-  const handleStatusFilterChange = (value: string) => {
-    setStatusFilter(prev => {
-      const newFilter = prev.includes(value)
-        ? prev.filter(item => item !== value)
-        : [...prev, value];
-
-      table
-        .getColumn('status')
-        ?.setFilterValue(newFilter?.length ? newFilter : undefined);
-      return newFilter;
-    });
+  const toggleStatusFilter = (status: string) => {
+    const currentFilter = (table.getColumn('status')?.getFilterValue() as string[] | undefined) || [];
+    const newFilter = currentFilter.includes(status)
+      ? currentFilter.filter(f => f !== status)
+      : [...currentFilter, status];
+    table.getColumn('status')?.setFilterValue(newFilter.length ? newFilter : undefined);
   };
 
   return (
-    <div className="w-full">
-      <div className="flex flex-col gap-4 py-4 md:flex-row md:items-center">
-        <Input
-          placeholder="Filter by transaction ID..."
-          value={
-            (table.getColumn('transactionId')?.getFilterValue() as string) ?? ''
-          }
-          onChange={event =>
-            table.getColumn('transactionId')?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <div className="flex flex-wrap gap-2">
-          {statusOptions.map(option => (
-            <Badge
-              key={option.value}
-              variant={
-                statusFilter.includes(option.value) ? 'default' : 'outline'
-              }
-              className="cursor-pointer"
-              onClick={() => handleStatusFilterChange(option.value)}
-            >
-              {option.label}
-            </Badge>
-          ))}
+    <div className="w-full space-y-4">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <Input
+            placeholder="Filter transactions..."
+            value={
+              (table.getColumn('transactionId')?.getFilterValue() as string) ?? ''
+            }
+            onChange={event =>
+              table.getColumn('transactionId')?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Status
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuCheckboxItem
+                checked={isStatusFiltered('Paid')}
+                onCheckedChange={() => toggleStatusFilter('Paid')}
+              >
+                Paid
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={isStatusFiltered('Pending')}
+                onCheckedChange={() => toggleStatusFilter('Pending')}
+              >
+                Pending
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={isStatusFiltered('Failed')}
+                onCheckedChange={() => toggleStatusFilter('Failed')}
+              >
+                Failed
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
+              Columns
+              <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
               .filter(column => column.getCanHide())
-              .map(column => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={value => column.toggleVisibility(!!value)}
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+              .map(column => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={value => column.toggleVisibility(!!value)}
+                >
+                  {column.id.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                </DropdownMenuCheckboxItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map(header => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows?.map(row => (
+              table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
@@ -695,22 +485,24 @@ export function TransactionDataTable({ data }: TransactionDataTableProps) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns?.length}
+                  colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No transactions found.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows?.length} of{' '}
-          {table.getFilteredRowModel().rows?.length} row(s) selected.
+
+      <div className="flex items-center justify-between px-2">
+        <div className="text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
+        
+        <div className="flex items-center space-x-2">
           <Button
             variant="outline"
             size="sm"
