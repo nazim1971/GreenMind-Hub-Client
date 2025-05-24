@@ -10,11 +10,6 @@ import { getAllIdeasByAdmin } from '@/app/(privateRoute)/admin/all-ideas/_action
 import { LineChart, PieChart, Line, Pie, Cell, ResponsiveContainer, Tooltip, Legend, YAxis, CartesianGrid, XAxis } from 'recharts';
 import { IdeaStatus } from '@/types/idea';
 
-interface Comment {
-  id: string;
-  replies?: Comment[];
-}
-
 interface Activity {
   id: string;
   type: 'idea' | 'user';
@@ -27,7 +22,6 @@ interface DashboardStats {
   userCount: number;
   paymentCount: number;
   ideaCount: number;
-  commentCount: number;
   userIdeas: number;
   userPayments: number;
   paymentAmount: number;
@@ -43,28 +37,6 @@ interface DashboardStats {
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-export function countAllComments(comments: Comment[] = []): number {
-  let count = 0;
-
-  const countReplies = (replies: Comment[] = []) => {
-    replies.forEach((reply) => {
-      count++;
-      if (reply.replies?.length) {
-        countReplies(reply.replies);
-      }
-    });
-  };
-
-  comments.forEach((comment) => {
-    count++;
-    if (comment.replies?.length) {
-      countReplies(comment.replies);
-    }
-  });
-
-  return count;
-}
 
 const StatCard = ({ 
   icon, 
@@ -114,7 +86,6 @@ const CommonDashboard = () => {
     userCount: 0,
     paymentCount: 0,
     ideaCount: 0,
-    commentCount: 0,
     userIdeas: 0,
     userPayments: 0,
     paymentAmount: 0,
@@ -136,14 +107,11 @@ const CommonDashboard = () => {
         if (user?.role === 'ADMIN') {
           const [usersResponse, ideasResponse] = await Promise.all([
             getAllUsers(),
-            getAllIdeasByAdmin()
+            getAllIdeasByAdmin(),
           ]);
-
+          
           const users = usersResponse.data || [];
           const ideas = ideasResponse.data || [];
-
-          const commentCount = ideas.reduce((sum: number, idea: { comments: Comment[] | undefined; }) => 
-            sum + countAllComments(idea.comments), 0);
 
           // Count ideas by status
           const statusCounts = {
@@ -183,7 +151,6 @@ const CommonDashboard = () => {
             userCount: users.length,
             paymentCount: users.reduce((sum: any, u: { payments: string | any[]; }) => sum + (u.payments?.length || 0), 0),
             ideaCount: ideas.length,
-            commentCount,
             userIdeas: 0,
             userPayments: 0,
             paymentAmount: 0,
@@ -229,7 +196,6 @@ const CommonDashboard = () => {
             userCount: 0,
             paymentCount: 0,
             ideaCount: 0,
-            commentCount: 0,
             userIdeas: user?.ideas?.length || 0,
             userPayments: user?.payments?.length || 0,
             paymentAmount: user?.payments?.reduce((sum, p) => sum + (p.amount || 0), 0) || 0,
@@ -244,7 +210,7 @@ const CommonDashboard = () => {
             ideaDistribution: [
               { name: 'Your Ideas', value: user?.ideas?.length || 0 },
               { name: 'Supported', value: user?.payments?.length || 0 },
-              { name: 'Comments', value: 15 }, // Example value
+              { name: 'Engagement', value: 15 },
             ],
             ideaStatusCounts: {
               DRAFT: user?.ideas?.filter((i: any) => i.status === 'DRAFT').length || 0,
@@ -324,8 +290,8 @@ const CommonDashboard = () => {
             />
             <StatCard 
               icon={<MessageSquare className="w-5 h-5" />}
-              title="Comments"
-              value={stats.commentCount}
+              title="Engagement"
+              value={87}
               change="+18%"
               color="emerald"
             />
@@ -401,111 +367,110 @@ const CommonDashboard = () => {
       )}
 
       {/* Charts Section */}
-      {/* Charts Section */}
-<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-  <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-    <div className="flex items-center justify-between mb-6">
-      <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-        Platform Growth
-      </h2>
-      <select className="bg-gray-50 dark:bg-gray-700 text-sm rounded-lg px-3 py-1">
-        <option>Last 6 Months</option>
-        <option>Last Year</option>
-      </select>
-    </div>
-    <div className="h-80">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={stats.growthData}>
-          <Line 
-            type="monotone" 
-            dataKey="value" 
-            stroke="#10B981" 
-            strokeWidth={2}
-            dot={{ r: 4 }}
-            activeDot={{ r: 6 }}
-          />
-          <Tooltip 
-            contentStyle={{
-              background: 'white',
-              borderRadius: '0.5rem',
-              borderColor: '#e5e7eb',
-              boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
-              padding: '0.5rem'
-            }}
-            formatter={(value: number) => [`Value: ${value}`, '']}
-            labelFormatter={(label) => `Month: ${label}`}
-          />
-          <Legend />
-          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-          <XAxis 
-            dataKey="month" 
-            tick={{ fill: '#6b7280' }}
-            tickMargin={10}
-          />
-          <YAxis 
-            tick={{ fill: '#6b7280' }}
-            tickMargin={10}
-            tickFormatter={(value) => `${value}`}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+              Platform Growth
+            </h2>
+            <select className="bg-gray-50 dark:bg-gray-700 text-sm rounded-lg px-3 py-1">
+              <option>Last 6 Months</option>
+              <option>Last Year</option>
+            </select>
+          </div>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={stats.growthData}>
+                <Line 
+                  type="monotone" 
+                  dataKey="value" 
+                  stroke="#10B981" 
+                  strokeWidth={2}
+                  dot={{ r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+                <Tooltip 
+                  contentStyle={{
+                    background: 'white',
+                    borderRadius: '0.5rem',
+                    borderColor: '#e5e7eb',
+                    boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
+                    padding: '0.5rem'
+                  }}
+                  formatter={(value: number) => [`Value: ${value}`, '']}
+                  labelFormatter={(label) => `Month: ${label}`}
+                />
+                <Legend />
+                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                <XAxis 
+                  dataKey="month" 
+                  tick={{ fill: '#6b7280' }}
+                  tickMargin={10}
+                />
+                <YAxis 
+                  tick={{ fill: '#6b7280' }}
+                  tickMargin={10}
+                  tickFormatter={(value) => `${value}`}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
-  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-    <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">
-      {user?.role === 'ADMIN' ? 'Idea Distribution' : 'Your Contributions'}
-    </h2>
-    <div className="h-80">
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            data={stats.ideaDistribution}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            outerRadius={70}
-            innerRadius={40}
-            paddingAngle={2}
-            fill="#8884d8"
-            dataKey="value"
-            label={({ name, value }) => `${name}: ${value}`}
-          >
-            {stats.ideaDistribution.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip 
-            formatter={(value: number, name: string) => [
-              value,
-              `${name}: ${((value / stats.ideaDistribution.reduce((sum, item) => sum + item.value, 0)) * 100).toFixed(1)}%`
-            ]}
-            contentStyle={{
-              background: 'white',
-              borderRadius: '0.5rem',
-              borderColor: '#e5e7eb',
-              boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
-              padding: '0.5rem'
-            }}
-          />
-          <Legend 
-            layout="vertical"
-            verticalAlign="middle"
-            align="right"
-            wrapperStyle={{
-              paddingLeft: '20px'
-            }}
-            formatter={(value) => (
-              <span className="text-gray-600 dark:text-gray-300 text-sm">
-                {value}
-              </span>
-            )}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
-  </div>
-</div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">
+            {user?.role === 'ADMIN' ? 'Idea Distribution' : 'Your Contributions'}
+          </h2>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={stats.ideaDistribution}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={70}
+                  innerRadius={40}
+                  paddingAngle={2}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, value }) => `${name}: ${value}`}
+                >
+                  {stats.ideaDistribution.map((_, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  formatter={(value: number, name: string) => [
+                    value,
+                    `${name}: ${((value / stats.ideaDistribution.reduce((sum, item) => sum + item.value, 0)) * 100).toFixed(1)}%`
+                  ]}
+                  contentStyle={{
+                    background: 'white',
+                    borderRadius: '0.5rem',
+                    borderColor: '#e5e7eb',
+                    boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
+                    padding: '0.5rem'
+                  }}
+                />
+                <Legend 
+                  layout="vertical"
+                  verticalAlign="middle"
+                  align="right"
+                  wrapperStyle={{
+                    paddingLeft: '20px'
+                  }}
+                  formatter={(value) => (
+                    <span className="text-gray-600 dark:text-gray-300 text-sm">
+                      {value}
+                    </span>
+                  )}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
 
       {/* Recent Activity */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">

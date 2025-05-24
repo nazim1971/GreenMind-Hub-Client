@@ -97,7 +97,7 @@ export function AppSidebar({
   }
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar className='relative ' collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
