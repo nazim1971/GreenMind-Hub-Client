@@ -31,8 +31,7 @@ export default async function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className="dark"
-      style={{ colorScheme: "dark" }}
+      
     >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -46,21 +45,18 @@ export default async function RootLayout({
           <Provider>
             <CartProvider>
               <Toaster
-            richColors
-            //   position="top-center"
-            toastOptions={{
-              style: {
-                // background: "#2ecc71",
-                border: "none",
-              },
-            }}
-          />
-            <div className=" pt-20 ">
-              {children}
-            </div>
+                richColors
+                //   position="top-center"
+                toastOptions={{
+                  style: {
+                    // background: "#2ecc71",
+                    border: "none",
+                  },
+                }}
+              />
+              <div className=" pt-20 ">{children}</div>
             </CartProvider>
           </Provider>
-          
         </ThemeProvider>
       </body>
     </html>

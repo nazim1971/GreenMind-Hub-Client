@@ -177,10 +177,9 @@ const isInCart = cart.some(item => item.ideaId === idea.id);
 
             <div className="flex flex-col gap-2">
 {idea.isPaid && (
-  <Button
-    variant={isInCart ? "outline" : "secondary"}
-    size="lg"
-    className="w-full"
+  <button
+   
+    className="w-full bg-[#14b8a520] hover:bg-[#14B8A6] p-2 rounded-md"
     onClick={() => {
       if (isInCart) {
         removeFromCart(idea.id);
@@ -198,7 +197,7 @@ const isInCart = cart.some(item => item.ideaId === idea.id);
     }}
   >
     {isInCart ? 'Remove from Cart' : 'Add to Cart'}
-  </Button>
+  </button>
 )}
               <Button
                 onClick={() => {
