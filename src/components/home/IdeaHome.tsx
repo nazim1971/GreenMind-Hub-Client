@@ -16,7 +16,7 @@ const IdeaHome = async () => {
           problems from solar panels to urban gardens and everything in between.
         </p>
       </section>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 my-5 gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 my-5 gap-10">
         {ideas?.slice(0, 8).map((idea: any, idx: number) => (
           <IdeaHomeCards key={idx} idea={idea}></IdeaHomeCards>
         ))}

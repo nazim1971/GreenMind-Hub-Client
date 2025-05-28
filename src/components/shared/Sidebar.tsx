@@ -30,6 +30,7 @@ const Sidebar = ({ isOpen, closeSidebar }: SidebarProps) => {
           <FiX className="text-2xl" />
         </button>
       </div>
+    
       <div className="flex flex-col items-start gap-5 p-5">
         <Link
           href="/"

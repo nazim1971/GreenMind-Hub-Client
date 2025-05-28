@@ -12,7 +12,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="w-full container mx-auto flex -mt-20 px-5 sm:px-0">
+    <div className="w-full container mx-auto flex -mt-20 ">
       <SidebarProvider>
         <AppSidebar className="sticky top-0 h-screen  " />
         <SidebarInset className="flex-1 container overflow-x-hidden">
@@ -21,7 +21,7 @@ export default function DashboardLayout({
               <SidebarTrigger className="-ml-1" />
             </div>
           </header>
-          <div className="p-4 dark:bg-[#14b8a51d]  pt-0 min-h-[calc(100vh-4rem)]">
+          <div className=" p-4 dark:bg-[#14b8a51d]  pt-0 min-h-[calc(100vh-4rem)]">
             {children}
           </div>
         </SidebarInset>

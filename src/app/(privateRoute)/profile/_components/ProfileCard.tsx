@@ -24,14 +24,14 @@ const ProfileCard = () => {
   } : null;
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-4 md:p-8 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="flex justify-center items-center min-h-screen sm:p-4 md:p-8 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-gray-800">
       <Card className="w-full max-w-md shadow-2xl rounded-3xl overflow-hidden bg-white dark:bg-gray-800 border-0 relative">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-400 to-teal-400" />
         <div className="absolute -top-16 -right-16 w-32 h-32 rounded-full bg-emerald-100/50 dark:bg-emerald-900/20 blur-xl" />
         <div className="absolute -bottom-16 -left-16 w-32 h-32 rounded-full bg-teal-100/50 dark:bg-teal-900/20 blur-xl" />
         
-        <div className="flex flex-col items-center px-8 py-10 relative z-10">
+        <div className="flex flex-col items-center px-3 sm:px-8 py-5 sm:py-10 relative z-10">
           {/* Profile image with decorative ring */}
           <div className="relative mb-6 group">
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 p-1 animate-spin-slow [animation-duration:8s] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -56,7 +56,7 @@ const ProfileCard = () => {
           </div>
 
           {/* Action buttons in one row */}
-          <div className="flex flex-row gap-4 w-full max-w-xs justify-center">
+          <div className="flex sm:flex-row flex-col gap-4 w-full max-w-xs justify-center">
             <UpdateProfileModal user={userForProfile} setIsLoading={setIsLoading} />
             <UpdatePasswordModal />
           </div>

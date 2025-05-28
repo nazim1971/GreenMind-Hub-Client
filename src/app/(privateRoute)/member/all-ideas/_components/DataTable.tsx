@@ -325,7 +325,7 @@ export function MemberIdeaTable({ ideas }: DataTableProps) {
 
   return (
     <div className="w-full space-y-4 ">
-      <div className="flex flex-col gap-4 py-4 md:flex-row md:items-center ">
+      <div className="flex flex-col gap-4 py-4 lg:flex-row lg:items-center ">
         <Input
           placeholder="Search your ideas..."
           value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}

@@ -110,28 +110,39 @@ const isInCart = cart.some(item => item.ideaId === idea.id);
         </CardContent>
 
         <CardFooter className="pb-4 flex flex-col gap-3 border-t">
-          <div className="flex items-center gap- justify-between text-sm">
-            <span className="bg-[#14B8A6]/10 text-[#14B8A6] px-3 py-1 rounded-full">
-              {idea.category?.name}
-            </span>
-            <span className="text-lg font-bold text-[#14B8A6]">
-              {idea.isPaid ? `$${idea.price?.toFixed(2)}` : 'Free'}
-            </span>
-          </div>
+  <div className="flex  justify-between gap-5 text-sm">
+    <span className="bg-[#14B8A6]/10 text-[#14B8A6] px-3 py-1 rounded-full">
+      {idea.category?.name}
+    </span>
+    <span className="text-lg font-bold text-[#14B8A6]">
+      {idea.isPaid ? `$${idea.price?.toFixed(2)}` : 'Free'}
+    </span>
+  </div>
 
-          {isLoading ? (
-            <IdeaActionSkeleton />
-          ) : (
-            <Link href={`/idea/${idea.id}`} onClick={handleLinkClick} className="w-full">
-              <Button
-                size="lg"
-                className="w-full bg-[#14B8A6] hover:bg-[#14b8a5d1] text-white font-semibold rounded-xl"
-              >
-                {idea.isPaid ? 'Unlock Premium' : 'View Solution'}
-              </Button>
-            </Link>
-          )}
-        </CardFooter>
+  {isLoading ? (
+    <IdeaActionSkeleton />
+  ) : (
+    <Link 
+      href={idea.isPaid && user?.role === 'ADMIN' ? '#' : `/idea/${idea.id}`}
+      onClick={(e) => {
+        if (idea.isPaid && user?.role === 'ADMIN') {
+          e.preventDefault();
+          toast.error("Admins cannot access premium content this way");
+        } else{
+         handleLinkClick(e)
+        }
+      }}
+      className="w-full"
+    >
+      <Button
+        size="lg"
+        className="w-full bg-[#14B8A6] hover:bg-[#14b8a5d1] text-white font-semibold rounded-xl"
+      >
+        {idea.isPaid ? 'Unlock Premium' : 'View Solution'}
+      </Button>
+    </Link>
+  )}
+</CardFooter>
       </Card>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

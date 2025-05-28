@@ -140,7 +140,9 @@ const NavBar = () => {
             <CartButton />
 
             <div className="flex gap-4 items-center">
-              <ModeToggle />
+              <div className='hidden lg:inline' >
+                <ModeToggle />
+              </div>
               {isLoading ? (
                 <Loader aria-label="Loading" />
               ) : user ? (
@@ -192,14 +194,14 @@ const NavBar = () => {
 
             {/* Mobile menu button */}
             <div className="lg:hidden">
-              <Button
-                variant="ghost"
+              <button
+               
                 className="text-gray-800 dark:text-[#14B8A6] hover:bg-gray-100 dark:hover:bg-gray-800"
                 onClick={() => setIsDrawerOpen(true)}
                 aria-label="Open menu"
               >
-                <Menu className="w-6 h-6" />
-              </Button>
+                <Menu className="w-8 h-8" />
+              </button>
 
               <Drawer 
                 open={isDrawerOpen} 
@@ -255,7 +257,9 @@ const NavBar = () => {
                         <Search className="w-5 h-5" />
                       </button>
                     </form>
-
+               <div className='text-center'>
+                 <ModeToggle/>
+               </div>
                     <nav className="flex-1 px-4 py-3 overflow-y-auto" aria-label="Mobile navigation">
                       <div className="flex flex-col gap-1">
                         {navLinks.map(({ name, path }) => (
