@@ -15,7 +15,7 @@ const TestimonialSection = async () => {
   const { data: testimonials } = await getByVotes();
 
   return (
-    <section className="py-16 px-2 sm:px-4 mt-8 bg-gradient-to-br from-white to-gray-100 dark:from-zinc-900 dark:to-zinc-950">
+    <section className="py-16 px-6 md:px-8 mt-20 bg-[#F4FAF7] rounded-2xl dark:bg-gray-900">
       <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white text-center mb-3">
         💬 What Our Users Say
       </h2>
@@ -27,7 +27,7 @@ const TestimonialSection = async () => {
         {testimonials?.slice(0, 3).map((idea: any, idx: number) => (
           <Card
             key={idx}
-            className="relative group overflow-hidden rounded-2xl bg-white/90 dark:bg-zinc-800/70 backdrop-blur-md border border-gray-200 dark:border-zinc-700 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.01] hover:border-transparent hover:ring-2 hover:ring-teal-400/40 max-w-[350px] mx-auto"
+            className="relative group overflow-hidden rounded-2xl  bg-white/90 dark:bg-gray-800 backdrop-blur-md border border-gray-200 dark:border-zinc-700 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.01] hover:border-transparent hover:ring-2 hover:ring-teal-400/40  mx-auto p-5"
           >
 
             <CardFooter className="flex items-center gap-3 pt-5">
@@ -37,14 +37,14 @@ const TestimonialSection = async () => {
                     width={40}
                     height={40}
                     alt="avatar"
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full rounded-full"
                   />
                 </div>
                 <div className="text-left">
-                  <CardTitle className="text-sm font-medium text-zinc-800 dark:text-white">
+                  <CardTitle className="text-lg font-medium text-zinc-800 dark:text-white">
                     {idea.author?.name}
                   </CardTitle>
-                  <p className="text-xs text-muted-foreground">
+                  <p className=" text-muted-foreground">
                     @{idea.author?.email.split('@')[0]}
                   </p>
                 </div>
@@ -61,26 +61,26 @@ const TestimonialSection = async () => {
               </Badge>
 
               {idea.images?.length > 0 && (
-                <div className="flex justify-center gap-2 mt-1">
+                <div className="flex justify-center gap-4 mt-1">
                   {idea.images.map((img: any, index: number) => (
                     <Image
                       key={index}
                       src={img}
                       alt={`Project image ${index + 1}`}
-                      height={60}
-                      width={60}
-                      className="w-14 h-14 object-cover rounded-lg border border-gray-300 dark:border-zinc-600"
+                      height={80}
+                      width={80}
+                      className="w-20 h-20 object-cover rounded-lg border border-gray-300 dark:border-zinc-600"
                     />
                   ))}
                 </div>
               )}
 
-              <h3 className="text-base font-semibold mt-2 text-teal-700 dark:text-teal-300">
+              <h3 className="text-lg font-semibold mt-2 text-teal-700 dark:text-teal-300">
                 {idea.title}
               </h3>
 
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {idea.description?.split(' ').slice(0,5).join(' ')}...
+              <p className=" text-gray-600 dark:text-gray-400">
+                {idea.description?.split(' ').slice(0,20).join(' ')}...
               </p>
 
              

@@ -242,7 +242,7 @@ const CommonDashboard = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 ">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {user?.role === 'ADMIN' ? 'Admin Dashboard' : 'My Sustainability Hub'}
@@ -367,8 +367,8 @@ const CommonDashboard = () => {
       )}
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className=" bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
               Platform Growth

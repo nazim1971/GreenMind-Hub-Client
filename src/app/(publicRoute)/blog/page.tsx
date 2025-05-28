@@ -3,7 +3,8 @@ import Link from 'next/link';
 
 const BlogsPage = () => {
   return (
-    <div className="p-5 md:p-10 bg-gray-100">
+    <div className="p-5 md:p-10 bg-gray-100 dark:bg-gray-900 rounded-2xl
+    ">
       {/* Header Section */}
       <header className="text-center mb-12">
         <h1 className="text-2xl md:text-5xl font-bold text-primary mb-4">

@@ -8,20 +8,20 @@ import { Badge } from "../ui/badge";
 const IdeaHomeCards = ({ idea }: { idea: any }) => {
   return (
     <Link href="/idea">
-      <Card className="flex flex-col justify-between h-full max-w-md mx-auto bg-white dark:bg-gradient-to-br dark:from-[#0f1412] dark:to-[#0c2924] text-black dark:text-white border border-[#14B8A6]/40 shadow-md rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] group">
+      <Card className="flex flex-col justify-between h-full max-w-md mx-auto bg-white dark:bg-gray-900 text-black dark:text-white border border-[#14B8A6]/40 shadow-md rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] group ">
         {/* Image Section */}
-        <div className="h-[250px] overflow-hidden ">
+        <div className="h-[250px] overflow-hidden border-b-1 ">
           <Image
             src={idea?.images?.[0]}
             alt={idea?.title}
             width={600}
             height={600}
-            className="object-cover rounded-t-xl w-full h-full transition-transform duration-300 group-hover:scale-105"
+            className="object-cover rounded-t-xl  w-full h-full transition-transform duration-300 group-hover:scale-105"
           />
         </div>
 
         {/* Body Section */}
-        <div className="flex flex-col justify-between flex-grow px-6  pb-6 space-y-4">
+        <div className="flex  flex-col justify-between flex-grow px-6  pb-6 space-y-4">
 
           {/* Info Row */}
           <div className="flex flex-wrap items-center gap-4 text-xs">
@@ -48,7 +48,7 @@ const IdeaHomeCards = ({ idea }: { idea: any }) => {
 
           {/* Title */}
           <CardHeader className="px-0 pt-3 pb-0">
-            <CardTitle className="text-normal font-bold text-[#14B8A6] group-hover:text-[#0d9488] transition-colors duration-300">
+            <CardTitle className="text-normal  text-[#14B8A6] group-hover:text-[#0d9488] transition-colors font-medium duration-300">
               {idea?.title}
             </CardTitle>
           </CardHeader>

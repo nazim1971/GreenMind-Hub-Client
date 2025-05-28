@@ -1,5 +1,7 @@
-import { Banner } from '@/components/home/Banner';
+
+import HeroSection from '@/components/home/HeroSection';
 import IdeaHome from '@/components/home/IdeaHome';
+import { Newsletter } from '@/components/home/Newsletter';
 import OurSkillsSection from '@/components/home/OurSkillsSection';
 import TestimonialSection from '@/components/home/TestimonialSection';
 import WorkingSolutins from '@/components/home/WorkingSolution';
@@ -12,8 +14,8 @@ const HomePage = () => {
 
   
   return (
-    <div>
-      <Banner />
+    <div className='w-full'>
+      <HeroSection/>
 
       <IdeaHome />
 
@@ -22,6 +24,8 @@ const HomePage = () => {
       <WorkingSolutins />
 
       <TestimonialSection />
+
+      <Newsletter/>
     </div>
   );
 };

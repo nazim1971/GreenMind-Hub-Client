@@ -3,7 +3,7 @@ import { FaSolarPanel } from 'react-icons/fa6';
 
 const WorkingSolutions = () => {
   return (
-    <div className="w-full px-4 sm:px-8 lg:px-16 py-20 bg-[#F4FAF7] dark:bg-gray-900">
+    <div className="w-full px-4 sm:px-8 lg:px-16 rounded-2xl py-20 bg-[#F4FAF7] dark:bg-gray-900">
       <section className="text-center mb-20">
         <h2 className="text-2xl sm:text-5xl font-extrabold text-[#14B8A6] mb-6">
           Our Sustainable Solutions

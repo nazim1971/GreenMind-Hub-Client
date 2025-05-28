@@ -22,7 +22,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4">
+    <div className="min-h-screen rounded-2xl bg-gray-50 dark:bg-gray-900 py-10 px-4">
       <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
         <h2 className="text-3xl font-bold mb-4 text-center text-[#14B8A6] dark:text-[#14B8A6]">
           Contact Us
@@ -32,12 +32,13 @@ const ContactPage = () => {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div suppressHydrationWarning className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                 Name
               </label>
               <input
+              suppressHydrationWarning
                 type="text"
                 required
                 className="mt-1 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
@@ -49,6 +50,7 @@ const ContactPage = () => {
                 Email
               </label>
               <input
+              suppressHydrationWarning
                 type="email"
                 required
                 className="mt-1 block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"

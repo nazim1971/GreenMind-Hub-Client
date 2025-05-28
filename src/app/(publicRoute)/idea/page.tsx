@@ -14,7 +14,7 @@ const AllIdeasPage = async ({
  
   const { data: ideas, meta } = await getAllIdeas(
     query.page as string,
-    '12',
+    '8',
     query
   );
 

@@ -55,13 +55,20 @@ interface DataTableProps {
   ideas: TIdea[];
 }
 
-export function DataTable({ ideas }: DataTableProps) {
+export function MemberIdeaTable({ ideas }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    id: false,
+    problemStatement: false,
+    solution: false,
+    description: false,
+    feedback: false,
+    updatedAt: false,
+    isDeleted: false
+  });
   const [rowSelection, setRowSelection] = useState({});
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
-
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [, setSelectedIdea] = useState<TIdea | null>(null);
@@ -90,7 +97,6 @@ export function DataTable({ ideas }: DataTableProps) {
     }
   };
 
-  // Update the columns array to include all fields
   const columns: ColumnDef<TIdea>[] = [
     {
       id: 'select',
@@ -115,28 +121,6 @@ export function DataTable({ ideas }: DataTableProps) {
       enableHiding: false,
     },
     {
-      accessorKey: 'id',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            ID
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const id = row.getValue('id') as string;
-        return (
-          <div className="font-mono text-xs max-w-[120px] truncate" title={id}>
-            {id}
-          </div>
-        );
-      },
-    },
-    {
       accessorKey: 'title',
       header: ({ column }) => {
         return (
@@ -144,52 +128,27 @@ export function DataTable({ ideas }: DataTableProps) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            Project Title
+            Project
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
       cell: ({ row }) => {
         const title = row.getValue('title') as string;
+        const images = row.original.images as string[];
         return (
-          <div className="font-medium max-w-[200px] truncate" title={title}>
-            {title}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'problemStatement',
-      header: 'Problem Statement',
-      cell: ({ row }) => {
-        const problemStatement = row.getValue('problemStatement') as string;
-        return (
-          <div className="max-w-[200px] truncate" title={problemStatement}>
-            {problemStatement}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'solution',
-      header: 'Solution',
-      cell: ({ row }) => {
-        const solution = row.getValue('solution') as string;
-        return (
-          <div className="max-w-[200px] truncate" title={solution}>
-            {solution}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'description',
-      header: 'Description',
-      cell: ({ row }) => {
-        const description = row.getValue('description') as string;
-        return (
-          <div className="max-w-[200px] truncate" title={description}>
-            {description}
+          <div className="flex items-center gap-3 min-w-[200px]  ">
+            <div className="relative h-10 w-10 overflow-hidden rounded-md shrink-0">
+              <Image
+                src={images?.[0] || '/placeholder.svg'}
+                alt={title}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="font-medium" title={title}>
+              {title.length > 30 ? `${title.substring(0, 30)}...` : title}
+            </div>
           </div>
         );
       },
@@ -223,169 +182,49 @@ export function DataTable({ ideas }: DataTableProps) {
       },
     },
     {
+      accessorKey: 'category',
+      accessorFn: row => row.category?.name,
+      header: 'Category',
+      cell: ({ row }) => {
+        const categoryName = row.original.category?.name;
+        return <div className="text-sm">{categoryName}</div>;
+      },
+    },
+    {
       accessorKey: 'isPaid',
       header: 'Type',
       cell: ({ row }) => {
         const isPaid = row.getValue('isPaid') as boolean;
         return (
           <Badge variant={isPaid ? 'default' : 'outline'}>
-            {isPaid ? 'Paid' : 'Free'}
+            {isPaid ? 'Premium' : 'Free'}
           </Badge>
         );
       },
     },
     {
       accessorKey: 'price',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            className="text-right"
-          >
-            Price
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      header: 'Price',
       cell: ({ row }) => {
         const price = Number.parseFloat(row.getValue('price'));
         const isPaid = row.getValue('isPaid') as boolean;
 
-        if (!isPaid) return <div className="text-center">Free</div>;
+        if (!isPaid) return <div className="text-center">-</div>;
 
-        // Format the price as a dollar amount
         const formatted = new Intl.NumberFormat('en-US', {
           style: 'currency',
           currency: 'USD',
         }).format(price);
 
-        return <div className="text-center font-medium">{formatted}</div>;
+        return <div className="font-medium">{formatted}</div>;
       },
-    },
-    {
-      accessorKey: 'feedback',
-      header: 'Feedback',
-      cell: ({ row }) => {
-        const feedback = row.getValue('feedback') as string | null;
-        return (
-          <div className="max-w-[200px] truncate" title={feedback || ''}>
-            {feedback || 'No feedback'}
-          </div>
-        );
-      },
-    },
-    {
-      id: 'category',
-      accessorFn: row => row.category?.name,
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Category
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const categoryName = row.original.category?.name;
-        return <div className="text-center">{categoryName}</div>;
-      },
-    },
-    {
-      id: 'author',
-      accessorFn: row => row.author?.name,
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Author
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const authorName = row.original.author?.name;
-        return <div>{authorName}</div>;
-      },
-    },
-    {
-      accessorKey: 'isDeleted',
-      header: 'Deleted',
-      cell: ({ row }) => {
-        const isDeleted = row.getValue('isDeleted') as boolean;
-        return (
-          <Badge variant={isDeleted ? 'destructive' : 'outline'}>
-            {isDeleted ? 'Deleted' : 'Active'}
-          </Badge>
-        );
-      },
-    },
-    {
-      accessorKey: 'images',
-      header: 'Image',
-      cell: ({ row }) => {
-        const images = row.getValue('images') as string[];
-
-        if (!images || images?.length === 0) {
-          return (
-            <div className="text-center text-muted-foreground">No image</div>
-          );
-        }
-
-        return (
-          <div className="flex justify-center">
-            <div className="relative h-10 w-10 overflow-hidden rounded-md">
-              <Image
-                src={images[0] || '/placeholder.svg'}
-                alt={row.getValue('title') as string}
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-        );
-      },
-      enableSorting: false,
     },
     {
       accessorKey: 'createdAt',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Created
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      header: 'Created',
       cell: ({ row }) => {
         const date = new Date(row.getValue('createdAt'));
-        return <div className="text-center">{date.toLocaleDateString()}</div>;
-      },
-    },
-    {
-      accessorKey: 'updatedAt',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Updated
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const date = new Date(row.getValue('updatedAt'));
-        return <div className="text-center">{date.toLocaleDateString()}</div>;
+        return <div className="text-sm">{date.toLocaleDateString()}</div>;
       },
     },
     {
@@ -403,44 +242,35 @@ export function DataTable({ ideas }: DataTableProps) {
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => {
                   navigator.clipboard.writeText(project?.id);
-                  toast.success('Idea id copied to dashboard');
+                  toast.success('Idea ID copied');
                 }}
               >
-                <span className="flex items-center">
-                  <span className="mr-2 cursor-pointer">Copy ID</span>
-                </span>
+                Copy ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <span className="flex items-center">
+                <Link href={`/ideas/${project?.id}`} className="flex items-center w-full">
                   <Eye className="mr-2 h-4 w-4" />
-                  <Link href={`/ideas/${project?.id}`}>View details</Link>
-                </span>
+                  View details
+                </Link>
               </DropdownMenuItem>
               {status !== 'APPROVED' && (
                 <DropdownMenuItem onClick={() => handleEditClick(project.id)}>
-                  <span className="flex items-center">
-                    <Edit className="mr-2 h-4 w-4" />
-                    <Link href={`/member/edit-idea/${project?.id}`}>
-                      Edit idea
-                    </Link>
-                  </span>
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit
                 </DropdownMenuItem>
               )}
-
               <DropdownMenuItem
                 onClick={() => handleDeleteClick(project.id)}
                 className="text-red-600"
               >
-                <span className="flex items-center">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  <span className="cursor-pointer">Delete idea</span>
-                </span>
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -460,6 +290,11 @@ export function DataTable({ ideas }: DataTableProps) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+      pagination: {
+        pageSize: 8,
+      },
+    },
     state: {
       sorting,
       columnFilters,
@@ -468,7 +303,6 @@ export function DataTable({ ideas }: DataTableProps) {
     },
   });
 
-  // Status filter options
   const statusOptions = [
     { label: 'Under Review', value: 'UNDER_REVIEW' },
     { label: 'Approved', value: 'APPROVED' },
@@ -476,7 +310,6 @@ export function DataTable({ ideas }: DataTableProps) {
     { label: 'Draft', value: 'DRAFT' },
   ];
 
-  // Handle status filter change
   const handleStatusFilterChange = (value: string) => {
     setStatusFilter(prev => {
       const newFilter = prev.includes(value)
@@ -491,24 +324,24 @@ export function DataTable({ ideas }: DataTableProps) {
   };
 
   return (
-    <div className="w-full">
-      <div className="flex flex-col gap-4 py-4 md:flex-row md:items-center">
+    <div className="w-full space-y-4 ">
+      <div className="flex flex-col gap-4 py-4 md:flex-row md:items-center ">
         <Input
-          placeholder="Filter by title..."
+          placeholder="Search your ideas..."
           value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
           onChange={event =>
             table.getColumn('title')?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 ">
           {statusOptions.map(option => (
             <Badge
               key={option.value}
               variant={
                 statusFilter.includes(option.value) ? 'default' : 'outline'
               }
-              className="cursor-pointer"
+              className="cursor-pointer  hover:bg-teal-100/80 hover:text-teal-800"
               onClick={() => handleStatusFilterChange(option.value)}
             >
               {option.label}
@@ -525,50 +358,48 @@ export function DataTable({ ideas }: DataTableProps) {
             {table
               .getAllColumns()
               .filter(column => column.getCanHide())
-              .map(column => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={value => column.toggleVisibility(!!value)}
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+              .map(column => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={value => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+
+      <div className="rounded-lg border bg-white dark:bg-gray-900 min-h-screen shadow-sm">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-gray-50 dark:bg-gray-900">
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map(header => (
+                  <TableHead key={header.id} className="py-3">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows?.map(row => (
+              table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  className="hover:bg-gray-800"
                 >
                   {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="py-3">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -580,22 +411,50 @@ export function DataTable({ ideas }: DataTableProps) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns?.length}
-                  className="h-24 text-center"
+                  colSpan={columns.length}
+                  className="h-24 text-center py-8"
                 >
-                  No results.
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-gray-500">No ideas found</p>
+                    <Button
+                      variant="ghost"
+                      className="text-teal-600"
+                      onClick={() => {
+                        table.resetColumnFilters();
+                        table.resetSorting();
+                      }}
+                    >
+                      Clear filters
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows?.length} of{' '}
-          {table.getFilteredRowModel().rows?.length} row(s) selected.
+
+      <div className="flex flex-col items-center gap-4 py-4 sm:flex-row sm:justify-between">
+        <div className="text-sm text-gray-500">
+          Showing {table.getRowModel().rows.length} of{' '}
+          {table.getFilteredRowModel().rows.length} ideas
         </div>
-        <div className="space-x-2">
+        <div className="flex gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -614,6 +473,7 @@ export function DataTable({ ideas }: DataTableProps) {
           </Button>
         </div>
       </div>
+
       <DeleteConfirmationModal
         open={openDeleteModal}
         onCancel={() => setOpenDeleteModal(false)}

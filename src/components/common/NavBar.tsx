@@ -23,13 +23,14 @@ import {
 } from '@/components/ui/drawer';
 import { logOut } from '@/services/AuthService';
 import { Button } from '../ui/button';
-import { Loader, LogOut, Menu, Search, X } from 'lucide-react';
+import { Loader, LogOut, Menu, Search,  X } from 'lucide-react';
 import { protectedRoutes } from '@/constants';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avater';
 import { ModeToggle } from '../theme/ModeToggle';
 import { ShinyButton } from '../magicui/shiny-button';
 import { useEffect, useState } from 'react';
 import { DialogTitle } from '../ui/dialog';
+import CartButton from './CartButton';
 
 const NavBar = () => {
   const router = useRouter();
@@ -78,11 +79,11 @@ const NavBar = () => {
 
   return (
     <header
-      className={`fixed w-full top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
+      className={`fixed w-full dark:bg-gray-900 top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
         showNavbar ? "translate-y-0" : "-translate-y-full"
-      } bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b pb-3`}
+      } bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b pb-3 `}
     >
-      <div className="container mx-auto h-16 px-5 md:px-10">
+      <div className="container dark:bg-gray-900 mx-auto h-16 px-5 md:px-10 ">
         <div className="relative h-16 md:h-20 flex items-center justify-between">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
@@ -98,7 +99,7 @@ const NavBar = () => {
             {/* Search Bar - Desktop */}
             <form 
               onSubmit={handleSearch}
-              className="hidden md:flex items-center relative"
+              className="hidden xl:flex items-center relative"
             >
               <input
                 type="text"
@@ -129,6 +130,9 @@ const NavBar = () => {
                 </Link>
               ))}
             </div>
+            {/* cart button */}
+                <CartButton/>
+            
 
             <div className="flex gap-4 items-center">
               <ModeToggle />
@@ -171,36 +175,40 @@ const NavBar = () => {
               )}
             </div>
 
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <Drawer direction="left">
                 <DrawerTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="text-gray-800 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="text-gray-800 dark:text-[#14B8A6] hover:bg-gray-100 dark:hover:bg-gray-800"
                   >
-                    <Menu className="w-6 h-6" />
+                    <Menu className="w-10 h-10" />
                   </Button>
                 </DrawerTrigger>
 
                 <DrawerContent className="text-gray-800 dark:text-white bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 max-w-[280px]">
                   <div className="w-full h-full flex flex-col">
-                    <DrawerHeader className="flex justify-between items-center px-4 pt-4">
-                      <div>
+                    <DrawerHeader className=" px-4 pt-4">
+                     <div className='flex justify-between items-center'>
+                       <div>
                         <DialogTitle/>
                         <Link href="/" className="w-fit">
                           <Image src={logo} alt="logo" className="h-16 w-auto" />
                         </Link>
                       </div>
 
-                      <DrawerClose asChild>
+                      <div>
+                        <DrawerClose asChild>
                         <Button
-                          size="icon"
+                          size="lg"
                           variant="ghost"
-                          className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                          className="text-gray-700  dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         >
                           <X className="w-5 h-5" />
                         </Button>
                       </DrawerClose>
+                      </div>
+                     </div>
                     </DrawerHeader>
 
                     {/* Search Bar - Mobile */}
@@ -232,8 +240,8 @@ const NavBar = () => {
                               className={`w-full rounded-md px-4 py-2 text-sm font-medium transition-all duration-150
                                 ${
                                   pathname === path
-                                    ? 'bg-blue-100 text-blue-600 dark:bg-blue-600 dark:text-white'
-                                    : 'hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-white'
+                                    ? 'bg-[#14b8a532]  dark:bg-[#14B8A6] dark:text-white'
+                                    : 'hover:bg-[#14b8a532] dark:hover:bg-[#14B8A6]  dark:hover:text-white'
                                 }`}
                             >
                               {name}

@@ -140,7 +140,7 @@ const LoginForm = ({ redirectPath }: { redirectPath: string | undefined }) => {
 
             <div className="pt-2">
               <ShinyButton
-                className="w-full py-3 rounded-lg font-medium text-white bg-gradient-to-r from-[#5eead4] to-[#14b8a6] hover:from-[#14b8a6] hover:to-[#5eead4] transition-all"
+                className="w-full py-3 rounded-lg font-medium text-white bg-gradient-to-r from-[#5eead4] to-[#14b8a6] hover:from-[#14b8a6] hover:to-[#5eead4] dark:bg-[#14b8a6] dark:hover:to-[#5eead4] transition-all"
                 
               >
                 {isSubmitting ? 'Logging in...' : 'Log in'}

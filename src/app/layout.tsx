@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { Provider } from "@/Providers/Provider";
+import { CartProvider } from "./(publicRoute)/cart/_compoenets/CartContext";
 
-const roboto = Roboto({
-  weight: "400",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -22,8 +27,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
- 
-
   return (
     <html
       suppressHydrationWarning
@@ -32,20 +35,33 @@ export default async function RootLayout({
       style={{ colorScheme: "dark" }}
     >
       <body
-        className={`${roboto.className} antialiased transition-colors duration-300 overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-           <Provider>
-           <div className="max-w-[1200px] mx-auto  sm:px-6 lg:px-8 pt-20 w-full">{children}</div>
-           </Provider>
-           <Toaster />
-          </ThemeProvider>
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Provider>
+            <CartProvider>
+              <Toaster
+            richColors
+            //   position="top-center"
+            toastOptions={{
+              style: {
+                // background: "#2ecc71",
+                border: "none",
+              },
+            }}
+          />
+            <div className=" pt-20 ">
+              {children}
+            </div>
+            </CartProvider>
+          </Provider>
           
+        </ThemeProvider>
       </body>
     </html>
   );

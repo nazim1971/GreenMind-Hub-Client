@@ -6,7 +6,7 @@ import { Progress } from '../ui/progress';
 
 const OurSkillsSection = () => {
   return (
-    <div className="bg-[#F6F6EE] dark:bg-black rounded-2xl flex flex-col md:flex-row-reverse justify-around items-center px-6 md:px-12 py-16 gap-10 my-20">
+    <div className="bg-[#F6F6EE]  dark:bg-gray-900 rounded-2xl flex flex-col md:flex-row-reverse justify-around items-center px-6 md:px-10 py-16 gap-10 my-20">
       {/* Right Image */}
       <div>
         <Image src={skill} height={500} width={500} alt="Team Working on Environment" />

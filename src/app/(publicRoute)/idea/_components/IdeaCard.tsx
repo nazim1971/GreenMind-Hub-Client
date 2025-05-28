@@ -34,11 +34,16 @@ import IdeaCardCarousel from './IdeaCardCarosule';
 import { createPayment } from '@/services/Payment';
 import IdeaActionSkeleton from './IdeaActionSkelletion';
 import { Idea } from '@/types/idea';
+import { useCart } from '../../cart/_compoenets/CartContext';
+import { toast } from 'sonner';
 
 const IdeaCard = ({ idea }: { idea: Idea }) => {
   const { user, isLoading } = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
+
+  const { cart, addToCart, removeFromCart } = useCart();
+const isInCart = cart.some(item => item.ideaId === idea.id);
 
   const handlePayment = async (id: string) => {
     try {
@@ -160,6 +165,30 @@ const IdeaCard = ({ idea }: { idea: Idea }) => {
             </div>
 
             <div className="flex flex-col gap-2">
+{idea.isPaid && (
+  <Button
+    variant={isInCart ? "outline" : "secondary"}
+    size="lg"
+    className="w-full"
+    onClick={() => {
+      if (isInCart) {
+        removeFromCart(idea.id);
+      } else if (cart.length >= 1) {
+        toast.warning("You can only add one premium idea at a time. Complete the payment or remove the existing one.");
+      } else {
+        addToCart({
+          ideaId: idea.id,
+          title: idea.title,
+          price: idea.price || 0,
+          image: idea.images,
+        });
+        toast.success("Idea added to cart!");
+      }
+    }}
+  >
+    {isInCart ? 'Remove from Cart' : 'Add to Cart'}
+  </Button>
+)}
               <Button
                 onClick={() => {
                   setIsModalOpen(false);

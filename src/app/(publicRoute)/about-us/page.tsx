@@ -10,7 +10,7 @@ import welcome from '@/assets/welcome.avif';
 
 const AboutUsPage = () => {
   return (
-    <div className="min-h-screen px-2 py-10 md:px-20 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
+    <div className="min-h-screen px-5 rounded-2xl py-10 md:px-20 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
       <div className="max-w-6xl mx-auto">
         {/* Hero Section */}
         <section className="mb-16 text-center">

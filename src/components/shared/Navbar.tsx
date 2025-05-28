@@ -40,7 +40,7 @@ const Navbar = () => {
   }, [lastScrollY]);
 
   return (
-    <div>
+    <div className="dark:bg-gray-900">
       {/* Sidebar Component */}
       <Sidebar  isOpen={isSidebarOpen} closeSidebar={() => setIsSidebarOpen(false)} />
 
@@ -50,7 +50,7 @@ const Navbar = () => {
           showNavbar ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="flex justify-between items-center p-5 bg-white dark:bg-gray-900 shadow-lg border-b border-gray-300 dark:border-gray-700 max-w-[1200px] mx-auto rounded-b-xl">
+        <div className="flex justify-between items-center p-5 bg-white dark:bg-gray-900 shadow-lg border-b border-gray-300 dark:border-gray-700 mx-auto rounded-b-xl">
           {/* Left side: Home icon */}
           <div className="flex items-center">
             <Link href="/">

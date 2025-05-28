@@ -7,8 +7,8 @@ import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 dark:bg-zinc-900 text-gray-700 dark:text-gray-300 border-t">
-      <div className="max-w-7xl mx-auto px-5 py-12 grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-t">
+      <div className="container  mx-auto px-5 py-12 grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Navigation */}
         <div>
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Navigation</h3>

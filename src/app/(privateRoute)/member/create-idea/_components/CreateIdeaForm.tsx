@@ -94,7 +94,7 @@ const CreateIdeaForm = ({ categories }: { categories: category[] }) => {
 
 
   return (
-    <div className="p-4 md:p-0 ">
+    <div className="py-10 ">
       <h1 className="text-3xl text-center mb-6">Create Idea</h1>
       <div className="flex justify-center h-screen  mx-auto">
         <Form {...form}>
