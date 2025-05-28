@@ -291,7 +291,7 @@ export function DataTable({ data }: DataTableProps) {
 
   return (
     <div className="w-full space-y-4">
-      <div className="flex flex-col gap-4 py-4 md:flex-row md:items-center">
+      <div className="flex flex-col gap-4 py-4 lg:flex-row md:items-center">
         <Input
           placeholder="Search projects..."
           value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}

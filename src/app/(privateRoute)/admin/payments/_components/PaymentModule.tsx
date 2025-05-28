@@ -5,7 +5,7 @@ const PaymentModule =async () => {
     const {data:payments} = await getAllPayments();
   
     return (
-    <div>
+    <div className='mt-5'>
       <TransactionDataTable data={payments} />
     </div>
   )
