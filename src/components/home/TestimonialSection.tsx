@@ -1,15 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardTitle,
-} from '../ui/card';
-import Image from 'next/image';
-import { getByVotes } from '@/services/Idea';
-import u1 from '../../assets/u1.avif';
-import { Badge } from '../ui/badge';
-import { Separator } from '../ui/separator';
+import { Card, CardContent, CardFooter, CardTitle } from "../ui/card";
+import Image from "next/image";
+import { getByVotes } from "@/services/Idea";
+import u1 from "../../assets/u1.avif";
+import { Badge } from "../ui/badge";
+import { Separator } from "../ui/separator";
 
 const TestimonialSection = async () => {
   const { data: testimonials } = await getByVotes();
@@ -20,38 +15,38 @@ const TestimonialSection = async () => {
         💬 What Our Users Say
       </h2>
       <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-sm sm:text-base text-center mb-10">
-        Real voices from changemakers who are building a more sustainable future with us.
+        Real voices from changemakers who are building a more sustainable future
+        with us.
       </p>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
         {testimonials?.slice(0, 3).map((idea: any, idx: number) => (
           <Card
             key={idx}
-            className="relative group overflow-hidden rounded-2xl  bg-white/90 dark:bg-gray-800 backdrop-blur-md border border-gray-200 dark:border-zinc-700 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.01] hover:border-transparent hover:ring-2 hover:ring-teal-400/40  mx-auto p-5"
+            className="relative group overflow-hidden rounded-2xl  bg-white/90 dark:bg-gray-800 backdrop-blur-md border border-gray-200 dark:border-zinc-700 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.01] hover:border-transparent hover:ring-2 hover:ring-teal-400/40  mx-auto p-3 md:p:5"
           >
-
             <CardFooter className="flex items-center gap-3 pt-5">
-                <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 dark:border-zinc-600">
-                  <Image
-                    src={idea.author.image || u1}
-                    width={40}
-                    height={40}
-                    alt="avatar"
-                    className="object-cover w-full h-full rounded-full"
-                  />
-                </div>
-                <div className="text-left">
-                  <CardTitle className="text-lg font-medium text-zinc-800 dark:text-white">
-                    {idea.author?.name}
-                  </CardTitle>
-                  <p className=" text-muted-foreground">
-                    @{idea.author?.email.split('@')[0]}
-                  </p>
-                </div>
-              </CardFooter>
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 dark:border-zinc-600">
+                <Image
+                  src={idea.author.image || u1}
+                  width={40}
+                  height={40}
+                  alt="avatar"
+                  className="object-cover w-full h-full rounded-full"
+                />
+              </div>
+              <div className="text-left">
+                <CardTitle className="text-lg font-medium text-zinc-800 dark:text-white">
+                  {idea.author?.name}
+                </CardTitle>
+                <p className=" text-muted-foreground">
+                  @{idea.author?.email.split("@")[0]}
+                </p>
+              </div>
+            </CardFooter>
 
-               <Separator className="my-1" />
-               
+            <Separator className="my-1" />
+
             <CardContent className="p-5 space-y-4">
               <Badge
                 variant="outline"
@@ -79,13 +74,17 @@ const TestimonialSection = async () => {
                 {idea.title}
               </h3>
 
-              <p className=" text-gray-600 dark:text-gray-400">
-                {idea.description?.split(' ').slice(0,20).join(' ')}...
+              <p className="text-gray-600 dark:text-gray-400">
+                {/* Mobile (default) - 10 words */}
+                <span className="inline lg:hidden">
+                  {idea.description?.split(" ").slice(0, 10).join(" ")}...
+                </span>
+
+                {/* Medium screens and up - 20 words */}
+                <span className="hidden lg:inline">
+                  {idea.description?.split(" ").slice(0, 15).join(" ")}...
+                </span>
               </p>
-
-             
-
-              
             </CardContent>
           </Card>
         ))}
